@@ -1,9 +1,14 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "qf_cardinal_test",
   "version": "${version}",
 
-  "name": "Example Mod",
+  "custom" : {
+    "cardinal-components" : [
+      "mymod:magik"
+    ]
+  },
+  "name": "BiryeongTrain Cardinal Test",
   "description": "This is an example description! Tell everyone what your mod is about!",
   "authors": [
     "Me!"
@@ -14,12 +19,15 @@
   },
 
   "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/qf_cardinal_test/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "net.biryeongtrain06.qf_cardinal_test.QfCardinalTest"
+    ],
+    "cardinal-components" : [
+      "net.biryeongtrain06.qf_cardinal_test.component.MyComponent"
     ]
   },
   "mixins": [
