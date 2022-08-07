@@ -4,9 +4,9 @@ import dev.onyxstudios.cca.api.v3.component.Component;
 
 public interface StatSystem extends Component {
 
-    int getValue();
-    void addValue();
-    void setValue();
+    int getLevel();
+    void addLevel();
+    void setLevel();
     void levelUp();
 
 }

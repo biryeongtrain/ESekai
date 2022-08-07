@@ -10,7 +10,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.SwordItem;
 import net.minecraft.util.Identifier;
 
-import static net.biryeongtrain06.stat_system.Cardinal.MOD_ID;
+import static net.biryeongtrain06.stat_system.MainStatSystem.MOD_ID;
 
 public class TestComponent implements ItemComponentInitializer {
 
