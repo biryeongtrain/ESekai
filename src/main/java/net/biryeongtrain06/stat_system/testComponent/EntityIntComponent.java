@@ -1,15 +1,13 @@
-package njoyshadow.cardinal.component;
+package net.biryeongtrain06.stat_system.testComponent;
 
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
 import dev.onyxstudios.cca.api.v3.entity.RespawnCopyStrategy;
 
-import static njoyshadow.cardinal.component.TestComponent.MAGIK;
-
 public class EntityIntComponent implements EntityComponentInitializer {
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
-        registry.registerForPlayers(MAGIK, player -> new RandomIntComponent(), RespawnCopyStrategy.ALWAYS_COPY);
+        registry.registerForPlayers(TestComponent.MAGIK, player -> new RandomIntComponent(), RespawnCopyStrategy.ALWAYS_COPY);
 
     }
 }

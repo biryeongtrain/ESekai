@@ -1,4 +1,4 @@
-package njoyshadow.cardinal.component;
+package net.biryeongtrain06.stat_system.testComponent;
 
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
@@ -7,13 +7,10 @@ import dev.onyxstudios.cca.api.v3.item.ItemComponentInitializer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.item.ArmorItem;
 import net.minecraft.item.SwordItem;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.hit.HitResult;
 
-import static njoyshadow.cardinal.Cardinal.MOD_ID;
+import static net.biryeongtrain06.stat_system.Cardinal.MOD_ID;
 
 public class TestComponent implements ItemComponentInitializer {
 

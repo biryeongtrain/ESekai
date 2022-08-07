@@ -1,4 +1,4 @@
-package njoyshadow.cardinal.component;
+package net.biryeongtrain06.stat_system.testComponent;
 
 import net.minecraft.nbt.NbtCompound;
 

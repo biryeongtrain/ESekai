@@ -1,4 +1,4 @@
-package njoyshadow.cardinal.component;
+package net.biryeongtrain06.stat_system.testComponent;
 
 import dev.onyxstudios.cca.api.v3.component.Component;
 

@@ -1,9 +1,8 @@
-package njoyshadow.cardinal.component;
+package net.biryeongtrain06.stat_system.testComponent;
 
 import dev.onyxstudios.cca.api.v3.item.ItemComponent;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 
 public class ItemIntComponent extends ItemComponent implements IntComponent {
     private int value;

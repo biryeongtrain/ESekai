@@ -13,11 +13,11 @@
     "client": [
     ],
     "main": [
-      "njoyshadow.cardinal.Cardinal"
+      "net.biryeongtrain06.stat_system.cardinal.Cardinal"
     ],
     "cardinal-components" : [
-      "njoyshadow.cardinal.component.TestComponent",
-      "njoyshadow.cardinal.component.EntityIntComponent"
+      "net.biryeongtrain06.stat_system.component.TestComponent",
+      "net.biryeongtrain06.stat_system.component.EntityIntComponent"
     ]
   },
   "custom" : {
