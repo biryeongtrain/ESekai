@@ -1,4 +1,4 @@
-package net.biryeongtrain06.stat_system.component;
+package net.biryeongtrain06.stat_system.stat;
 
 import org.intellij.lang.annotations.MagicConstant;
 
