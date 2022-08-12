@@ -18,8 +18,7 @@
     "cardinal-components" : [
       "net.biryeongtrain06.stat_system.testComponent.TestComponent",
       "net.biryeongtrain06.stat_system.testComponent.EntityIntComponent",
-      "net.biryeongtrain06.stat_system.component.PlayerStatComponent",
-      "net.biryeongtrain06.stat_system.component.StatComponent"
+      "net.biryeongtrain06.stat_system.component.PlayerStatComponent"
     ]
   },
   "custom" : {
