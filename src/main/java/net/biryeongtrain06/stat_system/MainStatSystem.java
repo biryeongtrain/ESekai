@@ -31,9 +31,9 @@ public class MainStatSystem implements ModInitializer {
             );
             dispatcher.register(
                     literal("setdefense").requires(serverCommandSource -> serverCommandSource.hasPermissionLevel(2))
-                            .then(CommandManager.argument("player", EntityArgumentType.player()))
+                            .then(CommandManager.argument("player", EntityArgumentType.player())
                                 .then(CommandManager.argument("value", IntegerArgumentType.integer())
-                                        .executes(ctx -> setDefense.onExecuted(EntityArgumentType.getPlayer(ctx, "player"), IntegerArgumentType.getInteger(ctx, "value"))))
+                                        .executes(ctx -> setDefense.onExecuted(EntityArgumentType.getPlayer(ctx, "player"), IntegerArgumentType.getInteger(ctx, "value")))))
 
             );
         });
