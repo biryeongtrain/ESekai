@@ -13,7 +13,7 @@
     "client": [
     ],
     "main": [
-      "net.biryeongtrain06.stat_system.cardinal.Cardinal"
+      "net.biryeongtrain06.stat_system.MainStatSystem"
     ],
     "cardinal-components" : [
       "net.biryeongtrain06.stat_system.testComponent.TestComponent",
