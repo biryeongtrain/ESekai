@@ -16,13 +16,12 @@
       "njoyshadow.cardinal.Cardinal"
     ],
     "cardinal-components" : [
-      "njoyshadow.cardinal.component.TestComponent",
-      "njoyshadow.cardinal.component.EntityIntComponent"
+      "njoyshadow.cardinal.component.PlayerStatComponent"
     ]
   },
   "custom" : {
     "cardinal-components" : [
-      "cardinal:magik"
+      "cardinal:stat"
     ]
   },
   "mixins": [
