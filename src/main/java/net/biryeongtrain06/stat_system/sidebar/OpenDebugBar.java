@@ -24,6 +24,8 @@ public class OpenDebugBar {
             sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Defense : " + STAT.get(p).getDefense())));
             sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Dodge : "  + STAT.get(p).getDodge())));
             sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Mana : "  + STAT.get(p).getMana())));
+            sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Xp : "  + STAT.get(p).getXp())));
+            sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Level : "  + STAT.get(p).getLevel())));
 
             sidebar.addPlayer(player);
             sidebar.show();
