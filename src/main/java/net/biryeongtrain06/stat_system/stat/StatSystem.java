@@ -101,9 +101,12 @@ public class StatSystem extends EntityStat implements StatComponent, AutoSyncedC
     @Override
     public void addXp(int xp) {
         this.xp += xp;
-        if (xp >= 1) {
+        if (this.xp > 1) {
+            return;
+        }
+        while (this.xp >= 1) {
+            this.addLevel(1);
             this.xp -= 1;
-            addLevel(1);
         }
     }
 
