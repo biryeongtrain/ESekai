@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntity.class)
-public class CheckEntityDeathByPlayer {
+public class CheckEntityDeathByPlayerMixin {
     @Inject(method = "onDeath", at = @At("HEAD"))
     //if Mob Dead by player, give player xp in statComponent
     public void StatSystem$onKilledXPTracker(DamageSource damageSource, CallbackInfo ci) {
