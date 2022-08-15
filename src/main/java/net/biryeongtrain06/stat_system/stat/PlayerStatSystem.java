@@ -1,22 +1,22 @@
 package net.biryeongtrain06.stat_system.stat;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import net.biryeongtrain06.stat_system.component.StatComponent;
+import net.biryeongtrain06.stat_system.component.PlayerStatComponentInterface;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
-public class StatSystem extends EntityStat implements StatComponent, AutoSyncedComponent {
+public class PlayerStatSystem extends PlayerStat implements PlayerStatComponentInterface, AutoSyncedComponent {
 
     private final PlayerEntity player;
 
-    public StatSystem(int health, int defense, int dodge, int mana, int magic_damage, int attack_damage, int xp, int level, ServerPlayerEntity player) {
+    public PlayerStatSystem(int health, int defense, int dodge, int mana, int magic_damage, int attack_damage, int xp, int level, ServerPlayerEntity player) {
         super(health, defense, dodge, mana, magic_damage, attack_damage, xp, level);
         this.player = player;
     }
 
-    public StatSystem(PlayerEntity player) {
+    public PlayerStatSystem(PlayerEntity player) {
         super(0, 0, 0, 0, 0, 0, 0, 1);
         this.player = player;
     }

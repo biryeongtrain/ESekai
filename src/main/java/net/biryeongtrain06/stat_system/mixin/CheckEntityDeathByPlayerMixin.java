@@ -1,6 +1,6 @@
 package net.biryeongtrain06.stat_system.mixin;
 
-import net.biryeongtrain06.stat_system.component.PlayerStatComponent;
+import net.biryeongtrain06.stat_system.component.StatComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.WitherEntity;
@@ -23,11 +23,11 @@ public class CheckEntityDeathByPlayerMixin {
             Entity entity = damageSource.getAttacker();
             if(entity instanceof ServerPlayerEntity player) {
                 if (entity instanceof WitherEntity || entity instanceof EnderDragonEntity) {
-                    PlayerStatComponent.STAT.get(player).addXp(30);
+                    StatComponent.PLAYERSTAT.get(player).addXp(30);
                 } else if (entity instanceof WardenEntity) {
-                    PlayerStatComponent.STAT.get(player).addXp(10);
+                    StatComponent.PLAYERSTAT.get(player).addXp(10);
                 } else {
-                    PlayerStatComponent.STAT.get(player).addXp(1);
+                    StatComponent.PLAYERSTAT.get(player).addXp(1);
                 }
             }
         }

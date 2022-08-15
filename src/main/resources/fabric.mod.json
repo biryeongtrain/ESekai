@@ -18,13 +18,15 @@
     "cardinal-components" : [
       "net.biryeongtrain06.stat_system.testComponent.TestComponent",
       "net.biryeongtrain06.stat_system.testComponent.EntityIntComponent",
-      "net.biryeongtrain06.stat_system.component.PlayerStatComponent"
+      "net.biryeongtrain06.stat_system.component.PlayerStatComponent",
+      "net.biryeongtrain06.stat_system.component.EntityStatComponent"
     ]
   },
   "custom" : {
     "cardinal-components" : [
       "cardinal:magik",
-      "cardinal:stat"
+      "cardinal:playerstat",
+      "cardinal:entitystat"
     ]
   },
   "mixins": [

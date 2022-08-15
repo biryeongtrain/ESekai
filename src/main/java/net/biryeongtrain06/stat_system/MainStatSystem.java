@@ -1,9 +1,7 @@
 package net.biryeongtrain06.stat_system;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.biryeongtrain06.stat_system.commands.setDefense;
-import net.biryeongtrain06.stat_system.component.PlayerStatComponent;
 import net.biryeongtrain06.stat_system.sidebar.OpenDebugBar;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -11,8 +9,6 @@ import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.CommandManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import javax.swing.text.html.parser.Entity;
 
 import static net.minecraft.server.command.CommandManager.literal;
 

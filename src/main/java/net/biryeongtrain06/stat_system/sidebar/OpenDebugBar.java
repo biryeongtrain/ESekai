@@ -7,7 +7,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
-import static net.biryeongtrain06.stat_system.component.PlayerStatComponent.STAT;
+import static net.biryeongtrain06.stat_system.component.StatComponent.PLAYERSTAT;
 
 public class OpenDebugBar {
 
@@ -20,12 +20,12 @@ public class OpenDebugBar {
             sidebar.setTitle(Text.literal("Debug Sidebar"));
             sidebar.setUpdateRate(1);
 
-            sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Health : " + STAT.get(p).getHealth())));
-            sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Defense : " + STAT.get(p).getDefense())));
-            sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Dodge : "  + STAT.get(p).getDodge())));
-            sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Mana : "  + STAT.get(p).getMana())));
-            sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Xp : "  + STAT.get(p).getXp())));
-            sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Level : "  + STAT.get(p).getLevel())));
+            sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Health : " + PLAYERSTAT.get(p).getHealth())));
+            sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Defense : " + PLAYERSTAT.get(p).getDefense())));
+            sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Dodge : "  + PLAYERSTAT.get(p).getDodge())));
+            sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Mana : "  + PLAYERSTAT.get(p).getMana())));
+            sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Xp : "  + PLAYERSTAT.get(p).getXp())));
+            sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Level : "  + PLAYERSTAT.get(p).getLevel())));
 
             sidebar.addPlayer(player);
             sidebar.show();

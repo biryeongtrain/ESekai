@@ -5,45 +5,47 @@ public class EntityStat {
     protected static final String HEALTH_KEY = "health";
     protected static final String DEFENSE_KEY = "defense";
     protected static final String DODGE_KEY = "dodge";
-    protected static final String MANA_KEY = "mana";
-    protected static final String MAGIC_DAMAGE_KEY = "magic_damage";
     protected static final String ATTACK_DAMAGE_KEY = "attack_damage";
-    protected static final String XP_KEY = "xp";
     protected static final String LEVEL_KEY = "level";
+    protected static final String DIFFICULTY_KEY = "difficulty";
 
-    protected int health;
-    protected int defense;
-    protected int dodge;
-    protected int mana;
-    protected int magic_damage;
-    protected int attack_damage;
-    protected int xp;
-    protected int level;
+    int health;
+    int defense;
+    int dodge;
+    int attack_damage;
+    int level;
+    int difficulty;
 
-    public EntityStat(int health, int defense, int dodge, int mana, int magic_damage, int attack_damage, int xp, int level) {
+    public EntityStat(int health, int defense, int dodge, int attack_damage, int level, int difficulty) {
         this.health = health;
         this.defense = defense;
         this.dodge = dodge;
-        this.mana = mana;
-        this.magic_damage = magic_damage;
         this.attack_damage = attack_damage;
-        this.xp = xp;
         this.level = level;
+        this.difficulty = difficulty;
     }
 
-    public int getHealth() { return this.health; }
+    int getHealth() {
+        return this.level;
+    }
 
-    public int getDefense() {return defense;}
+    int getDefense() {
+        return this.defense;
+    }
 
-    public int getDodge() {return dodge;}
+    int getDodge() {
+        return this.dodge;
+    }
 
-    public int getMana() {return mana;}
+    int getLevel() {
+        return this.level;
+    }
 
-    public int getMagic_damage() {return magic_damage;}
+    int getAttack_damage() {
+        return this.attack_damage;
+    }
 
-    public int getAttack_damage() {return attack_damage;}
-
-    public int getXp() {return xp;}
-
-    public int getLevel() {return level;}
+    int getDifficulty() {
+        return this.difficulty;
+    }
 }
