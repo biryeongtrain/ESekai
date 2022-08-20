@@ -9,6 +9,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GameRules;
 
 public class onMobSpawn implements ServerEntityEvents.Load{
@@ -35,6 +37,13 @@ public class onMobSpawn implements ServerEntityEvents.Load{
             if (nearestPlayer == null) {
                 StatComponent.ENTITY_STAT.get(entity).setLevel((int) Math.round(Math.random() * 5));
             }
+            else {
+                StatComponent.ENTITY_STAT.get(entity).setLevel(StatComponent.PLAYERSTAT.get(nearestPlayer).getLevel());
+            }
+        }
+        else {
+            double distance = entity.world.getSpawnPos().getManhattanDistance(entity.getBlockPos());
+            // TODO : MAKE LEVEL SYSTEM PER DISTANCE
         }
 
     }
