@@ -1,6 +1,7 @@
 package net.biryeongtrain06.stat_system;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import net.biryeongtrain06.stat_system.commands.gameRule;
 import net.biryeongtrain06.stat_system.commands.setDefense;
 import net.biryeongtrain06.stat_system.sidebar.OpenDebugBar;
 import net.fabricmc.api.ModInitializer;
@@ -33,6 +34,7 @@ public class MainStatSystem implements ModInitializer {
 
             );
         });
+        gameRule.setupGameRule();
     }
 }
 
