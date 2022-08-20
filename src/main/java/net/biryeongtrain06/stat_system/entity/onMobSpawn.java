@@ -2,15 +2,13 @@ package net.biryeongtrain06.stat_system.entity;
 
 import net.biryeongtrain06.stat_system.commands.gameRule;
 import net.biryeongtrain06.stat_system.component.StatComponent;
-import net.biryeongtrain06.stat_system.stat.EntityStatSystem;
 import net.biryeongtrain06.stat_system.util.PlayerUtil;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GameRules;
 
 public class onMobSpawn implements ServerEntityEvents.Load{
@@ -22,15 +20,15 @@ public class onMobSpawn implements ServerEntityEvents.Load{
         if (!(entity instanceof HostileEntity)) {
             return;
         }
-
+        setUpNewMobOnSpawn(entity);
     }
 
-    public static void setUpNewMobOnSpawn(HostileEntity entity) {
+    public static void setUpNewMobOnSpawn(Entity entity) {
         if (entity.world.isClient) {
             throw new RuntimeException("Why this running in Client Side?");
         }
         PlayerEntity nearestPlayer = null;
-        nearestPlayer = PlayerUtil.getNearestPlayer((ServerWorld) entity.world, entity);
+        nearestPlayer = PlayerUtil.getNearestPlayer((ServerWorld) entity.world, (LivingEntity) entity);
 
         GameRules gameRules = entity.getWorld().getGameRules();
         if (gameRules.getBoolean(gameRule.ENTITY_FOLLOWS_PLAYER_LEVEL_SCALING)) {
