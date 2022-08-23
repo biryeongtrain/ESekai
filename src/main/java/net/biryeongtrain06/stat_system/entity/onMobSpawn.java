@@ -1,14 +1,21 @@
 package net.biryeongtrain06.stat_system.entity;
 
+import net.biryeongtrain06.stat_system.MainStatSystem;
 import net.biryeongtrain06.stat_system.commands.gameRule;
 import net.biryeongtrain06.stat_system.component.StatComponent;
 import net.biryeongtrain06.stat_system.util.PlayerUtil;
+import net.biryeongtrain06.stat_system.util.StatSystemConfig;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.Main;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GameRules;
 
 public class onMobSpawn implements ServerEntityEvents.Load{
@@ -27,8 +34,9 @@ public class onMobSpawn implements ServerEntityEvents.Load{
         if (entity.world.isClient) {
             throw new RuntimeException("Why this running in Client Side?");
         }
-        PlayerEntity nearestPlayer = null;
-        nearestPlayer = PlayerUtil.getNearestPlayer((ServerWorld) entity.world, (LivingEntity) entity);
+        int MAX_LEVEL = MainStatSystem.getConfig().getMaxLevel();
+        int SCALING_DISTANCE = MainStatSystem.getConfig().getScalingDistance();
+        PlayerEntity nearestPlayer = PlayerUtil.getNearestPlayer((ServerWorld) entity.world, (LivingEntity) entity);
 
         GameRules gameRules = entity.getWorld().getGameRules();
         if (gameRules.getBoolean(gameRule.ENTITY_FOLLOWS_PLAYER_LEVEL_SCALING)) {
@@ -42,8 +50,14 @@ public class onMobSpawn implements ServerEntityEvents.Load{
         else {
             double distance = entity.world.getSpawnPos().getManhattanDistance(entity.getBlockPos());
             // TODO : MAKE LEVEL SYSTEM PER DISTANCE
+            int level = MathHelper.clamp((int)distance / SCALING_DISTANCE, 0, MAX_LEVEL);
+            StatComponent.ENTITY_STAT.get(entity).setLevel(level);
         }
 
     }
 
+    void setName(Entity entity) {
+        MutableText name = Text.literal(StatComponent.ENTITY_STAT.get(entity).getLevel() + "레벨").formatted(Formatting.BOLD).append(entity.getDisplayName()).formatted(Formatting.AQUA);
+        entity.setCustomName(name);
+    }
 }

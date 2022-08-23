@@ -1,9 +1,13 @@
 package net.biryeongtrain06.stat_system;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.biryeongtrain06.stat_system.commands.gameRule;
 import net.biryeongtrain06.stat_system.commands.setDefense;
+import net.biryeongtrain06.stat_system.commands.setLevel;
 import net.biryeongtrain06.stat_system.sidebar.OpenDebugBar;
+import net.biryeongtrain06.stat_system.util.StatSystemConfig;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.argument.EntityArgumentType;
@@ -15,9 +19,12 @@ import static net.minecraft.server.command.CommandManager.literal;
 
 
 public class MainStatSystem implements ModInitializer {
-    public static String MOD_ID ="cardinal";
+    public static final String MOD_ID ="cardinal";
     final public static Logger debugLogger = LogManager.getLogger("Qf Stat Debug");
 
+    public static StatSystemConfig getConfig() {
+        return AutoConfig.getConfigHolder(StatSystemConfig.class).getConfig();
+    }
 
     @Override
     public void onInitialize() {
@@ -33,8 +40,17 @@ public class MainStatSystem implements ModInitializer {
                                         .executes(ctx -> setDefense.onExecuted(EntityArgumentType.getPlayer(ctx, "player"), IntegerArgumentType.getInteger(ctx, "value")))))
 
             );
+            dispatcher.register(
+                    literal("setlevel").requires(serverCommandSource -> serverCommandSource.hasPermissionLevel(2))
+                            .then(CommandManager.argument("player", EntityArgumentType.player())
+                                    .then(CommandManager.argument("value", IntegerArgumentType.integer())
+                                            .executes(ctx -> setLevel.onExecuted(EntityArgumentType.getPlayer(ctx, "player"), IntegerArgumentType.getInteger(ctx, "value")))))
+
+            );
         });
         gameRule.setupGameRule();
+        AutoConfig.register(StatSystemConfig.class, GsonConfigSerializer::new);
+        }
     }
-}
+
 
