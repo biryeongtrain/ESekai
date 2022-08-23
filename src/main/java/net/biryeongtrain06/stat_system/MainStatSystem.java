@@ -1,13 +1,10 @@
 package net.biryeongtrain06.stat_system;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.biryeongtrain06.stat_system.commands.gameRule;
 import net.biryeongtrain06.stat_system.commands.setDefense;
 import net.biryeongtrain06.stat_system.commands.setLevel;
 import net.biryeongtrain06.stat_system.sidebar.OpenDebugBar;
-import net.biryeongtrain06.stat_system.util.StatSystemConfig;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.argument.EntityArgumentType;
@@ -22,9 +19,6 @@ public class MainStatSystem implements ModInitializer {
     public static final String MOD_ID ="cardinal";
     final public static Logger debugLogger = LogManager.getLogger("Qf Stat Debug");
 
-    public static StatSystemConfig getConfig() {
-        return AutoConfig.getConfigHolder(StatSystemConfig.class).getConfig();
-    }
 
     @Override
     public void onInitialize() {
@@ -49,7 +43,6 @@ public class MainStatSystem implements ModInitializer {
             );
         });
         gameRule.setupGameRule();
-        AutoConfig.register(StatSystemConfig.class, GsonConfigSerializer::new);
         }
     }
 
