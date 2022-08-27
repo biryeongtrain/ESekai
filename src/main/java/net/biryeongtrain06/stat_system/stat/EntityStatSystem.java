@@ -21,7 +21,6 @@ public class EntityStatSystem extends EntityStat implements EntityStatComponentI
     public EntityStatSystem(Entity entity) {
         super(20, 0, 0, 1, 1, 0);
         this.entity = entity;
-        setName(this.entity);
     }
 
 
@@ -114,10 +113,5 @@ public class EntityStatSystem extends EntityStat implements EntityStatComponentI
         tag.putInt("attack_damage", this.attack_damage);
         tag.putInt("level", this.level);
         tag.putInt("difficulty", this.difficulty);
-    }
-
-    void setName(Entity entity) {
-        MutableText name = Text.literal(this.level + "레벨").formatted(Formatting.BOLD).append(entity.getDisplayName()).formatted(Formatting.AQUA);
-        entity.setCustomName(name);
     }
 }

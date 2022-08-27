@@ -10,25 +10,37 @@ public class PlayerStat {
     protected static final String ATTACK_DAMAGE_KEY = "attack_damage";
     protected static final String XP_KEY = "xp";
     protected static final String LEVEL_KEY = "level";
+    protected static final String STRENGTH_KEY = "strength";
+    protected static final String Dexterity_KEY = "dexterity";
+    protected static final String INTELLIGENCE_KEY = "intelligence";
+    protected static final String LUCK_KEY = "luck";
 
     protected int health;
     protected int defense;
     protected int dodge;
     protected int mana;
-    protected int magic_damage;
-    protected int attack_damage;
+    protected double magic_damage;
+    protected double attack_damage;
     protected int xp;
     protected int level;
+    protected int strength;
+    protected int dexterity;
+    protected int intelligence;
+    protected int luck;
 
-    public PlayerStat(int health, int defense, int dodge, int mana, int magic_damage, int attack_damage, int xp, int level) {
+    public PlayerStat(int xp, int level, int strength, int dexterity, int intelligence, int luck, int health, int defense, int dodge, int mana, double magic_damage, double attack_damage) {
+        this.xp = xp;
+        this.level = level;
+        this.strength = strength;
+        this.dexterity = dexterity;
+        this.intelligence = intelligence;
+        this.luck = luck;
         this.health = health;
         this.defense = defense;
         this.dodge = dodge;
         this.mana = mana;
         this.magic_damage = magic_damage;
         this.attack_damage = attack_damage;
-        this.xp = xp;
-        this.level = level;
     }
 
     public int getHealth() { return this.health; }
@@ -39,11 +51,23 @@ public class PlayerStat {
 
     public int getMana() {return mana;}
 
-    public int getMagic_damage() {return magic_damage;}
+    public double getMagic_damage() {return magic_damage;}
 
-    public int getAttack_damage() {return attack_damage;}
+    public double getAttack_damage() {return attack_damage;}
 
     public int getXp() {return xp;}
 
     public int getLevel() {return level;}
+
+    public int getStrength() {return strength;}
+
+    public int getDexterity() {return dexterity;}
+
+    public int getIntelligence() {
+        return intelligence;
+    }
+
+    public int getLuck() {
+        return luck;
+    }
 }

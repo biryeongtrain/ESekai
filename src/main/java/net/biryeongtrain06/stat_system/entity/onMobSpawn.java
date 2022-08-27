@@ -1,10 +1,8 @@
 package net.biryeongtrain06.stat_system.entity;
 
-import net.biryeongtrain06.stat_system.MainStatSystem;
 import net.biryeongtrain06.stat_system.commands.gameRule;
 import net.biryeongtrain06.stat_system.component.StatComponent;
 import net.biryeongtrain06.stat_system.util.PlayerUtil;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.HostileEntity;
@@ -16,9 +14,10 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GameRules;
 
-public class onMobSpawn implements ServerEntityEvents.Load{
-    @Override
-    public void onLoad(Entity entity, ServerWorld world) {
+import static net.biryeongtrain06.stat_system.MainStatSystem.debugLogger;
+
+public class onMobSpawn {
+    public static void onLoad(Entity entity, ServerWorld world) {
         if (entity instanceof PlayerEntity) {
             return;
         }
@@ -41,10 +40,14 @@ public class onMobSpawn implements ServerEntityEvents.Load{
             if (nearestPlayer == null) {
                 StatComponent.ENTITY_STAT.get(entity).setLevel((int) Math.round(Math.random() * 5));
                 setName(entity);
+                entity.setCustomNameVisible(false);
+                debugLogger.info("PlayerNotFound : Entity Level : " + StatComponent.ENTITY_STAT.get(entity).getLevel()); ;
             }
             else {
                 StatComponent.ENTITY_STAT.get(entity).setLevel(StatComponent.PLAYERSTAT.get(nearestPlayer).getLevel());
                 setName(entity);
+                entity.getServer().sendMessage(Text.literal("Level : " + StatComponent.ENTITY_STAT.get(entity).getLevel()));
+                debugLogger.info("PlayerFound : Entity Level : " + StatComponent.ENTITY_STAT.get(entity).getLevel());
             }
         }
         else {
@@ -53,6 +56,8 @@ public class onMobSpawn implements ServerEntityEvents.Load{
             int level = MathHelper.clamp((int)distance / SCALING_DISTANCE, 1, MAX_LEVEL);
             StatComponent.ENTITY_STAT.get(entity).setLevel(level);
             setName(entity);
+            entity.getServer().sendMessage(Text.literal("Level : " + StatComponent.ENTITY_STAT.get(entity).getLevel()));
+            debugLogger.info("Distance - Entity Level : " + StatComponent.ENTITY_STAT.get(entity).getLevel());
         }
 
     }

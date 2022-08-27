@@ -10,24 +10,96 @@ import net.minecraft.text.Text;
 public class PlayerStatSystem extends PlayerStat implements PlayerStatComponentInterface, AutoSyncedComponent {
 
     private final PlayerEntity player;
+    private final int POINT_PER_LEVEL = 5;
+    private final int STR_HEALTH_MODIFIER = 2;
+    private final double STR_ATTACK_DMG_MODIFIER = 0.15;
+    private final int DEX_DODGE_MODIFIER = 3;
+    private final double DEX_ATTACK_DMG_MODIFIER = 0.1;
+    private final int INT_MAX_MANA_MODIFIER = 10;
+    private final int INT_DEFENSE_MODIFIER = 2;
+    private final int LUCK_DODGE_MODIFIER = 2;
 
-    public PlayerStatSystem(int health, int defense, int dodge, int mana, int magic_damage, int attack_damage, int xp, int level, ServerPlayerEntity player) {
-        super(health, defense, dodge, mana, magic_damage, attack_damage, xp, level);
+    public PlayerStatSystem(int xp, int level, int strength, int dexterity, int intelligence, int luck, int health, int defense, int dodge, int mana, double magic_damage, double attack_damage,  ServerPlayerEntity player) {
+        super(xp, level, strength, dexterity, intelligence, luck, health, defense, dodge, mana, magic_damage, attack_damage);
         this.player = player;
     }
 
     public PlayerStatSystem(PlayerEntity player) {
-        super(0, 0, 0, 0, 0, 0, 0, 1);
+        super(0, 1, 0, 0, 0, 0, 20, 0, 0, 10, 1, 1);
         this.player = player;
     }
 
     @Override
-    public void setHealth(int health) {
+    public void addStrength(int strength) {
+        this.strength += strength;
+        addMaxHealth(STR_HEALTH_MODIFIER);
+        addAttack_damage(STR_ATTACK_DMG_MODIFIER);
+    }
+
+    @Override
+    public void setStrength(int strength) {
+        addMaxHealth(-this.strength * STR_HEALTH_MODIFIER);
+        addAttack_damage(-this.strength * STR_ATTACK_DMG_MODIFIER);
+        this.strength = strength;
+
+        addMaxHealth(this.strength * STR_HEALTH_MODIFIER);
+        addAttack_damage(this.strength * STR_ATTACK_DMG_MODIFIER);
+    }
+
+    @Override
+    public void addDexterity(int dexterity) {
+        addDodge(DEX_DODGE_MODIFIER);
+        addAttack_damage(DEX_ATTACK_DMG_MODIFIER);
+        this.dexterity += dexterity;
+    }
+
+    @Override
+    public void setDexterity(int dexterity) {
+        addDodge(-this.dexterity * DEX_DODGE_MODIFIER);
+        addAttack_damage(-this.dexterity * DEX_ATTACK_DMG_MODIFIER);
+        this.dexterity = dexterity;
+        addDodge(this.dexterity * DEX_DODGE_MODIFIER);
+        addAttack_damage(this.dexterity * DEX_ATTACK_DMG_MODIFIER);
+    }
+
+    @Override
+    public void addIntelligence(int intelligence) {
+        this.intelligence += intelligence;
+        addMaxMana(INT_MAX_MANA_MODIFIER);
+        addDefense(INT_DEFENSE_MODIFIER);
+    }
+
+    @Override
+    public void setIntelligence(int intelligence) {
+        addMaxMana(-this.intelligence * INT_MAX_MANA_MODIFIER);
+        addDefense(-this.intelligence * INT_DEFENSE_MODIFIER);
+        this.intelligence = intelligence;
+        addMaxMana(this.intelligence * INT_MAX_MANA_MODIFIER);
+        addDefense(this.intelligence * INT_DEFENSE_MODIFIER);
+    }
+
+    @Override
+    public void addLuck(int luck) {
+        this.luck += luck;
+        //TODO : Add Critical Rate and Apply to here.
+        addDodge(LUCK_DODGE_MODIFIER);
+    }
+
+    @Override
+    public void setLuck(int luck) {
+        addDodge(-this.luck * LUCK_DODGE_MODIFIER);
+        this.luck = luck;
+        addDodge(this.luck * LUCK_DODGE_MODIFIER);
+    }
+
+
+    @Override
+    public void setMaxHealth(int health) {
         this.health = health;
     }
 
     @Override
-    public void addHealth(int health) {
+    public void addMaxHealth(int health) {
         this.health += health;
     }
 
@@ -53,32 +125,32 @@ public class PlayerStatSystem extends PlayerStat implements PlayerStatComponentI
     }
 
     @Override
-    public void setMana(int mana) {
+    public void setMaxMana(int mana) {
         this.mana = mana;
     }
 
     @Override
-    public void addMana(int mana) {
+    public void addMaxMana(int mana) {
         this.mana += mana;
     }
 
     @Override
-    public void setMagic_damage(int magic_damage) {
+    public void setMagic_damage(double magic_damage) {
         this.magic_damage = magic_damage;
     }
 
     @Override
-    public void addMagic_damage(int magic_damage) {
+    public void addMagic_damage(double magic_damage) {
         this.magic_damage += magic_damage;
     }
 
     @Override
-    public void setAttack_damage(int attack_damage) {
+    public void setAttack_damage(double attack_damage) {
         this.attack_damage = attack_damage;
     }
 
     @Override
-    public void addAttack_damage(int attack_damage) {
+    public void addAttack_damage(double attack_damage) {
         this.attack_damage += attack_damage;
     }
 
@@ -98,6 +170,7 @@ public class PlayerStatSystem extends PlayerStat implements PlayerStatComponentI
         this.player.sendMessage(Text.literal("Level Up! Now your Level is " + this.level));
     }
 
+
     @Override
     public void addXp(int xp) {
         this.xp += xp;
@@ -116,10 +189,14 @@ public class PlayerStatSystem extends PlayerStat implements PlayerStatComponentI
         this.defense = tag.getInt(DEFENSE_KEY);
         this.dodge = tag.getInt(DODGE_KEY);
         this.mana = tag.getInt(MANA_KEY);
-        this.magic_damage = tag.getInt(MAGIC_DAMAGE_KEY);
-        this.attack_damage = tag.getInt(ATTACK_DAMAGE_KEY);
+        this.magic_damage = tag.getDouble(MAGIC_DAMAGE_KEY);
+        this.attack_damage = tag.getDouble(ATTACK_DAMAGE_KEY);
         this.xp = tag.getInt(XP_KEY);
         this.level = tag.getInt(LEVEL_KEY);
+        this.strength = tag.getInt(STRENGTH_KEY);
+        this.dexterity = tag.getInt(Dexterity_KEY);
+        this.intelligence = tag.getInt(INTELLIGENCE_KEY);
+        this.luck = tag.getInt(LUCK_KEY);
     }
 
     @Override
@@ -128,10 +205,14 @@ public class PlayerStatSystem extends PlayerStat implements PlayerStatComponentI
         tag.putInt(DEFENSE_KEY, this.defense);
         tag.putInt(DODGE_KEY, this.dodge);
         tag.putInt(MANA_KEY, this.mana);
-        tag.putInt(MAGIC_DAMAGE_KEY, this.magic_damage);
-        tag.putInt(ATTACK_DAMAGE_KEY, this.attack_damage);
+        tag.putDouble(MAGIC_DAMAGE_KEY, this.magic_damage);
+        tag.putDouble(ATTACK_DAMAGE_KEY, this.attack_damage);
         tag.putInt(XP_KEY, this.xp);
         tag.putInt(LEVEL_KEY, this.level);
+        tag.putInt(STRENGTH_KEY, this.strength);
+        tag.putInt(DEFENSE_KEY, this.defense);
+        tag.putInt(INTELLIGENCE_KEY, this.intelligence);
+        tag.putInt(LUCK_KEY, this.luck);
     }
 
     @Override

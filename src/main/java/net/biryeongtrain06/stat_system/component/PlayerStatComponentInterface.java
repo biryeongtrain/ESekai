@@ -4,11 +4,35 @@ import dev.onyxstudios.cca.api.v3.component.Component;
 
 public interface PlayerStatComponentInterface extends Component {
 
+    int getStrength();
+
+    void addStrength(int strength);
+
+    void setStrength(int strength);
+
+    int getDexterity();
+
+    void setDexterity(int dexterity);
+
+    void addDexterity(int dexterity);
+
+    int getIntelligence();
+
+    void addIntelligence(int intelligence);
+
+    void setIntelligence(int intelligence);
+
+    int getLuck();
+
+    void addLuck(int luck);
+
+    void setLuck(int luck);
+
     int getHealth();
 
-    void setHealth(int health);
+    void setMaxHealth(int health);
 
-    void addHealth(int health);
+    void addMaxHealth(int health);
 
     int getDefense();
 
@@ -24,21 +48,21 @@ public interface PlayerStatComponentInterface extends Component {
 
     int getMana();
 
-    void setMana(int mana);
+    void setMaxMana(int mana);
 
-    void addMana(int mana);
+    void addMaxMana(int mana);
 
-    int getMagic_damage();
+    double getMagic_damage();
 
-    void setMagic_damage(int magic_damage);
+    void setMagic_damage(double magic_damage);
 
-    void addMagic_damage(int magic_damage);
+    void addMagic_damage(double magic_damage);
 
-    int getAttack_damage();
+    double getAttack_damage();
 
-    void setAttack_damage(int attack_damage);
+    void setAttack_damage(double attack_damage);
 
-    void addAttack_damage(int attack_damage);
+    void addAttack_damage(double attack_damage);
 
     int getXp();
 
