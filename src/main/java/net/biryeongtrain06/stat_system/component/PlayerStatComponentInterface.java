@@ -4,6 +4,11 @@ import dev.onyxstudios.cca.api.v3.component.Component;
 
 public interface PlayerStatComponentInterface extends Component {
 
+    int getStatPoint();
+
+    void addStatPoint(int statPoint);
+
+    void setStatPoint(int statPoint);
     int getStrength();
 
     void addStrength(int strength);
@@ -28,7 +33,7 @@ public interface PlayerStatComponentInterface extends Component {
 
     void setLuck(int luck);
 
-    int getHealth();
+    int getMaxHealth();
 
     void setMaxHealth(int health);
 

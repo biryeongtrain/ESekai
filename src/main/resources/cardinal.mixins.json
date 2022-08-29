@@ -4,7 +4,7 @@
   "package": "net.biryeongtrain06.stat_system.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "CheckEntityDeathByPlayerMixin"
+    "LivingEntityMixin"
   ],
   "server": [
   ],

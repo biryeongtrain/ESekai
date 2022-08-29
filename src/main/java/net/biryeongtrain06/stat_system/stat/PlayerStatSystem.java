@@ -19,14 +19,24 @@ public class PlayerStatSystem extends PlayerStat implements PlayerStatComponentI
     private final int INT_DEFENSE_MODIFIER = 2;
     private final int LUCK_DODGE_MODIFIER = 2;
 
-    public PlayerStatSystem(int xp, int level, int strength, int dexterity, int intelligence, int luck, int health, int defense, int dodge, int mana, double magic_damage, double attack_damage,  ServerPlayerEntity player) {
-        super(xp, level, strength, dexterity, intelligence, luck, health, defense, dodge, mana, magic_damage, attack_damage);
+    public PlayerStatSystem(int xp, int level,int statPoint, int strength, int dexterity, int intelligence, int luck, int health, int defense, int dodge, int mana, double magic_damage, double attack_damage,  ServerPlayerEntity player) {
+        super(xp, level, strength, statPoint, dexterity, intelligence, luck, health, defense, dodge, mana, magic_damage, attack_damage);
         this.player = player;
     }
 
     public PlayerStatSystem(PlayerEntity player) {
-        super(0, 1, 0, 0, 0, 0, 20, 0, 0, 10, 1, 1);
+        super(0, 1, 5, 0, 0, 0, 0, 20, 0, 0, 10, 1, 1);
         this.player = player;
+    }
+
+    @Override
+    public void addStatPoint(int statPoint) {
+        this.statPoint += statPoint;
+    }
+
+    @Override
+    public void setStatPoint(int statPoint) {
+        this.statPoint = statPoint;
     }
 
     @Override
@@ -161,13 +171,16 @@ public class PlayerStatSystem extends PlayerStat implements PlayerStatComponentI
 
     @Override
     public void setLevel(int level) {
+        addStatPoint(-POINT_PER_LEVEL * this.level);
         this.level = level;
+        addStatPoint(POINT_PER_LEVEL * this.level);
     }
 
     @Override
     public void addLevel(int level) {
         this.level += level;
         this.player.sendMessage(Text.literal("Level Up! Now your Level is " + this.level));
+        addStatPoint(POINT_PER_LEVEL);
     }
 
 
@@ -197,6 +210,7 @@ public class PlayerStatSystem extends PlayerStat implements PlayerStatComponentI
         this.dexterity = tag.getInt(Dexterity_KEY);
         this.intelligence = tag.getInt(INTELLIGENCE_KEY);
         this.luck = tag.getInt(LUCK_KEY);
+        this.statPoint = tag.getInt(STAT_POINT_KEY);
     }
 
     @Override
@@ -213,6 +227,7 @@ public class PlayerStatSystem extends PlayerStat implements PlayerStatComponentI
         tag.putInt(DEFENSE_KEY, this.defense);
         tag.putInt(INTELLIGENCE_KEY, this.intelligence);
         tag.putInt(LUCK_KEY, this.luck);
+        tag.putInt(STAT_POINT_KEY, this.statPoint);
     }
 
     @Override

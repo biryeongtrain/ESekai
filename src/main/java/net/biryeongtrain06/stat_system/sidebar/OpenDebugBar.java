@@ -20,12 +20,13 @@ public class OpenDebugBar {
             sidebar.setTitle(Text.literal("Debug Sidebar"));
             sidebar.setUpdateRate(1);
 
-            sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Health : " + PLAYERSTAT.get(p).getHealth())));
+            sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Xp : "  + PLAYERSTAT.get(p).getXp())));
+            sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Level : "  + PLAYERSTAT.get(p).getLevel())));
+            sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Stat Point : "  + PLAYERSTAT.get(p).getStatPoint())));
+            sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Health : " + PLAYERSTAT.get(p).getMaxHealth())));
             sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Defense : " + PLAYERSTAT.get(p).getDefense())));
             sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Dodge : "  + PLAYERSTAT.get(p).getDodge())));
             sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Mana : "  + PLAYERSTAT.get(p).getMana())));
-            sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Xp : "  + PLAYERSTAT.get(p).getXp())));
-            sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Level : "  + PLAYERSTAT.get(p).getLevel())));
 
             sidebar.addPlayer(player);
             sidebar.show();
