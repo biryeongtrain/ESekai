@@ -7,17 +7,16 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum Elements {
-    Physical(false, "Physical", Formatting.GOLD, "physical", "\u2726"),
-    Fire(true, "Fire", Formatting.RED, "fire", "\u2600"),
-    Water(true, "Water", Formatting.AQUA, "water", "\u2749"),
-    Earth(true, "Earth", Formatting.DARK_GREEN, "earth", "\u273F"),
+    Physical("Physical", Formatting.GOLD, "physical", "\u2726"),
+    Fire( "Fire", Formatting.RED, "fire", "\u2600"),
+    Water("Water", Formatting.AQUA, "water", "\u2749"),
+    Earth( "Earth", Formatting.DARK_GREEN, "earth", "\u273F"),
 
-    Elemental(false, "Elemental", Formatting.LIGHT_PURPLE, "elemental", "\u269C"),
-    All(false, "All", Formatting.LIGHT_PURPLE, "all", "\u273F");
+    Elemental("Elemental", Formatting.LIGHT_PURPLE, "elemental", "\u269C"),
+    All("All", Formatting.LIGHT_PURPLE, "all", "\u273F");
 
-    public boolean isSingleElement = true;
-    Elements(boolean isSingleElement, String dmgName, Formatting format, String guidName, String icon) {
-        this.isSingleElement = isSingleElement;
+    Elements(String dmgName, Formatting format, String guidName, String icon) {
+
         this.dmgName = dmgName;
         this.format = format;
         this.guidName = guidName;
