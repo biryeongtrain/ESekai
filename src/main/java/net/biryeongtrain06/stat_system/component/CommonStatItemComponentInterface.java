@@ -4,11 +4,11 @@ public interface CommonStatItemComponentInterface {
 
     String getElement();
 
-    void setElement();
+    void setElement(String element);
 
     int getEquipmentLevel();
 
-    void setEquipmentLevel();
+    void setEquipmentLevel(int level);
 
     //TODO Make Set Method
 
