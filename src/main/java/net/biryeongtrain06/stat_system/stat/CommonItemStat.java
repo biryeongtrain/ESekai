@@ -5,37 +5,29 @@ public class CommonItemStat {
     protected static final String EQUIPMENT_LEVEL_KEY = "item_level";
 
     protected int health;
-    protected int defense;
-    protected int dodge;
     protected int mana;
-    protected double magic_damage;
-    protected double attack_damage;
     protected int strength;
     protected int dexterity;
     protected int intelligence;
     protected int luck;
+    protected String element;
+    protected int equipment_level;
 
-    public int getMaxHealth() { return this.health; }
+    public String getElement() {return this.element;}
 
-    public int getDefense() {return defense;}
+    public int getEquipment_level() {return this.equipment_level;}
 
-    public int getDodge() {return dodge;}
+    public int getMana() {return this.mana;}
 
-    public int getMana() {return mana;}
+    public int getStrength() {return this.strength;}
 
-    public double getMagic_damage() {return magic_damage;}
-
-    public double getAttack_damage() {return attack_damage;}
-
-    public int getStrength() {return strength;}
-
-    public int getDexterity() {return dexterity;}
+    public int getDexterity() {return this.dexterity;}
 
     public int getIntelligence() {
-        return intelligence;
+        return this.intelligence;
     }
 
     public int getLuck() {
-        return luck;
+        return this.luck;
     }
 }
