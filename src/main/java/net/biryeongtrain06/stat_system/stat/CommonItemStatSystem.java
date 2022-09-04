@@ -2,19 +2,20 @@ package net.biryeongtrain06.stat_system.stat;
 
 import net.biryeongtrain06.stat_system.component.CommonStatItemComponentInterface;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 public class CommonItemStatSystem extends CommonItemStat implements CommonStatItemComponentInterface {
 
-    private final Item item;
-
-    public CommonItemStatSystem(String element, int level, int health, int mana, int strength, int dexterity, int intelligence, int luck, Item item) {
+    private final ItemStack item;
+    public CommonItemStatSystem(String element, int level, int health, int mana, int strength, int dexterity, int intelligence, int luck, ItemStack item) {
         super(element, level, health, mana, strength, dexterity, intelligence, luck);
         this.item = item;
     }
 
-    public CommonItemStatSystem(Item item) {
+    public CommonItemStatSystem(ItemStack item) {
         super("Physical", 1, 5, 2, 0,0,0,0);
         this.item = item;
+
     }
 
     @Override

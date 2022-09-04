@@ -2,19 +2,20 @@ package net.biryeongtrain06.stat_system.stat;
 
 import net.biryeongtrain06.stat_system.component.NonMagicWeaponComponentInterface;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 
 import static net.biryeongtrain06.stat_system.stat.PlayerStat.HEALTH_KEY;
 
 public class NonMagicWeaponItemStatSystem extends NonMagicWeaponItemStat implements NonMagicWeaponComponentInterface {
 
-    private final Item item;
-    public NonMagicWeaponItemStatSystem(String element, int level, int health, int mana, int attack_damage, int strength, int dexterity, int intelligence, int luck, Item item) {
+    private final ItemStack item;
+    public NonMagicWeaponItemStatSystem(String element, int level, int health, int mana, int attack_damage, int strength, int dexterity, int intelligence, int luck, ItemStack item) {
         super(element, level, health, mana, attack_damage, strength, dexterity, intelligence, luck);
         this.item = item;
     }
 
-    public NonMagicWeaponItemStatSystem(Item item) {
+    public NonMagicWeaponItemStatSystem(ItemStack item) {
         super("Physical", 1, 5, 2, 3, 0,0,0,0);
         this.item = item;
     }

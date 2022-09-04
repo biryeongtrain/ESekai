@@ -19,6 +19,6 @@ public class StatComponent implements EntityComponentInitializer {
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
         registry.registerForPlayers(PLAYERSTAT, PlayerStatSystem::new, RespawnCopyStrategy.ALWAYS_COPY);
-        registry.registerFor(HostileEntity.class, ENTITY_STAT, e -> new EntityStatSystem(e));
+        registry.registerFor(HostileEntity.class, ENTITY_STAT, EntityStatSystem::new);
     }
 }
