@@ -4,6 +4,7 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.biryeongtrain06.stat_system.commands.gameRule;
 import net.biryeongtrain06.stat_system.commands.setDefense;
 import net.biryeongtrain06.stat_system.commands.setLevel;
+import net.biryeongtrain06.stat_system.config.ConfigHandler;
 import net.biryeongtrain06.stat_system.entity.onMobSpawn;
 import net.biryeongtrain06.stat_system.sidebar.OpenDebugBar;
 import net.fabricmc.api.ModInitializer;
@@ -46,6 +47,7 @@ public class MainStatSystem implements ModInitializer {
         });
         gameRule.setupGameRule();
         ServerEntityEvents.ENTITY_LOAD.register(onMobSpawn::onLoad);
+        ConfigHandler.setup();
         }
     }
 
