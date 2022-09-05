@@ -42,7 +42,7 @@ public class onMobSpawn {
                 StatComponent.ENTITY_STAT.get(entity).setLevel((int) Math.round(Math.random() * 5));
                 setName(entity);
                 entity.setCustomNameVisible(false);
-                debugLogger.info("PlayerNotFound : Entity Level : " + StatComponent.ENTITY_STAT.get(entity).getLevel()); ;
+                debugLogger.info("PlayerNotFound : Entity Level : " + StatComponent.ENTITY_STAT.get(entity).getLevel());
             }
             else {
                 StatComponent.ENTITY_STAT.get(entity).setLevel(StatComponent.PLAYERSTAT.get(nearestPlayer).getLevel());
