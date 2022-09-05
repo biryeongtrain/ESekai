@@ -2,6 +2,7 @@ package net.biryeongtrain06.stat_system.entity;
 
 import net.biryeongtrain06.stat_system.commands.gameRule;
 import net.biryeongtrain06.stat_system.component.StatComponent;
+import net.biryeongtrain06.stat_system.config.ConfigHandler;
 import net.biryeongtrain06.stat_system.util.PlayerUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -31,8 +32,8 @@ public class onMobSpawn {
         if (entity.world.isClient) {
             throw new RuntimeException("Why this running in Client Side?");
         }
-        int MAX_LEVEL = 50;
-        int SCALING_DISTANCE = 500;
+        int MAX_LEVEL = ConfigHandler.maxLevel.getValue();
+        int SCALING_DISTANCE = ConfigHandler.levelPerDistance.getValue();
         PlayerEntity nearestPlayer = PlayerUtil.getNearestPlayer((ServerWorld) entity.world, (LivingEntity) entity);
 
         GameRules gameRules = entity.getWorld().getGameRules();
