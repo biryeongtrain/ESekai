@@ -24,14 +24,34 @@ public class registerOnItemCrafted {
         this.rarity = 5;
     }
 
-    public registerOnItemCrafted(ItemStack item, PlayerEntity player, int level, int rarirty) {
+    public registerOnItemCrafted(ItemStack item, PlayerEntity player, int level, int rarity) {
         this.level = level;
         this.player = player;
         this.item = item;
-        this.rarity = rarirty;
+        this.rarity = rarity;
     }
 
     private int setLevel(int playerLevel) {
         return (int) Math.round(Math.random() * playerLevel);
+    }
+
+    public static int setRarity() {
+        int value = (int) Math.ceil(Math.random() * 100);
+        if (value <= 35) {
+            return 0;
+        }
+        if (value <= 61) {
+            return 1;
+        }
+        if (value <= 81) {
+            return 2;
+        }
+        if (value <= 90) {
+            return 3;
+        }
+        if (value >= 90) {
+            return 4;
+        }
+        return 0;
     }
 }

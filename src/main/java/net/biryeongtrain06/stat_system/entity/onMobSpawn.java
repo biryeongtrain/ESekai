@@ -53,7 +53,6 @@ public class onMobSpawn {
         }
         else {
             double distance = entity.world.getSpawnPos().getManhattanDistance(entity.getBlockPos());
-            // TODO : MAKE LEVEL SYSTEM PER DISTANCE
             int level = MathHelper.clamp((int)distance / SCALING_DISTANCE, 1, MAX_LEVEL);
             StatComponent.ENTITY_STAT.get(entity).setLevel(level);
             setName(entity);
