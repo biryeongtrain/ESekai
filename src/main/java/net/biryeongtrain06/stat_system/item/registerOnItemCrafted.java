@@ -1,5 +1,6 @@
 package net.biryeongtrain06.stat_system.item;
 
+import net.biryeongtrain06.stat_system.util.setItemStat.SetItemStatPerInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -15,13 +16,13 @@ public class registerOnItemCrafted {
     private int level = 0;
     private int rarity = 0;
 
-    NbtCompound nbt = new NbtCompound();
 
     public registerOnItemCrafted(ItemStack item, PlayerEntity player) {
         this.item = item;
         this.player = player;
         this.level = setLevel(playerLevel);
         this.rarity = 5;
+        new SetItemStatPerInstance(item, level, rarity);
     }
 
     public registerOnItemCrafted(ItemStack item, PlayerEntity player, int level, int rarity) {
@@ -29,9 +30,10 @@ public class registerOnItemCrafted {
         this.player = player;
         this.item = item;
         this.rarity = rarity;
+        new SetItemStatPerInstance(item, level, rarity);
     }
 
-    private int setLevel(int playerLevel) {
+    public static int setLevel(int playerLevel) {
         return (int) Math.round(Math.random() * playerLevel);
     }
 

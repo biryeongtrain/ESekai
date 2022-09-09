@@ -8,9 +8,9 @@ import static net.biryeongtrain06.stat_system.util.setItemStat.ItemStatKeys.getK
 public class StatRegistry {
     protected static float RARITY_MODIFIER = 1.5F;
     protected static float LEVEL_MODIFIER = 1.1F;
-    public NbtCompound decideStat(String key, NbtCompound nbt, int level, int rarity) {
+    public StatRegistry decideStat(String key) {
         StatRegistry statRegistry = getKeyRegistry(key);
-        return statRegistry.setStat(nbt, level, rarity);
+        return statRegistry;
     }
 
     public NbtCompound setStat(NbtCompound nbt, int level, int rarity) {

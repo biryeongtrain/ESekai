@@ -12,7 +12,8 @@ public class AttackDamageRegistry extends StatRegistry{
         float maxValue = 10 * ((rarity + 1) * RARITY_MODIFIER) * (level * LEVEL_MODIFIER);
         float minValue = 1 * ((rarity + 1) * RARITY_MODIFIER) * (level * LEVEL_MODIFIER);
         NbtCompound result = nbt;
-        result.putInt(ITEM_ATTACK_DAMAGE_KEY, MathHelper.ceil(((Math.random() * maxValue)) + minValue));
+        result.putString("name", ITEM_ATTACK_DAMAGE_KEY);
+        result.putInt("value", MathHelper.ceil(((Math.random() * maxValue)) + minValue));
         return result;
     }
 }

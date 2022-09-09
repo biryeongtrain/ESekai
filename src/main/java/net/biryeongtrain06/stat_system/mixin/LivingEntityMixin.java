@@ -34,7 +34,7 @@ public class LivingEntityMixin {
             }
         }
     }
-    @Inject(method = "Lnet/minecraft/entity/LivingEntity;modifyAppliedDamage(Lnet/minecraft/entity/damage/DamageSource;F)F", at = @At(value = "HEAD"), cancellable = true)
+    @Inject(method = "modifyAppliedDamage(Lnet/minecraft/entity/damage/DamageSource;F)F", at = @At(value = "HEAD"), cancellable = true)
     public void enchantedEntityHook(DamageSource source, float amount, CallbackInfoReturnable<Float> ci) {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
         if (source instanceof DamageSourceAdder) {
@@ -42,7 +42,7 @@ public class LivingEntityMixin {
         }
     }
 
-    @Inject(method = "Lnet/minecraft/entity/LivingEntity;modifyAppliedDamage(Lnet/minecraft/entity/damage/DamageSource;F)F", at = @At(value = "RETURN"), cancellable = true)
+    @Inject(method = "modifyAppliedDamage(Lnet/minecraft/entity/damage/DamageSource;F)F", at = @At(value = "RETURN"), cancellable = true)
     public void enchantedEntityHookReturn(DamageSource source, float amount, CallbackInfoReturnable<Float> ci) {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
 

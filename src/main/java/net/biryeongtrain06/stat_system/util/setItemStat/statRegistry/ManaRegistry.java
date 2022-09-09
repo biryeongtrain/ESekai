@@ -11,7 +11,8 @@ public class ManaRegistry extends StatRegistry{
         float maxValue = 25 * ((rarity + 1) * RARITY_MODIFIER) * (level * LEVEL_MODIFIER);
         float minValue = 5 * ((rarity + 1) * RARITY_MODIFIER) * (level * LEVEL_MODIFIER);
         NbtCompound result = nbt;
-        result.putInt(ITEM_MANA_KEY, MathHelper.ceil(((Math.random() * maxValue)) + minValue));
+        result.putString("name", ITEM_MANA_KEY);
+        result.putInt("value", MathHelper.ceil(((Math.random() * maxValue)) + minValue));
         return result;
     }
 }
