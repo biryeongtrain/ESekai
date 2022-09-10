@@ -6,13 +6,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.MathHelper;
 
+import static net.biryeongtrain06.stat_system.MainStatSystem.debugLogger;
 import static net.biryeongtrain06.stat_system.component.StatComponent.PLAYERSTAT;
 
 public class registerOnItemCrafted {
 
     private final ItemStack item;
     private PlayerEntity player;
-    private int playerLevel = PLAYERSTAT.get(this.player).getLevel();
+    private final int playerLevel;
     private int level = 0;
     private int rarity = 0;
 
@@ -20,17 +21,30 @@ public class registerOnItemCrafted {
     public registerOnItemCrafted(ItemStack item, PlayerEntity player) {
         this.item = item;
         this.player = player;
+        this.playerLevel = PLAYERSTAT.get(this.player).getLevel();
         this.level = setLevel(playerLevel);
         this.rarity = 5;
-        new SetItemStatPerInstance(item, level, rarity);
+        SetItemStatPerInstance.RegisterItemStatPerInstance(item, level, rarity);
     }
 
     public registerOnItemCrafted(ItemStack item, PlayerEntity player, int level, int rarity) {
-        this.level = level;
         this.player = player;
+        this.playerLevel = PLAYERSTAT.get(this.player).getLevel();
+        this.level = level;
         this.item = item;
         this.rarity = rarity;
-        new SetItemStatPerInstance(item, level, rarity);
+        debugLogger.info("settingItemStatPerInstance");
+        SetItemStatPerInstance.RegisterItemStatPerInstance(item, level, rarity);
+    }
+
+    public registerOnItemCrafted(ItemStack item, PlayerEntity player, int rarity) {
+        this.player = player;
+        this.playerLevel = PLAYERSTAT.get(this.player).getLevel();
+        this.level = setLevel(playerLevel);
+        this.item = item;
+        this.rarity = rarity;
+        debugLogger.info("settingItemStatPerInstance");
+        SetItemStatPerInstance.RegisterItemStatPerInstance(item, level, rarity);
     }
 
     public static int setLevel(int playerLevel) {
