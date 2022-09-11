@@ -21,7 +21,7 @@ public class ItemStatKeys {
 
 
 
-    public static ArrayList getSTAT_LIST() {
+    public static ArrayList<String> getSTAT_LIST() {
         ArrayList<String> STAT_LIST = new ArrayList<>();
         STAT_LIST.add(ITEM_HEALTH_KEY);
         STAT_LIST.add(ITEM_MANA_KEY);

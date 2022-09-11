@@ -38,10 +38,11 @@ public class SetItemStatPerInstance {
             NbtCompound result = list[i].setStat(item.getNbt(), level, rarity);
             nbt.add(result);
         }
+        debugLogger.info("Merging Elements into ITEM NBT....");
         itemNBT.put("element", NbtString.of(Elements.Physical.dmgName));
-            itemNBT.put("stat", nbt);
-        debugLogger.info("Successfully Lore Set.");
-        setLore(item, rarity);
+        debugLogger.info("Merging STATS into ITEM NBT....");
+        itemNBT.put("stat", nbt);
+        debugLogger.info("Successfully Stat Set.");
     }
 // TODO - NEED TESTING / STACK OVERFLOW ERROR / check if lore successfully inject.
     public static void setLore(ItemStack Item, int rarity) {
@@ -56,6 +57,6 @@ public class SetItemStatPerInstance {
             lore.add(NbtString.of(Text.Serializer.toJson(Text.of(stats.getCompound(i).getString("name") + " : " + stats.getCompound(i).getInt("value")))));
         }
         lore.add(NbtString.of(Text.Serializer.toJson(Text.of("Element : " + Item.getNbt().getString("element")))));
-        itemNBT.put("lore", lore);
+        itemNBT.put("Lore", lore);
     }
 }
