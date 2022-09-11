@@ -1,6 +1,7 @@
 package net.biryeongtrain06.stat_system;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import net.biryeongtrain06.stat_system.Init.InitCommand;
 import net.biryeongtrain06.stat_system.commands.gameRule;
 import net.biryeongtrain06.stat_system.commands.setDefense;
 import net.biryeongtrain06.stat_system.commands.setLevel;
@@ -25,26 +26,10 @@ public class MainStatSystem implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
-            dispatcher.register(
-                    literal("opendebugbar").requires(serverCommandSource -> serverCommandSource.hasPermissionLevel(2))
-                            .executes(OpenDebugBar::OpenGUI)
-            );
-            dispatcher.register(
-                    literal("setdefense").requires(serverCommandSource -> serverCommandSource.hasPermissionLevel(2))
-                            .then(CommandManager.argument("player", EntityArgumentType.player())
-                                .then(CommandManager.argument("value", IntegerArgumentType.integer())
-                                        .executes(ctx -> setDefense.onExecuted(EntityArgumentType.getPlayer(ctx, "player"), IntegerArgumentType.getInteger(ctx, "value")))))
 
-            );
-            dispatcher.register(
-                    literal("setlevel").requires(serverCommandSource -> serverCommandSource.hasPermissionLevel(2))
-                            .then(CommandManager.argument("player", EntityArgumentType.player())
-                                    .then(CommandManager.argument("value", IntegerArgumentType.integer())
-                                            .executes(ctx -> setLevel.onExecuted(EntityArgumentType.getPlayer(ctx, "player"), IntegerArgumentType.getInteger(ctx, "value")))))
+        //register Commands
+        CommandRegistrationCallback.EVENT.register(InitCommand::InitCommands);
 
-            );
-        });
         debugLogger.info("Hello! qf_Stat_Mod is Initializing!");
         gameRule.setupGameRule();
         ServerEntityEvents.ENTITY_LOAD.register(onMobSpawn::onLoad);

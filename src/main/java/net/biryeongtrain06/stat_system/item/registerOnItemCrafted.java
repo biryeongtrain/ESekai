@@ -15,8 +15,8 @@ public class registerOnItemCrafted {
     private PlayerEntity player;
     private final int playerLevel;
     private int level = 0;
-    private int rarity = 0;
 
+    private int rarity = 0;
 
     public registerOnItemCrafted(ItemStack item, PlayerEntity player) {
         this.item = item;

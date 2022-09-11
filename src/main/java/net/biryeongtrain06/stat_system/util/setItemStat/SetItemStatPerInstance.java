@@ -11,6 +11,7 @@ import net.minecraft.nbt.NbtString;
 import net.minecraft.text.Text;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static net.biryeongtrain06.stat_system.MainStatSystem.debugLogger;
 import static net.biryeongtrain06.stat_system.util.setItemStat.ItemStatKeys.ITEM_ATTACK_DAMAGE_KEY;
@@ -34,6 +35,12 @@ public class SetItemStatPerInstance {
     public static void ItemRegister(ItemStack item, int level, int rarity, StatRegistry[] list) {
         NbtCompound itemNBT = item.getOrCreateNbt();
         NbtList nbt = new NbtList();
+        //for문 이건 어떰?
+        /*Arrays.stream(list).map((x) -> {
+            nbt.add(x.setStat(item.getNbt(),level,rarity));
+           return 0;
+        });*/
+
         for (int i = 0; i < list.length; i++) {
             NbtCompound result = list[i].setStat(item.getNbt(), level, rarity);
             nbt.add(result);
