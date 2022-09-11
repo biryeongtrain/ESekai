@@ -12,6 +12,7 @@ import net.minecraft.text.Text;
 
 import java.util.ArrayList;
 
+import static net.biryeongtrain06.stat_system.MainStatSystem.debugLogger;
 import static net.biryeongtrain06.stat_system.util.setItemStat.ItemStatKeys.ITEM_ATTACK_DAMAGE_KEY;
 // TODO : 아이템 NBT 넣는 작업하기
 
@@ -38,11 +39,13 @@ public class SetItemStatPerInstance {
             nbt.add(result);
         }
         itemNBT.put("element", NbtString.of(Elements.Physical.dmgName));
-        itemNBT.put("stat", nbt);
+            itemNBT.put("stat", nbt);
+        debugLogger.info("Successfully Lore Set.");
         setLore(item, rarity);
     }
 // TODO - NEED TESTING / STACK OVERFLOW ERROR / check if lore successfully inject.
     public static void setLore(ItemStack Item, int rarity) {
+        debugLogger.info("Setting Lore...");
         NbtList lore = new NbtList();
         NbtCompound itemNBT = Item.getOrCreateSubNbt("display");
         NbtList stats = Item.getNbt().getList("stats", 0);
@@ -52,7 +55,7 @@ public class SetItemStatPerInstance {
         for (int i = 0; i < rarity; i ++) {
             lore.add(NbtString.of(Text.Serializer.toJson(Text.of(stats.getCompound(i).getString("name") + " : " + stats.getCompound(i).getInt("value")))));
         }
-        lore.add(NbtString.of(Text.Serializer.toJson(Text.of("Element : " + itemNBT.getString("element")))));
+        lore.add(NbtString.of(Text.Serializer.toJson(Text.of("Element : " + Item.getNbt().getString("element")))));
         itemNBT.put("lore", lore);
     }
 }
