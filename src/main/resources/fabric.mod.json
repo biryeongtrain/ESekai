@@ -7,7 +7,7 @@
   "authors": [],
   "contact": {},
   "license": "MIT",
-  "icon": "assets/cardinal/icon.png",
+  "icon": "assets/qf_stat_mod/icon.png",
   "environment": "*",
   "entrypoints": {
     "client": [
