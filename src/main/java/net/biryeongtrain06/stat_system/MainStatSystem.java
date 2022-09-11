@@ -19,7 +19,7 @@ import static net.minecraft.server.command.CommandManager.literal;
 
 
 public class MainStatSystem implements ModInitializer {
-    public static final String MOD_ID ="cardinal";
+    public static final String MOD_ID ="qf_stat_mod";
     final public static Logger debugLogger = LogManager.getLogger("Qf Stat Debug");
 
 
