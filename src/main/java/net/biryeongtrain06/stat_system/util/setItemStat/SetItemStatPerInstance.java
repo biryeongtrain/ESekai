@@ -26,7 +26,7 @@ public class SetItemStatPerInstance {
             statlist.add(ITEM_ATTACK_DAMAGE_KEY);
             for (int i = 0; i < list.length; i++) {
                 String s = statlist.get((int) (Math.random() * statlist.size()));
-                list[i] = new StatRegistry().decideStat(s);
+                list[i] = list[i].decideStat(s);
             }
             ItemRegister(item, level, rarity, list);
         }
@@ -35,16 +35,10 @@ public class SetItemStatPerInstance {
     public static void ItemRegister(ItemStack item, int level, int rarity, StatRegistry[] list) {
         NbtCompound itemNBT = item.getOrCreateNbt();
         NbtList nbt = new NbtList();
-        //for문 이건 어떰?
-        /*Arrays.stream(list).map((x) -> {
+        Arrays.stream(list).map((x) -> {
             nbt.add(x.setStat(item.getNbt(),level,rarity));
-           return 0;
-        });*/
-
-        for (int i = 0; i < list.length; i++) {
-            NbtCompound result = list[i].setStat(item.getNbt(), level, rarity);
-            nbt.add(result);
-        }
+            return 0;
+        });
         debugLogger.info("Merging Elements into ITEM NBT....");
         itemNBT.put("element", NbtString.of(Elements.Physical.dmgName));
         debugLogger.info("Merging STATS into ITEM NBT....");

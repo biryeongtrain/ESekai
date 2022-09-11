@@ -54,19 +54,19 @@ public class registerOnItemCrafted {
     public static int setRarity() {
         int value = (int) Math.ceil(Math.random() * 100);
         if (value <= 35) {
-            return 0;
-        }
-        if (value <= 61) {
             return 1;
         }
-        if (value <= 81) {
+        if (value <= 61) {
             return 2;
         }
-        if (value <= 90) {
+        if (value <= 81) {
             return 3;
         }
-        if (value >= 90) {
+        if (value <= 90) {
             return 4;
+        }
+        if (value >= 90) {
+            return 5;
         }
         return 0;
     }

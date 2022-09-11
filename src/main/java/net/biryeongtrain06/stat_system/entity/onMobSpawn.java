@@ -41,13 +41,13 @@ public class onMobSpawn {
             if (nearestPlayer == null) {
                 StatComponent.ENTITY_STAT.get(entity).setLevel((int) Math.round(Math.random() * 5));
                 setName(entity);
-                entity.setCustomNameVisible(false);
+                //entity.setCustomNameVisible(false);
                 //debugLogger.info("PlayerNotFound : Entity Level : " + StatComponent.ENTITY_STAT.get(entity).getLevel());
             }
             else {
                 StatComponent.ENTITY_STAT.get(entity).setLevel(StatComponent.PLAYERSTAT.get(nearestPlayer).getLevel());
                 setName(entity);
-                entity.getServer().sendMessage(Text.literal("Level : " + StatComponent.ENTITY_STAT.get(entity).getLevel()));
+                //entity.getServer().sendMessage(Text.literal("Level : " + StatComponent.ENTITY_STAT.get(entity).getLevel()));
                 //debugLogger.info("PlayerFound : Entity Level : " + StatComponent.ENTITY_STAT.get(entity).getLevel());
             }
         }
@@ -56,7 +56,7 @@ public class onMobSpawn {
             int level = MathHelper.clamp((int)distance / SCALING_DISTANCE, 1, MAX_LEVEL);
             StatComponent.ENTITY_STAT.get(entity).setLevel(level);
             setName(entity);
-            entity.getServer().sendMessage(Text.literal("Level : " + StatComponent.ENTITY_STAT.get(entity).getLevel()));
+            //entity.getServer().sendMessage(Text.literal("Level : " + StatComponent.ENTITY_STAT.get(entity).getLevel()));
             //debugLogger.info("Distance - Entity Level : " + StatComponent.ENTITY_STAT.get(entity).getLevel());
         }
 
