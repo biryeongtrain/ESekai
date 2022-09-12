@@ -21,7 +21,7 @@ import java.util.UUID;
 import static net.biryeongtrain06.stat_system.MainStatSystem.debugLogger;
 import static net.biryeongtrain06.stat_system.util.setItemStat.ItemStatKeys.ITEM_ELEMENT_KEY;
 import static net.biryeongtrain06.stat_system.util.setItemStat.ItemStatKeys.ITEM_ATTACK_DAMAGE_KEY;
-// TODO : 아이템 NBT 넣는 작업하기
+
 
 public class SetItemStatPerInstance {
 

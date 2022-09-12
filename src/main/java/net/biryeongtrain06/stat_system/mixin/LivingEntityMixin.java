@@ -2,6 +2,8 @@ package net.biryeongtrain06.stat_system.mixin;
 
 import net.biryeongtrain06.stat_system.component.StatComponent;
 import net.biryeongtrain06.stat_system.util.DamageSourceAdder;
+import net.biryeongtrain06.stat_system.util.Elements;
+import net.biryeongtrain06.stat_system.util.applyDamageHook;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.WitherEntity;
@@ -58,7 +60,7 @@ public class LivingEntityMixin {
         }
     }
 
-    @Inject(method = "Lnet/minecraft/entity/LivingEntity;applyArmorToDamage(Lnet/minecraft/entity/damage/DamageSource;F)F", at = @At(value = "HEAD"), cancellable = true)
+    @Inject(method = "applyArmorToDamage(Lnet/minecraft/entity/damage/DamageSource;F)F", at = @At(value = "HEAD"), cancellable = true)
     public void armor2Damage(DamageSource source, float amount, CallbackInfoReturnable<Float> ci) {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
         if (source instanceof DamageSourceAdder) {
@@ -66,6 +68,7 @@ public class LivingEntityMixin {
         }
     }
 
+    //TODO 엔티티 아직 후킹 안함
     @Inject(method = "applyDamage", at = @At(value = "HEAD"), cancellable = true)
     public void setDamageSource(DamageSource source, float amount, CallbackInfo ci) {
         LivingEntity entity = (LivingEntity) (Object) this;
@@ -73,7 +76,9 @@ public class LivingEntityMixin {
             PlayerEntity player = (PlayerEntity) source.getAttacker();
             ItemStack item = player.getMainHandStack();
             if (!item.getNbt().getString(ITEM_ELEMENT_KEY).equals("")) {
-                // TODO - Hook to Damage Behavior
+
+                Elements elements = Elements.valueOf(item.getNbt().getString(ITEM_ELEMENT_KEY));
+                applyDamageHook.hook(entity, player, source, amount, elements);
             }
         }
     }

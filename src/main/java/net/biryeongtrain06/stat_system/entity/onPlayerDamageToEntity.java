@@ -7,7 +7,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 
 public class onPlayerDamageToEntity {
-    public static void applyDamage(Entity target, Entity source, DamageSource dmgSource, float damage) {
+    public static void applyDamage(Entity target, Entity source, DamageSource dmgSource, float damage, Elements element) {
         if (target.getWorld().isClient) {
             return;
         }
@@ -17,8 +17,8 @@ public class onPlayerDamageToEntity {
         if (!target.isAlive()) {
             return;
         }
-        Elements elements;
 
-        DamageSourceAdder damageSource = new DamageSourceAdder(dmgSource, source, Elements.Physical, damage);
+        DamageSourceAdder damageSource = new DamageSourceAdder(dmgSource, source, element, damage);
+        //TODO - 데미지 주는거랑 방어력에 따른 데미지 감소 / 회피 넣어아함
     }
 }
