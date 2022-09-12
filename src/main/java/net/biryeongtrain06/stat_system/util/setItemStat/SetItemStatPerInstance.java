@@ -58,7 +58,7 @@ public class SetItemStatPerInstance {
             ItemRegister(item, level, rarity, list, Elements.Physical);
         }
     }
-// TODO - 공격 Attribute 붙으면 데미지 증가하나 체크해야함
+// TODO - 공격 Attribute 붙으면 데미지 증가하나 체크해야함, Lore 도 잘붙는지 확인
     /**
      * NBT결정, 아이템에 병합하는 메소드입니다. 이후 setLore 메소드를 호출하면서 설명값을 부여합니다.
      * @param item 대상 아이템입니다.
