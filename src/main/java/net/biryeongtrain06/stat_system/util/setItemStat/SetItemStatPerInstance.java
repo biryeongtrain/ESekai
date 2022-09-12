@@ -56,9 +56,9 @@ public class SetItemStatPerInstance {
             lore = itemNBT.getList("Lore", NbtElement.STRING_TYPE);
         }
         for (int i = 0; i < rarity; i ++) {
-            lore.add(NbtString.of(Text.Serializer.toJson(Text.of(stats.getCompound(i).getString("name") + " : " + stats.getCompound(i).getInt("value"))).formatted(Formatting.GREEN)));
+            lore.add(NbtString.of(Text.Serializer.toJson(Text.literal(stats.getCompound(i).getString("name") + " : " + stats.getCompound(i).getInt("value")).formatted(Formatting.AQUA))));
         }
-        lore.add(NbtString.of(Text.Serializer.toJson(Text.of("Element : " + Item.getNbt().getString("element"))).formatted(Formatting.AQUA)));
+        lore.add(NbtString.of(Text.Serializer.toJson(Text.literal("Element : " + Item.getNbt().getString("element")).formatted(Formatting.GREEN))));
         itemNBT.put("Lore", lore);
     }
 }

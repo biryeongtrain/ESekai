@@ -80,4 +80,34 @@ public interface PlayerStatComponentInterface extends Component {
     void setLevel(int level);
 
     void addLevel(int level);
+
+    int getFireResistance();
+
+    void addFireResistance(int value);
+
+    void setFireResistance(int value);
+
+    int  getWaterResistance();
+
+    void addWaterResistance(int value);
+
+    void setWaterResistance(int value);
+
+    int getNatureResistance();
+
+    void addNatureResistance(int value);
+
+    void setNatureResistance(int value);
+
+    int getLightResistance();
+
+    void addLightResistance(int value);
+
+    void setLightResistance(int value);
+
+    int getDarkResistance();
+
+    void addDarkResistance(int value);
+
+    void setDarkResistance(int value);
 }

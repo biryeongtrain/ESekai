@@ -19,13 +19,13 @@ public class PlayerStatSystem extends PlayerStat implements PlayerStatComponentI
     private final int INT_DEFENSE_MODIFIER = 2;
     private final int LUCK_DODGE_MODIFIER = 2;
 
-    public PlayerStatSystem(int xp, int level,int statPoint, int strength, int dexterity, int intelligence, int luck, int health, int defense, int dodge, int mana, double magic_damage, double attack_damage,  ServerPlayerEntity player) {
-        super(xp, level, strength, statPoint, dexterity, intelligence, luck, health, defense, dodge, mana, magic_damage, attack_damage);
+    public PlayerStatSystem(int xp, int level,int statPoint, int strength, int dexterity, int intelligence, int luck, int health, int defense, int dodge, int mana, double magic_damage, double attack_damage, int fire_resistance, int water_resistance, int nature_resistance, int light_resistance, int dark_resistance, ServerPlayerEntity player) {
+        super(xp, level, strength, statPoint, dexterity, intelligence, luck, health, defense, dodge, mana, magic_damage, attack_damage, fire_resistance, water_resistance, nature_resistance, light_resistance, dark_resistance);
         this.player = player;
     }
 
     public PlayerStatSystem(PlayerEntity player) {
-        super(0, 1, 5, 0, 0, 0, 0, 20, 0, 0, 10, 1, 1);
+        super(0, 1, 5, 0, 0, 0, 0, 20, 0, 0, 10, 1, 1, 0, 0, 0, 0, 0);
         this.player = player;
     }
 
@@ -185,6 +185,57 @@ public class PlayerStatSystem extends PlayerStat implements PlayerStatComponentI
 
 
     @Override
+    public void addFireResistance(int value) {
+        this.fire_resistance += value;
+    }
+
+    @Override
+    public void setFireResistance(int value) {
+        this.fire_resistance = value;
+    }
+
+    @Override
+    public void addWaterResistance(int value) {
+        this.water_resistance += value;
+    }
+
+    @Override
+    public void setWaterResistance(int value) {
+        this.water_resistance = value;
+    }
+
+    @Override
+    public void addNatureResistance(int value) {
+        this.nature_resistance += value;
+    }
+
+    @Override
+    public void setNatureResistance(int value) {
+        this.nature_resistance = value;
+    }
+
+    @Override
+    public void addLightResistance(int value) {
+        this.light_resistance += value;
+    }
+
+    @Override
+    public void setLightResistance(int value) {
+        this.light_resistance = value;
+    }
+
+    @Override
+    public void addDarkResistance(int value) {
+        this.dark_resistance += value;
+    }
+
+    @Override
+    public void setDarkResistance(int value) {
+        this.dark_resistance = value;
+    }
+
+
+    @Override
     public void addXp(int xp) {
         this.xp += xp;
         if (this.xp > 1) {
@@ -211,6 +262,11 @@ public class PlayerStatSystem extends PlayerStat implements PlayerStatComponentI
         this.intelligence = tag.getInt(INTELLIGENCE_KEY);
         this.luck = tag.getInt(LUCK_KEY);
         this.statPoint = tag.getInt(STAT_POINT_KEY);
+        this.fire_resistance = tag.getInt(FIRE_RESISTANCE_KEY);
+        this.water_resistance = tag.getInt(WATER_RESISTANCE_KEY);
+        this.nature_resistance = tag.getInt(NATURE_RESISTANCE_KEY);
+        this.light_resistance = tag.getInt(LIGHT_RESISTANCE_KEY);
+        this.dark_resistance = tag.getInt(DARK_RESISTANCE_KEY);
     }
 
     @Override
@@ -228,6 +284,11 @@ public class PlayerStatSystem extends PlayerStat implements PlayerStatComponentI
         tag.putInt(INTELLIGENCE_KEY, this.intelligence);
         tag.putInt(LUCK_KEY, this.luck);
         tag.putInt(STAT_POINT_KEY, this.statPoint);
+        tag.putInt(FIRE_RESISTANCE_KEY, this.fire_resistance);
+        tag.putInt(WATER_RESISTANCE_KEY, this.fire_resistance);
+        tag.putInt(NATURE_RESISTANCE_KEY, this.nature_resistance);
+        tag.putInt(LIGHT_RESISTANCE_KEY, this.light_resistance);
+        tag.putInt(DARK_RESISTANCE_KEY, this.dark_resistance);
     }
 
     @Override
