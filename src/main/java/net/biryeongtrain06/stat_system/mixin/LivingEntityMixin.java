@@ -7,13 +7,18 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.WardenEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import static net.biryeongtrain06.stat_system.util.setItemStat.ItemStatKeys.ITEM_ELEMENT_KEY;
 
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
@@ -58,6 +63,18 @@ public class LivingEntityMixin {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
         if (source instanceof DamageSourceAdder) {
             ci.setReturnValue(amount);
+        }
+    }
+
+    @Inject(method = "applyDamage", at = @At(value = "HEAD"), cancellable = true)
+    public void setDamageSource(DamageSource source, float amount, CallbackInfo ci) {
+        LivingEntity entity = (LivingEntity) (Object) this;
+        if (source.getAttacker() instanceof PlayerEntity && entity instanceof HostileEntity) {
+            PlayerEntity player = (PlayerEntity) source.getAttacker();
+            ItemStack item = player.getMainHandStack();
+            if (!item.getNbt().getString(ITEM_ELEMENT_KEY).equals("")) {
+                // TODO - Hook to Damage Behavior
+            }
         }
     }
 }

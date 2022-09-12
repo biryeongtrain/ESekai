@@ -3,10 +3,9 @@ package net.biryeongtrain06.stat_system.util.setItemStat;
 import net.biryeongtrain06.stat_system.util.setItemStat.statRegistry.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ItemStatKeys {
-    public static final String ELEMENT_KEY = "element";
+    public static final String ITEM_ELEMENT_KEY = "element";
     public static final String EQUIPMENT_LEVEL_KEY = "item_level";
     public static final String ITEM_HEALTH_KEY = "item_health";
     public static final String ITEM_MANA_KEY = "item_mana";
