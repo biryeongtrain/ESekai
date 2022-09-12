@@ -82,7 +82,7 @@ public class SetItemStatPerInstance {
         NbtList lore = new NbtList();
         NbtCompound itemNBT = Item.getOrCreateSubNbt("display");
         NbtList stats = Item.getNbt().getList("stat", 10);
-        Elements element = Elements.valueOf(Item.getNbt().getString("element"));
+        Elements element = Elements.valueOf(Item.getNbt().getString(ITEM_ELEMENT_KEY));
         if (itemNBT.contains("Lore")) {
             lore = itemNBT.getList("Lore", NbtElement.STRING_TYPE);
         }
