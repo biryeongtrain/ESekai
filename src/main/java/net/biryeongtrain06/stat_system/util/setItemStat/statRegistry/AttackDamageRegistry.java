@@ -8,10 +8,10 @@ import static net.biryeongtrain06.stat_system.util.setItemStat.ItemStatKeys.ITEM
 
 public class AttackDamageRegistry extends StatRegistry{
     @Override
-    public NbtCompound setStat(NbtCompound nbt, int level, int rarity) {
+    public NbtCompound setStat(int level, int rarity) {
         float maxValue = 10 * ((rarity + 1) * RARITY_MODIFIER) * (level * LEVEL_MODIFIER);
         float minValue = 1 * ((rarity + 1) * RARITY_MODIFIER) * (level * LEVEL_MODIFIER);
-        NbtCompound result = nbt;
+        NbtCompound result = new NbtCompound();
         result.putString("name", ITEM_ATTACK_DAMAGE_KEY);
         result.putInt("value", MathHelper.ceil(((Math.random() * maxValue)) + minValue));
         return result;

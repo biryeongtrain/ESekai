@@ -7,10 +7,10 @@ import static net.biryeongtrain06.stat_system.util.setItemStat.ItemStatKeys.ITEM
 
 public class ManaRegistry extends StatRegistry{
     @Override
-    public NbtCompound setStat(NbtCompound nbt, int level, int rarity) {
+    public NbtCompound setStat(int level, int rarity) {
         float maxValue = 25 * ((rarity + 1) * RARITY_MODIFIER) * (level * LEVEL_MODIFIER);
         float minValue = 5 * ((rarity + 1) * RARITY_MODIFIER) * (level * LEVEL_MODIFIER);
-        NbtCompound result = nbt;
+        NbtCompound result = new NbtCompound();
         result.putString("name", ITEM_MANA_KEY);
         result.putInt("value", MathHelper.ceil(((Math.random() * maxValue)) + minValue));
         return result;

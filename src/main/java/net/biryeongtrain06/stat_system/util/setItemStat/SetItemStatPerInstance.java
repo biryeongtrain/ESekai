@@ -26,7 +26,7 @@ public class SetItemStatPerInstance {
             statlist.add(ITEM_ATTACK_DAMAGE_KEY);
             for (int i = 0; i < list.length; i++) {
                 String s = statlist.get((int) (Math.random() * statlist.size()));
-                list[i] = list[i].decideStat(s);
+                list[i] = StatRegistry.decideStat(s);
             }
             ItemRegister(item, level, rarity, list);
         }
@@ -35,22 +35,22 @@ public class SetItemStatPerInstance {
     public static void ItemRegister(ItemStack item, int level, int rarity, StatRegistry[] list) {
         NbtCompound itemNBT = item.getOrCreateNbt();
         NbtList nbt = new NbtList();
-        Arrays.stream(list).map((x) -> {
-            nbt.add(x.setStat(item.getNbt(),level,rarity));
-            return 0;
-        });
+        for (int i = 0; i < list.length; i++){
+            nbt.add(list[i].setStat(level, rarity));
+        }
         debugLogger.info("Merging Elements into ITEM NBT....");
         itemNBT.put("element", NbtString.of(Elements.Physical.dmgName));
         debugLogger.info("Merging STATS into ITEM NBT....");
         itemNBT.put("stat", nbt);
         debugLogger.info("Successfully Stat Set.");
+        setLore(item, rarity);
     }
 // TODO - NEED TESTING / STACK OVERFLOW ERROR / check if lore successfully inject.
     public static void setLore(ItemStack Item, int rarity) {
         debugLogger.info("Setting Lore...");
         NbtList lore = new NbtList();
         NbtCompound itemNBT = Item.getOrCreateSubNbt("display");
-        NbtList stats = Item.getNbt().getList("stats", 0);
+        NbtList stats = Item.getNbt().getList("stat", 10);
         if (itemNBT.contains("Lore")) {
             lore = itemNBT.getList("Lore", NbtElement.STRING_TYPE);
         }

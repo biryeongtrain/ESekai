@@ -48,7 +48,8 @@ public class registerOnItemCrafted {
     }
 
     public static int setLevel(int playerLevel) {
-        return (int) Math.round(Math.random() * playerLevel);
+        int level = (int) Math.round(Math.random() * playerLevel);
+        return level == 0 ? 1 : level;
     }
 
     public static int setRarity() {
