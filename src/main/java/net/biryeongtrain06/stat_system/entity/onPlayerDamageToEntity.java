@@ -3,10 +3,11 @@ package net.biryeongtrain06.stat_system.entity;
 import net.biryeongtrain06.stat_system.util.DamageSourceAdder;
 import net.biryeongtrain06.stat_system.util.Elements;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 
 public class onPlayerDamageToEntity {
-    public static void applyDamage(Entity target, DamageSource source, float damage) {
+    public static void applyDamage(Entity target, Entity source, DamageSource dmgSource, float damage) {
         if (target.getWorld().isClient) {
             return;
         }
@@ -16,6 +17,8 @@ public class onPlayerDamageToEntity {
         if (!target.isAlive()) {
             return;
         }
-        DamageSourceAdder damageSource = new DamageSourceAdder(source, target, Elements.Physical, damage);
+        Elements elements;
+
+        DamageSourceAdder damageSource = new DamageSourceAdder(dmgSource, source, Elements.Physical, damage);
     }
 }

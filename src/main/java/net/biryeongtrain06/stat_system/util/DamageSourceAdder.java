@@ -8,20 +8,20 @@ import net.minecraft.entity.damage.EntityDamageSource;
 public class DamageSourceAdder extends EntityDamageSource {
 
     Elements elements;
-    public float readlDamage;
+    public float realDamage;
     DamageSource source;
 
     public DamageSourceAdder(DamageSource s, Entity source, Elements elements, float dmg) {
         super(source(s), source);
         this.elements = elements;
         this.bypassesArmor();
-        this.readlDamage = dmg;
+        this.realDamage = dmg;
         this.source = s;
     }
 
     static String source(DamageSource s) {
         if (s == null) {
-            return new String(MainStatSystem.MOD_ID + ".customdamage");
+            return MainStatSystem.MOD_ID + ".customdamage";
         }
         return s.name;
     }

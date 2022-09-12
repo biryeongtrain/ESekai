@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static net.biryeongtrain06.stat_system.MainStatSystem.debugLogger;
+import static net.biryeongtrain06.stat_system.util.setItemStat.ItemStatKeys.ELEMENT_KEY;
 import static net.biryeongtrain06.stat_system.util.setItemStat.ItemStatKeys.ITEM_ATTACK_DAMAGE_KEY;
 // TODO : 아이템 NBT 넣는 작업하기
 
@@ -40,7 +41,7 @@ public class SetItemStatPerInstance {
             nbt.add(list[i].setStat(level, rarity));
         }
         debugLogger.info("Merging Elements into ITEM NBT....");
-        itemNBT.put("element", NbtString.of(Elements.Physical.dmgName));
+        itemNBT.put(ELEMENT_KEY, NbtString.of(Elements.Physical.dmgName));
         debugLogger.info("Merging STATS into ITEM NBT....");
         itemNBT.put("stat", nbt);
         debugLogger.info("Successfully Stat Set.");
