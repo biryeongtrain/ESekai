@@ -9,6 +9,7 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,9 +56,9 @@ public class SetItemStatPerInstance {
             lore = itemNBT.getList("Lore", NbtElement.STRING_TYPE);
         }
         for (int i = 0; i < rarity; i ++) {
-            lore.add(NbtString.of(Text.Serializer.toJson(Text.of(stats.getCompound(i).getString("name") + " : " + stats.getCompound(i).getInt("value")))));
+            lore.add(NbtString.of(Text.Serializer.toJson(Text.of(stats.getCompound(i).getString("name") + " : " + stats.getCompound(i).getInt("value"))).formatted(Formatting.GREEN)));
         }
-        lore.add(NbtString.of(Text.Serializer.toJson(Text.of("Element : " + Item.getNbt().getString("element")))));
+        lore.add(NbtString.of(Text.Serializer.toJson(Text.of("Element : " + Item.getNbt().getString("element"))).formatted(Formatting.AQUA)));
         itemNBT.put("Lore", lore);
     }
 }
