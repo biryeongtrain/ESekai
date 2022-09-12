@@ -37,7 +37,7 @@ public class SetItemStatPerInstance {
             ItemRegister(item, level, rarity, list);
         }
     }
-// TODO - Element 넣어야함
+// TODO - 공격 Attribute 붙으면 데미지 증가하나 체크해야함
     public static void ItemRegister(ItemStack item, int level, int rarity, StatRegistry[] list) {
         NbtCompound itemNBT = item.getOrCreateNbt();
         NbtList nbt = new NbtList();
