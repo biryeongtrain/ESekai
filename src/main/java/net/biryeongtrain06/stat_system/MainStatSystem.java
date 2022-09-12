@@ -19,7 +19,6 @@ public class MainStatSystem implements ModInitializer {
     @Override
     public void onInitialize() {
 
-        //register Commands
         CommandRegistrationCallback.EVENT.register(InitCommand::InitCommands);
 
         debugLogger.info("Hello! qf_Stat_Mod is Initializing!");

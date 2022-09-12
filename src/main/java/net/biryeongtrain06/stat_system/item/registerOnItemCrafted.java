@@ -1,5 +1,6 @@
 package net.biryeongtrain06.stat_system.item;
 
+import net.biryeongtrain06.stat_system.util.Elements;
 import net.biryeongtrain06.stat_system.util.setItemStat.SetItemStatPerInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -27,24 +28,13 @@ public class registerOnItemCrafted {
         SetItemStatPerInstance.RegisterItemStatPerInstance(item, level, rarity);
     }
 
-    public registerOnItemCrafted(ItemStack item, PlayerEntity player, int level, int rarity) {
+    public registerOnItemCrafted(ItemStack item, PlayerEntity player, int level, int rarity, Elements element) {
         this.player = player;
         this.playerLevel = PLAYERSTAT.get(this.player).getLevel();
         this.level = level;
         this.item = item;
         this.rarity = rarity;
-        debugLogger.info("settingItemStatPerInstance");
-        SetItemStatPerInstance.RegisterItemStatPerInstance(item, level, rarity);
-    }
-
-    public registerOnItemCrafted(ItemStack item, PlayerEntity player, int rarity) {
-        this.player = player;
-        this.playerLevel = PLAYERSTAT.get(this.player).getLevel();
-        this.level = setLevel(playerLevel);
-        this.item = item;
-        this.rarity = rarity;
-        debugLogger.info("settingItemStatPerInstance");
-        SetItemStatPerInstance.RegisterItemStatPerInstance(item, level, rarity);
+        SetItemStatPerInstance.RegisterItemStatPerInstance(item, level, rarity, element);
     }
 
     public static int setLevel(int playerLevel) {
@@ -70,5 +60,28 @@ public class registerOnItemCrafted {
             return 5;
         }
         return 0;
+    }
+
+    public static Elements setElement() {
+        int roll = (int) (Math.random() * 100);
+        if (roll <= 50) {
+            return Elements.Physical;
+        }
+        if (roll <= 62) {
+            return Elements.Fire;
+        }
+        if (roll <= 74) {
+            return Elements.Water;
+        }
+        if (roll <= 86) {
+            return Elements.Earth;
+        }
+        if (roll <= 93) {
+            return Elements.Light;
+        }
+        if (roll >= 93) {
+            return Elements.Dark;
+        }
+        return Elements.Physical;
     }
 }

@@ -30,8 +30,7 @@ public abstract class ItemStackMixin {
     public void onCraft(World world, PlayerEntity player, int amount, CallbackInfo ci) {
         ItemStack item = (ItemStack) (Object) this;
         if (item.getItem() instanceof SwordItem) {
-            debugLogger.info("Start Resister Item");
-            new registerOnItemCrafted(item, player, registerOnItemCrafted.setLevel(StatComponent.PLAYERSTAT.get(player).getLevel()) ,registerOnItemCrafted.setRarity());
+            new registerOnItemCrafted(item, player, registerOnItemCrafted.setLevel(StatComponent.PLAYERSTAT.get(player).getLevel()) ,registerOnItemCrafted.setRarity(), registerOnItemCrafted.setElement());
         }
     }
 

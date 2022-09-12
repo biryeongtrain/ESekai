@@ -5,9 +5,10 @@ import net.biryeongtrain06.stat_system.util.Elements;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.player.PlayerEntity;
 
 public class onPlayerDamageToEntity {
-    public static void applyDamage(Entity target, Entity source, DamageSource dmgSource, float damage, Elements element) {
+    public static void applyDamage(Entity target, PlayerEntity source, DamageSource dmgSource, float damage, Elements element) {
         if (target.getWorld().isClient) {
             return;
         }
@@ -19,6 +20,7 @@ public class onPlayerDamageToEntity {
         }
 
         DamageSourceAdder damageSource = new DamageSourceAdder(dmgSource, source, element, damage);
+
         //TODO - 데미지 주는거랑 방어력에 따른 데미지 감소 / 회피 넣어아함
     }
 }

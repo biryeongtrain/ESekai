@@ -79,6 +79,7 @@ public class LivingEntityMixin {
 
                 Elements elements = Elements.valueOf(item.getNbt().getString(ITEM_ELEMENT_KEY));
                 applyDamageHook.hook(entity, player, source, amount, elements);
+                ci.cancel();
             }
         }
     }

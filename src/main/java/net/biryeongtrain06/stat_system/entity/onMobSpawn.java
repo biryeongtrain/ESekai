@@ -15,7 +15,6 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GameRules;
 
-import static net.biryeongtrain06.stat_system.MainStatSystem.debugLogger;
 
 public class onMobSpawn {
     public static void onLoad(Entity entity, ServerWorld world) {
@@ -41,14 +40,12 @@ public class onMobSpawn {
             if (nearestPlayer == null) {
                 StatComponent.ENTITY_STAT.get(entity).setLevel((int) Math.round(Math.random() * 5));
                 setName(entity);
-                //entity.setCustomNameVisible(false);
-                //debugLogger.info("PlayerNotFound : Entity Level : " + StatComponent.ENTITY_STAT.get(entity).getLevel());
+                entity.setCustomNameVisible(false);
             }
             else {
                 StatComponent.ENTITY_STAT.get(entity).setLevel(StatComponent.PLAYERSTAT.get(nearestPlayer).getLevel());
                 setName(entity);
-                //entity.getServer().sendMessage(Text.literal("Level : " + StatComponent.ENTITY_STAT.get(entity).getLevel()));
-                //debugLogger.info("PlayerFound : Entity Level : " + StatComponent.ENTITY_STAT.get(entity).getLevel());
+                entity.setCustomNameVisible(false);
             }
         }
         else {
@@ -56,8 +53,7 @@ public class onMobSpawn {
             int level = MathHelper.clamp((int)distance / SCALING_DISTANCE, 1, MAX_LEVEL);
             StatComponent.ENTITY_STAT.get(entity).setLevel(level);
             setName(entity);
-            //entity.getServer().sendMessage(Text.literal("Level : " + StatComponent.ENTITY_STAT.get(entity).getLevel()));
-            //debugLogger.info("Distance - Entity Level : " + StatComponent.ENTITY_STAT.get(entity).getLevel());
+            entity.setCustomNameVisible(false);
         }
 
     }

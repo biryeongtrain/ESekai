@@ -12,7 +12,7 @@ public class applyDamageHook {
 
             }
             else if (target instanceof Entity && dmgSource.getAttacker().isPlayer()) {
-                onPlayerDamageToEntity.applyDamage(target, source, dmgSource, damage, element);
+                onPlayerDamageToEntity.applyDamage(target, (PlayerEntity) source, dmgSource, damage, element);
             }
         }
 
