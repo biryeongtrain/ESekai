@@ -19,8 +19,8 @@ public class PlayerStatSystem extends PlayerStat implements PlayerStatComponentI
     private final int INT_DEFENSE_MODIFIER = 2;
     private final int LUCK_DODGE_MODIFIER = 2;
 
-    public PlayerStatSystem(int xp, int level,int statPoint, int strength, int dexterity, int intelligence, int luck, int health, int defense, int dodge, int mana, double magic_damage, double attack_damage, int fire_resistance, int water_resistance, int nature_resistance, int light_resistance, int dark_resistance, ServerPlayerEntity player) {
-        super(xp, level, strength, statPoint, dexterity, intelligence, luck, health, defense, dodge, mana, magic_damage, attack_damage, fire_resistance, water_resistance, nature_resistance, light_resistance, dark_resistance);
+    public PlayerStatSystem(int xp, int level,int statPoint, int strength, int dexterity, int intelligence, int luck, int health, int defense, int dodge, int mana, double magic_damage, double attack_damage, int fire_resistance, int water_resistance, int earth_resistance, int light_resistance, int dark_resistance, ServerPlayerEntity player) {
+        super(xp, level, strength, statPoint, dexterity, intelligence, luck, health, defense, dodge, mana, magic_damage, attack_damage, fire_resistance, water_resistance, earth_resistance, light_resistance, dark_resistance);
         this.player = player;
     }
 
@@ -205,13 +205,13 @@ public class PlayerStatSystem extends PlayerStat implements PlayerStatComponentI
     }
 
     @Override
-    public void addNatureResistance(int value) {
-        this.nature_resistance += value;
+    public void addEarthResistance(int value) {
+        this.earth_resistance += value;
     }
 
     @Override
-    public void setNatureResistance(int value) {
-        this.nature_resistance = value;
+    public void setEarthResistance(int value) {
+        this.earth_resistance = value;
     }
 
     @Override
@@ -264,7 +264,7 @@ public class PlayerStatSystem extends PlayerStat implements PlayerStatComponentI
         this.statPoint = tag.getInt(STAT_POINT_KEY);
         this.fire_resistance = tag.getInt(FIRE_RESISTANCE_KEY);
         this.water_resistance = tag.getInt(WATER_RESISTANCE_KEY);
-        this.nature_resistance = tag.getInt(NATURE_RESISTANCE_KEY);
+        this.earth_resistance = tag.getInt(EARTH_RESISTANCE_KEY);
         this.light_resistance = tag.getInt(LIGHT_RESISTANCE_KEY);
         this.dark_resistance = tag.getInt(DARK_RESISTANCE_KEY);
     }
@@ -286,7 +286,7 @@ public class PlayerStatSystem extends PlayerStat implements PlayerStatComponentI
         tag.putInt(STAT_POINT_KEY, this.statPoint);
         tag.putInt(FIRE_RESISTANCE_KEY, this.fire_resistance);
         tag.putInt(WATER_RESISTANCE_KEY, this.fire_resistance);
-        tag.putInt(NATURE_RESISTANCE_KEY, this.nature_resistance);
+        tag.putInt(EARTH_RESISTANCE_KEY, this.earth_resistance);
         tag.putInt(LIGHT_RESISTANCE_KEY, this.light_resistance);
         tag.putInt(DARK_RESISTANCE_KEY, this.dark_resistance);
     }

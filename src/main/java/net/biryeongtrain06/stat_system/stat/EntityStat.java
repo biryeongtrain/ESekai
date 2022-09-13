@@ -12,11 +12,11 @@ public class EntityStat {
     int difficulty;
     protected int fire_resistance;
     protected int water_resistance;
-    protected int nature_resistance;
+    protected int earth_resistance;
     protected int light_resistance;
     protected int dark_resistance;
 
-    public EntityStat(int health, int defense, int dodge, int attack_damage, int level, int difficulty, int fire_resistance, int water_resistance, int nature_resistance, int light_resistance, int dark_resistance) {
+    public EntityStat(int health, int defense, int dodge, int attack_damage, int level, int difficulty, int fire_resistance, int water_resistance, int earth_resistance, int light_resistance, int dark_resistance) {
         this.health = health;
         this.defense = defense;
         this.dodge = dodge;
@@ -25,7 +25,7 @@ public class EntityStat {
         this.difficulty = difficulty;
         this.fire_resistance = fire_resistance;
         this.water_resistance = water_resistance;
-        this.nature_resistance = nature_resistance;
+        this.earth_resistance = earth_resistance;
         this.light_resistance = light_resistance;
         this.dark_resistance = dark_resistance;
     }
@@ -58,7 +58,7 @@ public class EntityStat {
 
     public int getWaterResistance() {return water_resistance;}
 
-    public int getNatureResistance() {return nature_resistance;}
+    public int getEarthResistance() {return earth_resistance;}
 
     public int getLightResistance() {return light_resistance;}
 

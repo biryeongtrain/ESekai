@@ -3,12 +3,8 @@ package net.biryeongtrain06.stat_system.stat;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.biryeongtrain06.stat_system.component.EntityStatComponentInterface;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 
 import static net.biryeongtrain06.stat_system.stat.PlayerStat.*;
 
@@ -16,8 +12,8 @@ public class EntityStatSystem extends EntityStat implements EntityStatComponentI
 
     private final Entity entity;
 
-    public EntityStatSystem(int health, int defense, int dodge, int attack_damage, int level, int difficulty, int fire_resistance, int water_resistance, int nature_resistance, int light_resistance, int dark_resistance, HostileEntity entity) {
-        super(health, defense, dodge, attack_damage, level, difficulty, fire_resistance, water_resistance, nature_resistance, light_resistance, dark_resistance);
+    public EntityStatSystem(int health, int defense, int dodge, int attack_damage, int level, int difficulty, int fire_resistance, int water_resistance, int earth_resistance, int light_resistance, int dark_resistance, HostileEntity entity) {
+        super(health, defense, dodge, attack_damage, level, difficulty, fire_resistance, water_resistance, earth_resistance, light_resistance, dark_resistance);
         this.entity = entity;
     }
 
@@ -119,13 +115,13 @@ public class EntityStatSystem extends EntityStat implements EntityStatComponentI
     }
 
     @Override
-    public void addNatureResistance(int value) {
-        this.nature_resistance += value;
+    public void addEarthResistance(int value) {
+        this.earth_resistance += value;
     }
 
     @Override
-    public void setNatureResistance(int value) {
-        this.nature_resistance = value;
+    public void setEarthResistance(int value) {
+        this.earth_resistance = value;
     }
 
     @Override
@@ -158,7 +154,7 @@ public class EntityStatSystem extends EntityStat implements EntityStatComponentI
         this.difficulty = tag.getInt(MOB_DIFFICULTY_KEY);
         this.fire_resistance = tag.getInt(FIRE_RESISTANCE_KEY);
         this.water_resistance = tag.getInt(WATER_RESISTANCE_KEY);
-        this.nature_resistance = tag.getInt(NATURE_RESISTANCE_KEY);
+        this.earth_resistance = tag.getInt(EARTH_RESISTANCE_KEY);
         this.light_resistance = tag.getInt(LIGHT_RESISTANCE_KEY);
         this.dark_resistance = tag.getInt(DARK_RESISTANCE_KEY);
     }
@@ -173,7 +169,7 @@ public class EntityStatSystem extends EntityStat implements EntityStatComponentI
         tag.putInt(MOB_DIFFICULTY_KEY, this.difficulty);
         tag.putInt(FIRE_RESISTANCE_KEY, this.fire_resistance);
         tag.putInt(WATER_RESISTANCE_KEY, this.water_resistance);
-        tag.putInt(NATURE_RESISTANCE_KEY, this.nature_resistance);
+        tag.putInt(EARTH_RESISTANCE_KEY, this.earth_resistance);
         tag.putInt(LIGHT_RESISTANCE_KEY, this.light_resistance);
         tag.putInt(DARK_RESISTANCE_KEY, this.dark_resistance);
     }

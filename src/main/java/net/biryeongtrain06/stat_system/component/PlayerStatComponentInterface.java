@@ -93,11 +93,11 @@ public interface PlayerStatComponentInterface extends Component {
 
     void setWaterResistance(int value);
 
-    int getNatureResistance();
+    int getEarthResistance();
 
-    void addNatureResistance(int value);
+    void addEarthResistance(int value);
 
-    void setNatureResistance(int value);
+    void setEarthResistance(int value);
 
     int getLightResistance();
 
