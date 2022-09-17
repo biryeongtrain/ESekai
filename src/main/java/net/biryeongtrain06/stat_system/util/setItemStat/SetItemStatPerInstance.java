@@ -53,7 +53,11 @@ public class SetItemStatPerInstance {
             String s = statlist.get((int) (Math.random() * statlist.size()));
             list[i] = StatRegistry.decideStat(s);
         }
-        ItemRegister(item, level, rarity, list, element);
+        if (item.getItem() instanceof SwordItem) {
+            ItemRegister(item, level, rarity, list, element);
+        } else {
+            ItemRegister(item, level, rarity, list, Elements.Physical);
+        }
     }
 
     public static void RegisterItemStatPerInstance (ItemStack item, int level, int rarity) {
@@ -94,7 +98,9 @@ public class SetItemStatPerInstance {
                 item.addAttributeModifier(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(UUID.randomUUID(), "generic.attack_damage",  nbt.getCompound(i).getInt("value"), EntityAttributeModifier.Operation.ADDITION), EquipmentSlot.MAINHAND);
             }
         }
-        itemNBT.put(ITEM_ELEMENT_KEY, NbtString.of(element.guidName));
+        if (item.getItem() instanceof SwordItem) {
+            itemNBT.put(ITEM_ELEMENT_KEY, NbtString.of(element.guidName));
+        }
         itemNBT.put("stat", nbt);
         setLore(item, rarity);
     }

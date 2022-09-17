@@ -18,7 +18,8 @@ public class onPlayerDamageToEntity {
         if (!target.isAlive()) {
             return;
         }
-        //float defense =
+        String defenseKey = element.resistanceName;
+
         DamageSourceAdder damageSource = new DamageSourceAdder(dmgSource, source, element, damage);
 
 
