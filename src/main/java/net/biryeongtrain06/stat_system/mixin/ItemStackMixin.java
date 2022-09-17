@@ -7,6 +7,7 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
@@ -29,7 +30,7 @@ public abstract class ItemStackMixin {
     @Inject(method = "onCraft", at = @At(value = "HEAD"))
     public void onCraft(World world, PlayerEntity player, int amount, CallbackInfo ci) {
         ItemStack item = (ItemStack) (Object) this;
-        if (item.getItem() instanceof SwordItem) {
+        if (item.getItem() instanceof SwordItem || item.getItem() instanceof ArmorItem) {
             new registerOnItemCrafted(item, player, registerOnItemCrafted.setLevel(StatComponent.PLAYERSTAT.get(player).getLevel()) ,registerOnItemCrafted.setRarity(), registerOnItemCrafted.setElement());
         }
     }

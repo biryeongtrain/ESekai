@@ -9,6 +9,7 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.item.SwordItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -69,6 +70,7 @@ public class SetItemStatPerInstance {
             statlist.add(ITEM_LIGHT_RESISTANCE_KEY);
             statlist.add(ITEM_DEFENSE_KEY);
             statlist.add(ITEM_DODGE_KEY);
+
         }
         for (int i = 0; i < list.length; i++) {
             String s = statlist.get((int) (Math.random() * statlist.size()));

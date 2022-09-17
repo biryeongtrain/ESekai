@@ -18,7 +18,7 @@ public class onPlayerDamageToEntity {
         if (!target.isAlive()) {
             return;
         }
-
+        //float defense =
         DamageSourceAdder damageSource = new DamageSourceAdder(dmgSource, source, element, damage);
 
 
