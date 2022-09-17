@@ -108,7 +108,6 @@ public class SetItemStatPerInstance {
         NbtList lore = new NbtList();
         NbtCompound itemNBT = Item.getOrCreateSubNbt("display");
         NbtList stats = Item.getNbt().getList("stat", 10);
-        Elements element = Elements.valueOf(Item.getNbt().getString(ITEM_ELEMENT_KEY));
         if (itemNBT.contains("Lore")) {
             lore = itemNBT.getList("Lore", NbtElement.STRING_TYPE);
         }
@@ -117,6 +116,7 @@ public class SetItemStatPerInstance {
         }
         lore.add(NbtString.of(Text.Serializer.toJson(Text.empty())));
         if (Item.getItem() instanceof SwordItem) {
+            Elements element = Elements.valueOf(Item.getNbt().getString(ITEM_ELEMENT_KEY));
             lore.add(NbtString.of(Text.Serializer.toJson(Text.literal(element.getIconNameDMG().formatted(element.format)))));
         }
         itemNBT.put("Lore", lore);
