@@ -7,6 +7,7 @@ import net.biryeongtrain06.stat_system.util.setItemStat.statRegistry.StatRegistr
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.nbt.NbtCompound;
@@ -20,8 +21,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
-import static net.biryeongtrain06.stat_system.util.setItemStat.ItemStatKeys.ITEM_ELEMENT_KEY;
-import static net.biryeongtrain06.stat_system.util.setItemStat.ItemStatKeys.ITEM_ATTACK_DAMAGE_KEY;
+import static net.biryeongtrain06.stat_system.util.setItemStat.ItemStatKeys.*;
 
 
 public class SetItemStatPerInstance {
@@ -35,30 +35,48 @@ public class SetItemStatPerInstance {
      */
     public static void RegisterItemStatPerInstance (ItemStack item, int level, int rarity, Elements element) {
         StatRegistry[] list = new StatRegistry[rarity];
+        ArrayList<String> statlist = ItemStatKeys.getSTAT_LIST();
         if (item.getItem() instanceof SwordItem) {
-            ArrayList<String> statlist = ItemStatKeys.getSTAT_LIST();
             statlist.add(ITEM_ATTACK_DAMAGE_KEY);
-            for (int i = 0; i < list.length; i++) {
-                String s = statlist.get((int) (Math.random() * statlist.size()));
-                list[i] = StatRegistry.decideStat(s);
-            }
-            ItemRegister(item, level, rarity, list, element);
         }
+        else if (item.getItem() instanceof ArmorItem) {
+            statlist.add(ITEM_DARK_RESISTANCE_KEY);
+            statlist.add(ITEM_FIRE_RESISTANCE_KEY);
+            statlist.add(ITEM_WATER_RESISTANCE_KEY);
+            statlist.add(ITEM_EARTH_RESISTANCE_KEY);
+            statlist.add(ITEM_LIGHT_RESISTANCE_KEY);
+            statlist.add(ITEM_DEFENSE_KEY);
+            statlist.add(ITEM_DODGE_KEY);
+        }
+        for (int i = 0; i < list.length; i++) {
+            String s = statlist.get((int) (Math.random() * statlist.size()));
+            list[i] = StatRegistry.decideStat(s);
+        }
+        ItemRegister(item, level, rarity, list, element);
     }
 
     public static void RegisterItemStatPerInstance (ItemStack item, int level, int rarity) {
         StatRegistry[] list = new StatRegistry[rarity];
+        ArrayList<String> statlist = ItemStatKeys.getSTAT_LIST();
         if (item.getItem() instanceof SwordItem) {
-            ArrayList<String> statlist = ItemStatKeys.getSTAT_LIST();
             statlist.add(ITEM_ATTACK_DAMAGE_KEY);
-            for (int i = 0; i < list.length; i++) {
-                String s = statlist.get((int) (Math.random() * statlist.size()));
-                list[i] = StatRegistry.decideStat(s);
-            }
+        }
+        else if (item.getItem() instanceof ArmorItem) {
+            statlist.add(ITEM_DARK_RESISTANCE_KEY);
+            statlist.add(ITEM_FIRE_RESISTANCE_KEY);
+            statlist.add(ITEM_WATER_RESISTANCE_KEY);
+            statlist.add(ITEM_EARTH_RESISTANCE_KEY);
+            statlist.add(ITEM_LIGHT_RESISTANCE_KEY);
+            statlist.add(ITEM_DEFENSE_KEY);
+            statlist.add(ITEM_DODGE_KEY);
+        }
+        for (int i = 0; i < list.length; i++) {
+            String s = statlist.get((int) (Math.random() * statlist.size()));
+            list[i] = StatRegistry.decideStat(s);
             ItemRegister(item, level, rarity, list, Elements.Physical);
         }
     }
-// TODO - 공격 Attribute 붙으면 데미지 증가하나 체크해야함, Lore 도 잘붙는지 확인
+
     /**
      * NBT결정, 아이템에 병합하는 메소드입니다. 이후 setLore 메소드를 호출하면서 설명값을 부여합니다.
      * @param item 대상 아이템입니다.
@@ -90,7 +108,10 @@ public class SetItemStatPerInstance {
             lore.add(NbtString.of(Text.Serializer.toJson(Text.literal(stats.getCompound(i).getString("name") + " : " + stats.getCompound(i).getInt("value")).formatted(Formatting.AQUA))));
         }
         lore.add(NbtString.of(Text.Serializer.toJson(Text.empty())));
-        lore.add(NbtString.of(Text.Serializer.toJson(Text.literal(element.getIconNameDMG().formatted(element.format)))));
+        if (Item.getItem() instanceof SwordItem) {
+            lore.add(NbtString.of(Text.Serializer.toJson(Text.literal(element.getIconNameDMG().formatted(element.format)))));
+        }
         itemNBT.put("Lore", lore);
     }
+
 }

@@ -72,14 +72,16 @@ public class LivingEntityMixin {
     @Inject(method = "applyDamage", at = @At(value = "HEAD"), cancellable = true)
     public void setDamageSource(DamageSource source, float amount, CallbackInfo ci) {
         LivingEntity entity = (LivingEntity) (Object) this;
-        if (source.getAttacker() instanceof PlayerEntity && entity instanceof HostileEntity) {
-            PlayerEntity player = (PlayerEntity) source.getAttacker();
-            ItemStack item = player.getMainHandStack();
-            if (!item.getNbt().getString(ITEM_ELEMENT_KEY).equals("")) {
+        if (source instanceof DamageSourceAdder) {
+            if (source.getAttacker() instanceof PlayerEntity && entity instanceof HostileEntity) {
+                PlayerEntity player = (PlayerEntity) source.getAttacker();
+                ItemStack item = player.getMainHandStack();
+                if (!item.getNbt().getString(ITEM_ELEMENT_KEY).equals("")) {
 
-                Elements elements = Elements.valueOf(item.getNbt().getString(ITEM_ELEMENT_KEY));
-                applyDamageHook.hook(entity, player, source, amount, elements);
-                ci.cancel();
+                    Elements elements = Elements.valueOf(item.getNbt().getString(ITEM_ELEMENT_KEY));
+                    applyDamageHook.hook(entity, player, source, amount, elements);
+                    ci.cancel();
+                }
             }
         }
     }

@@ -17,6 +17,11 @@ public class ItemStatKeys {
     public static String ITEM_MAGIC_DAMAGE_KEY = "item_magic_damage";
     public static String ITEM_DEFENSE_KEY = "item_defense_damage";
     public static String ITEM_DODGE_KEY = "item_dodge_key";
+    public static String ITEM_FIRE_RESISTANCE_KEY = "item_fire_resistance";
+    public static String ITEM_WATER_RESISTANCE_KEY = "item_water_resistance";
+    public static String ITEM_EARTH_RESISTANCE_KEY = "item_earth_resistance";
+    public static String ITEM_LIGHT_RESISTANCE_KEY = "item_light_resistance";
+    public static String ITEM_DARK_RESISTANCE_KEY = "item_dark_resistance";
 
 
 
@@ -63,6 +68,21 @@ public class ItemStatKeys {
         }
         if (s.equals(ITEM_MAGIC_DAMAGE_KEY)) {
             return new MagicDamageRegistry();
+        }
+        if (s.equals(ITEM_LIGHT_RESISTANCE_KEY)) {
+            return new LightResistanceRegistry();
+        }
+        if (s.equals(ITEM_FIRE_RESISTANCE_KEY)) {
+            return new FireResistanceRegistry();
+        }
+        if(s.equals(ITEM_WATER_RESISTANCE_KEY)) {
+            return new WaterResistanceRegistry();
+        }
+        if (s.equals(ITEM_EARTH_RESISTANCE_KEY)) {
+            return new EarthResistanceRegistry();
+        }
+        if (s.equals(ITEM_DARK_RESISTANCE_KEY)) {
+            return new DarkResistanceRegistry();
         }
         return null;
     }
