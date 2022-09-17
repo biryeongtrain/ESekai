@@ -11,8 +11,8 @@ public class RegistryClass extends StatRegistry{
 
     public NbtCompound setNbt(int level, int rarity) {
 
-        float maxValue = this.statMaxValue * ((rarity + 1) * RARITY_MODIFIER) * (level * LEVEL_MODIFIER);
-        float minValue = this.statMinValue * ((rarity + 1) * RARITY_MODIFIER) * (level * LEVEL_MODIFIER);
+        float maxValue = statMaxValue * ((rarity + 1) * RARITY_MODIFIER) * (level * LEVEL_MODIFIER);
+        float minValue = statMinValue * ((rarity + 1) * RARITY_MODIFIER) * (level * LEVEL_MODIFIER);
         int value = MathHelper.ceil(Math.random() * maxValue + minValue);
         NbtCompound result = new NbtCompound();
         result.putString("name", key);

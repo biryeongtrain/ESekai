@@ -92,7 +92,7 @@ public class SetItemStatPerInstance {
     public static void ItemRegister(ItemStack item, int level, int rarity, StatRegistry[] list, Elements element) {
         NbtCompound itemNBT = item.getOrCreateNbt();
         NbtList nbt = new NbtList();
-        for (int i = 0; i < list.length; i++){
+        for (int i = 0; i < list.length; i++){ // TODO Error Occurs When Craft Armor
             nbt.add(list[i].setStat(level, rarity));
             if (list[i] instanceof AttackDamageRegistry) {
                 item.addAttributeModifier(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(UUID.randomUUID(), "generic.attack_damage",  nbt.getCompound(i).getInt("value"), EntityAttributeModifier.Operation.ADDITION), EquipmentSlot.MAINHAND);
