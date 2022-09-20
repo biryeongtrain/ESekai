@@ -9,7 +9,8 @@ public class RegistryClass extends StatRegistry{
     int statMaxValue = 0;
     String key = "key";
 
-    public NbtCompound setNbt(int level, int rarity) {
+    @Override
+    public NbtCompound setStat(int level, int rarity) {
 
         float maxValue = statMaxValue * ((rarity + 1) * RARITY_MODIFIER) * (level * LEVEL_MODIFIER);
         float minValue = statMinValue * ((rarity + 1) * RARITY_MODIFIER) * (level * LEVEL_MODIFIER);
