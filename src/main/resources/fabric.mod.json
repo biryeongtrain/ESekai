@@ -13,10 +13,10 @@
     "client": [
     ],
     "main": [
-      "net.biryeongtrain06.stat_system.MainStatSystem"
+      "net.biryeongtrain06.qf_stat_mod.MainStatSystem"
     ],
     "cardinal-components" : [
-      "net.biryeongtrain06.stat_system.component.StatComponent"
+      "net.biryeongtrain06.qf_stat_mod.component.StatComponent"
     ]
   },
   "custom" : {
