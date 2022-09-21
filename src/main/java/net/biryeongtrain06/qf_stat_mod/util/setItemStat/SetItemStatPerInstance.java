@@ -15,6 +15,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
@@ -112,7 +113,7 @@ public class SetItemStatPerInstance {
         }
         for (int i = 0; i < rarity; i ++) {
             Stats statEnum = Stats.getStats(stats.getCompound(i).getString("name"));
-            lore.add(NbtString.of(Text.Serializer.toJson(statEnum.displayName.copy().formatted(Formatting.RESET).formatted(statEnum.format).append(Text.literal(" : " + stats.getCompound(i).getInt("value")).formatted(Formatting.RESET).formatted(statEnum.format)))));
+            lore.add(NbtString.of(Text.Serializer.toJson(statEnum.displayName.copy().fillStyle(Style.EMPTY.withItalic(false)).formatted(statEnum.format).append(Text.literal(" : " + stats.getCompound(i).getInt("value")).formatted(Formatting.RESET).formatted(statEnum.format)))));
         }
         lore.add(NbtString.of(Text.Serializer.toJson(Text.empty())));
         if (Item.getItem() instanceof SwordItem) {

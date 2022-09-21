@@ -1,5 +1,6 @@
 package net.biryeongtrain06.qf_stat_mod.util;
 
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
@@ -49,7 +50,7 @@ public enum Elements {
     }
 
     public Text getTranslationName() {
-        return Text.literal(this.icon + " ").formatted(this.format).append(Text.translatable(this.translationKey)).formatted(this.format).append(Text.literal(" ")).append(Text.translatable(MOD_ID + ".damage"));
+        return Text.literal(this.icon + " ").fillStyle(Style.EMPTY.withItalic(false)).formatted(this.format).append(Text.translatable(this.translationKey)).formatted(this.format).append(Text.literal(" ")).append(Text.translatable(MOD_ID + ".damage"));
     }
 
     public boolean isPhysical() {
