@@ -1,6 +1,6 @@
 package net.biryeongtrain06.qf_stat_mod.item;
 
-import net.biryeongtrain06.qf_stat_mod.util.Elements;
+import net.biryeongtrain06.qf_stat_mod.util.enums.Elements;
 import net.biryeongtrain06.qf_stat_mod.util.setItemStat.SetItemStatPerInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;

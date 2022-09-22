@@ -2,7 +2,7 @@ package net.biryeongtrain06.qf_stat_mod.mixin;
 
 import net.biryeongtrain06.qf_stat_mod.component.StatComponent;
 import net.biryeongtrain06.qf_stat_mod.util.DamageSourceAdder;
-import net.biryeongtrain06.qf_stat_mod.util.Elements;
+import net.biryeongtrain06.qf_stat_mod.util.enums.Elements;
 import net.biryeongtrain06.qf_stat_mod.util.applyDamageHook;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;

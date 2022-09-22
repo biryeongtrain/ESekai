@@ -1,6 +1,6 @@
 package net.biryeongtrain06.qf_stat_mod.util.setItemStat.statRegistry;
 
-import net.biryeongtrain06.qf_stat_mod.util.Stats;
+import net.biryeongtrain06.qf_stat_mod.util.enums.Stats;
 
 public class LuckRegistry extends RegistryClass{
     public LuckRegistry() {

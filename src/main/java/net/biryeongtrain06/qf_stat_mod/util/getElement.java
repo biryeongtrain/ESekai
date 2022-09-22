@@ -1,5 +1,6 @@
 package net.biryeongtrain06.qf_stat_mod.util;
 
+import net.biryeongtrain06.qf_stat_mod.util.enums.Elements;
 import net.minecraft.entity.player.PlayerEntity;
 
 public class getElement {

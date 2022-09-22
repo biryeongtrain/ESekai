@@ -1,7 +1,7 @@
 package net.biryeongtrain06.qf_stat_mod.entity;
 
 import net.biryeongtrain06.qf_stat_mod.util.DamageSourceAdder;
-import net.biryeongtrain06.qf_stat_mod.util.Elements;
+import net.biryeongtrain06.qf_stat_mod.util.enums.Elements;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;

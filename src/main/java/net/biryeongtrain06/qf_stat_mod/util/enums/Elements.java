@@ -1,4 +1,4 @@
-package net.biryeongtrain06.qf_stat_mod.util;
+package net.biryeongtrain06.qf_stat_mod.util.enums;
 
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.MOD_ID;
-import static net.biryeongtrain06.qf_stat_mod.stat.PlayerStat.*;
 
 public enum Elements {
     Physical("물리", Formatting.GOLD, "Physical", "\u2726", Stats.Defense, "physical"),
