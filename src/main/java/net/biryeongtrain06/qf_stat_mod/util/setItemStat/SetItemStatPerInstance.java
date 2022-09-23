@@ -2,6 +2,7 @@ package net.biryeongtrain06.qf_stat_mod.util.setItemStat;
 
 import net.biryeongtrain06.qf_stat_mod.item.registerOnItemCrafted;
 import net.biryeongtrain06.qf_stat_mod.util.enums.Elements;
+import net.biryeongtrain06.qf_stat_mod.util.enums.Rarity;
 import net.biryeongtrain06.qf_stat_mod.util.enums.Stats;
 import net.biryeongtrain06.qf_stat_mod.util.setItemStat.statRegistry.AttackDamageRegistry;
 import net.biryeongtrain06.qf_stat_mod.util.setItemStat.statRegistry.StatRegistry;
@@ -103,7 +104,7 @@ public class SetItemStatPerInstance {
         }
         itemNBT.putInt("rarity", rarity);
         itemNBT.put("stat", nbt);
-        //setLore(item, rarity);
+        setLore(item, rarity);
     }
     public static void setLore(ItemStack Item, int rarity) {
         NbtList lore = new NbtList();
@@ -112,6 +113,7 @@ public class SetItemStatPerInstance {
         if (itemNBT.contains("Lore")) {
             lore = itemNBT.getList("Lore", NbtElement.STRING_TYPE);
         }
+        lore.add(NbtString.of(Text.Serializer.toJson(Rarity.getRarityEnum(rarity).getTranslationKey())));
         for (int i = 0; i < rarity; i ++) {
             Stats statEnum = Stats.getStats(stats.getCompound(i).getString("name"));
             lore.add(NbtString.of(Text.Serializer.toJson(statEnum.displayName.copy().fillStyle(Style.EMPTY.withItalic(false)).formatted(statEnum.format).append(Text.literal(" : " + stats.getCompound(i).getInt("value")).formatted(Formatting.RESET).formatted(statEnum.format)))));

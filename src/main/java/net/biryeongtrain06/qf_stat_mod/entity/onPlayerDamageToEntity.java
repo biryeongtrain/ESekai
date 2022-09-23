@@ -20,6 +20,7 @@ public class onPlayerDamageToEntity {
         String defenseKey = element.resistanceStat.key;
 
         DamageSourceAdder damageSource = new DamageSourceAdder(dmgSource, source, element, damage);
+        target.damage(damageSource, damageSource.realDamage);
 
 
         //TODO - 데미지 주는거랑 방어력에 따른 데미지 감소 / 회피 넣어아함
