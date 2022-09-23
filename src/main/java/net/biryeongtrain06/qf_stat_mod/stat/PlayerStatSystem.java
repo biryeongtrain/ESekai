@@ -2,10 +2,12 @@ package net.biryeongtrain06.qf_stat_mod.stat;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.biryeongtrain06.qf_stat_mod.component.PlayerStatComponentInterface;
+import net.biryeongtrain06.qf_stat_mod.util.enums.Stats;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.MathHelper;
 
 public class PlayerStatSystem extends PlayerStat implements PlayerStatComponentInterface, AutoSyncedComponent {
 
@@ -19,13 +21,13 @@ public class PlayerStatSystem extends PlayerStat implements PlayerStatComponentI
     private final int INT_DEFENSE_MODIFIER = 2;
     private final int LUCK_DODGE_MODIFIER = 2;
 
-    public PlayerStatSystem(int xp, int level,int statPoint, int strength, int dexterity, int intelligence, int luck, int health, int defense, int dodge, int mana, double magic_damage, double attack_damage, int fire_resistance, int water_resistance, int earth_resistance, int light_resistance, int dark_resistance, ServerPlayerEntity player) {
-        super(xp, level, strength, statPoint, dexterity, intelligence, luck, health, defense, dodge, mana, magic_damage, attack_damage, fire_resistance, water_resistance, earth_resistance, light_resistance, dark_resistance);
+    public PlayerStatSystem(int xp, int level,int statPoint, int strength, int dexterity, int intelligence, int luck, int health, int defense, int dodge, int mana, double magic_damage, double attack_damage, int fire_resistance, int water_resistance, int earth_resistance, int light_resistance, int dark_resistance, int reduce_physical_dmg,ServerPlayerEntity player) {
+        super(xp, level, strength, statPoint, dexterity, intelligence, luck, health, defense, dodge, mana, magic_damage, attack_damage, fire_resistance, water_resistance, earth_resistance, light_resistance, dark_resistance, reduce_physical_dmg);
         this.player = player;
     }
 
     public PlayerStatSystem(PlayerEntity player) {
-        super(0, 1, 5, 0, 0, 0, 0, 20, 0, 0, 10, 1, 1, 0, 0, 0, 0, 0);
+        super(0, 1, 5, 0, 0, 0, 0, 20, 0, 0, 10, 1, 1, 0, 0, 0, 0, 0, 0);
         this.player = player;
     }
 
@@ -234,6 +236,16 @@ public class PlayerStatSystem extends PlayerStat implements PlayerStatComponentI
         this.dark_resistance = value;
     }
 
+    @Override
+    public void addReducePhysicalDMG(int value) {
+        this.reduce_physical_dmg = MathHelper.clamp(this.reduce_physical_dmg + value, 0, 75);
+    }
+
+    @Override
+    public void setReducePhysicalDMG(int value) {
+        this.reduce_physical_dmg = MathHelper.clamp(value, 0, 75);
+    }
+
 
     @Override
     public void addXp(int xp) {
@@ -267,6 +279,7 @@ public class PlayerStatSystem extends PlayerStat implements PlayerStatComponentI
         this.earth_resistance = tag.getInt(EARTH_RESISTANCE_KEY);
         this.light_resistance = tag.getInt(LIGHT_RESISTANCE_KEY);
         this.dark_resistance = tag.getInt(DARK_RESISTANCE_KEY);
+        this.reduce_physical_dmg = tag.getInt(Stats.Reduce_Physical_DMG.key);
     }
 
     @Override
@@ -289,6 +302,7 @@ public class PlayerStatSystem extends PlayerStat implements PlayerStatComponentI
         tag.putInt(EARTH_RESISTANCE_KEY, this.earth_resistance);
         tag.putInt(LIGHT_RESISTANCE_KEY, this.light_resistance);
         tag.putInt(DARK_RESISTANCE_KEY, this.dark_resistance);
+        tag.putInt(Stats.Reduce_Physical_DMG.key, this.reduce_physical_dmg);
     }
 
     @Override

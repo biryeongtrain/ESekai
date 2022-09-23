@@ -39,8 +39,9 @@ public class PlayerStat {
     protected int intelligence;
     protected int luck;
     protected int statPoint;
+    protected int reduce_physical_dmg;
 
-    public PlayerStat(int xp, int level, int statPoint, int strength, int dexterity, int intelligence, int luck, int health, int defense, int dodge, int mana, double magic_damage, double attack_damage, int fire_resistance, int water_resistance, int earth_resistance, int light_resistance, int dark_resistance) {
+    public PlayerStat(int xp, int level, int statPoint, int strength, int dexterity, int intelligence, int luck, int health, int defense, int dodge, int mana, double magic_damage, double attack_damage, int fire_resistance, int water_resistance, int earth_resistance, int light_resistance, int dark_resistance, int reduce_physical_dmg) {
         this.xp = xp;
         this.level = level;
         this.statPoint = statPoint;
@@ -59,6 +60,7 @@ public class PlayerStat {
         this.earth_resistance = earth_resistance;
         this.light_resistance = light_resistance;
         this.dark_resistance = dark_resistance;
+        this.reduce_physical_dmg = reduce_physical_dmg;
     }
 
     public int getStatPoint() {return this.statPoint;}
@@ -99,4 +101,6 @@ public class PlayerStat {
     public int getLightResistance() {return light_resistance;}
 
     public int getDarkResistance() { return dark_resistance; }
+
+    public int getReducePhysicalDMG() {return reduce_physical_dmg;}
 }

@@ -61,4 +61,8 @@ public interface EntityStatComponentInterface extends Component {
         void addDarkResistance(int value);
 
         void setDarkResistance(int value);
+
+        int getReducePhysicalDMG();
+        int addReducePhysicalDMG(int value);
+        int setReducePhysicalDMG(int value);
 }

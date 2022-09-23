@@ -110,4 +110,8 @@ public interface PlayerStatComponentInterface extends Component {
     void addDarkResistance(int value);
 
     void setDarkResistance(int value);
+
+    int getReducePhysicalDMG();
+    void addReducePhysicalDMG(int value);
+    void setReducePhysicalDMG(int value);
 }
