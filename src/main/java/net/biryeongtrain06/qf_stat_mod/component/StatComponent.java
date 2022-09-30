@@ -8,7 +8,11 @@ import dev.onyxstudios.cca.api.v3.entity.RespawnCopyStrategy;
 import net.biryeongtrain06.qf_stat_mod.MainStatSystem;
 import net.biryeongtrain06.qf_stat_mod.stat.EntityStatSystem;
 import net.biryeongtrain06.qf_stat_mod.stat.PlayerStatSystem;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 
 public class StatComponent implements EntityComponentInitializer {
@@ -19,6 +23,6 @@ public class StatComponent implements EntityComponentInitializer {
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
         registry.registerForPlayers(PLAYERSTAT, PlayerStatSystem::new, RespawnCopyStrategy.ALWAYS_COPY);
-        registry.registerFor(HostileEntity.class, ENTITY_STAT, EntityStatSystem::new);
+        registry.registerFor(MobEntity.class, ENTITY_STAT, EntityStatSystem::new);
     }
 }

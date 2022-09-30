@@ -7,7 +7,9 @@ import net.biryeongtrain06.qf_stat_mod.util.PlayerUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -21,7 +23,7 @@ public class onMobSpawn {
         if (entity instanceof PlayerEntity) {
             return;
         }
-        if (!(entity instanceof HostileEntity)) {
+        if (!(entity instanceof MobEntity)) {
             return;
         }
         setUpNewMobOnSpawn(entity);
@@ -39,27 +41,22 @@ public class onMobSpawn {
         if (gameRules.getBoolean(gameRule.ENTITY_FOLLOWS_PLAYER_LEVEL_SCALING)) {
             if (nearestPlayer == null) {
                 StatComponent.ENTITY_STAT.get(entity).setLevel((int) Math.round(Math.random() * 5));
-                setName(entity);
-                entity.setCustomNameVisible(false);
             }
             else {
                 StatComponent.ENTITY_STAT.get(entity).setLevel(StatComponent.PLAYERSTAT.get(nearestPlayer).getLevel());
-                setName(entity);
-                entity.setCustomNameVisible(false);
             }
         }
         else {
             double distance = entity.world.getSpawnPos().getManhattanDistance(entity.getBlockPos());
             int level = MathHelper.clamp((int)distance / SCALING_DISTANCE, 1, MAX_LEVEL);
             StatComponent.ENTITY_STAT.get(entity).setLevel(level);
-            setName(entity);
-            entity.setCustomNameVisible(false);
         }
-
+        setName(entity);
+        entity.setCustomNameVisible(false);
     }
 
     private static void setName(Entity entity) {
-        MutableText name = Text.literal(StatComponent.ENTITY_STAT.get(entity).getLevel() + "레벨").formatted(Formatting.BOLD).append(entity.getDisplayName()).formatted(Formatting.AQUA);
+        MutableText name = Text.literal(StatComponent.ENTITY_STAT.get(entity).getLevel() + " 레벨").formatted(Formatting.BOLD).append(entity.getDisplayName()).formatted(Formatting.AQUA);
         entity.setCustomName(name);
     }
 }

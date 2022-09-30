@@ -2,23 +2,28 @@ package net.biryeongtrain06.qf_stat_mod.stat;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.biryeongtrain06.qf_stat_mod.component.EntityStatComponentInterface;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.mob.HostileEntity;
+import net.biryeongtrain06.qf_stat_mod.util.enums.Stats;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.math.MathHelper;
 
 import static net.biryeongtrain06.qf_stat_mod.stat.PlayerStat.*;
+import static net.biryeongtrain06.qf_stat_mod.util.MobAttributeModifiers.BASE_HEALTH_FLAT_KEY;
 
 public class EntityStatSystem extends EntityStat implements EntityStatComponentInterface, AutoSyncedComponent {
 
-    private final Entity entity;
+    private final MobEntity entity;
 
-    public EntityStatSystem(int health, int defense, int dodge, int attack_damage, int level, int difficulty, int fire_resistance, int water_resistance, int earth_resistance, int light_resistance, int dark_resistance, HostileEntity entity) {
-        super(health, defense, dodge, attack_damage, level, difficulty, fire_resistance, water_resistance, earth_resistance, light_resistance, dark_resistance);
+    public EntityStatSystem(int health, int defense, int dodge, int attack_damage, int level, int difficulty, int fire_resistance, int water_resistance, int earth_resistance, int light_resistance, int dark_resistance, int reduce_physical_dmg, MobEntity entity) {
+        super(health, defense, dodge, attack_damage, level, difficulty, fire_resistance, water_resistance, earth_resistance, light_resistance, dark_resistance, reduce_physical_dmg);
         this.entity = entity;
     }
 
-    public EntityStatSystem(Entity entity) {
-        super(20, 0, 0, 1, 1, 0, 0, 0, 0,0,0);
+    public EntityStatSystem(MobEntity entity) {
+        super(20, 0, 0, 1, 1, 0, 0, 0, 0,0,0, 0);
         this.entity = entity;
     }
 
@@ -30,7 +35,12 @@ public class EntityStatSystem extends EntityStat implements EntityStatComponentI
 
     @Override
     public void setHealth(int health) {
+        EntityAttributeInstance entityAttributeInstance = entity.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
         this.health = health;
+        if (entityAttributeInstance.tryRemoveModifier(BASE_HEALTH_FLAT_KEY)) {
+            // TODO Try Recalculate
+        }
+        entityAttributeInstance.addPersistentModifier(new EntityAttributeModifier(BASE_HEALTH_FLAT_KEY, "BASE_HEALTH_FLAT", health, EntityAttributeModifier.Operation.fromId(0)));
     }
 
     @Override
@@ -145,6 +155,16 @@ public class EntityStatSystem extends EntityStat implements EntityStatComponentI
     }
 
     @Override
+    public void addReducePhysicalDMG(int value) {
+        this.reduce_physical_dmg = MathHelper.clamp(this.reduce_physical_dmg + value, 0, 75);
+    }
+
+    @Override
+    public void setReducePhysicalDMG(int value) {
+        this.reduce_physical_dmg = MathHelper.clamp(value, 0, 75);
+    }
+
+    @Override
     public void readFromNbt(NbtCompound tag) {
         this.health = tag.getInt(HEALTH_KEY);
         this.defense = tag.getInt(DEFENSE_KEY);
@@ -157,6 +177,7 @@ public class EntityStatSystem extends EntityStat implements EntityStatComponentI
         this.earth_resistance = tag.getInt(EARTH_RESISTANCE_KEY);
         this.light_resistance = tag.getInt(LIGHT_RESISTANCE_KEY);
         this.dark_resistance = tag.getInt(DARK_RESISTANCE_KEY);
+        this.reduce_physical_dmg = tag.getInt(Stats.Reduce_Physical_DMG.key);
     }
 
     @Override
@@ -172,5 +193,6 @@ public class EntityStatSystem extends EntityStat implements EntityStatComponentI
         tag.putInt(EARTH_RESISTANCE_KEY, this.earth_resistance);
         tag.putInt(LIGHT_RESISTANCE_KEY, this.light_resistance);
         tag.putInt(DARK_RESISTANCE_KEY, this.dark_resistance);
+        tag.putInt(Stats.Reduce_Physical_DMG.key, this.reduce_physical_dmg);
     }
 }

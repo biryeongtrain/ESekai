@@ -1,5 +1,6 @@
 package net.biryeongtrain06.qf_stat_mod.entity;
 
+import net.biryeongtrain06.qf_stat_mod.component.StatComponent;
 import net.biryeongtrain06.qf_stat_mod.util.DamageSourceAdder;
 import net.biryeongtrain06.qf_stat_mod.util.enums.Elements;
 import net.minecraft.entity.Entity;
@@ -20,6 +21,7 @@ public class onPlayerDamageToEntity {
         String defenseKey = element.resistanceStat.key;
 
         DamageSourceAdder damageSource = new DamageSourceAdder(dmgSource, source, element, damage);
+
         target.damage(damageSource, damageSource.realDamage);
 
 
