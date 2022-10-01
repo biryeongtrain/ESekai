@@ -3,11 +3,16 @@ package net.biryeongtrain06.qf_stat_mod.stat;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.biryeongtrain06.qf_stat_mod.component.PlayerStatComponentInterface;
 import net.biryeongtrain06.qf_stat_mod.util.enums.Stats;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
+
+import static net.biryeongtrain06.qf_stat_mod.util.MobAttributeModifiers.BASE_HEALTH_FLAT_KEY;
 
 public class PlayerStatSystem extends PlayerStat implements PlayerStatComponentInterface, AutoSyncedComponent {
 
@@ -107,7 +112,7 @@ public class PlayerStatSystem extends PlayerStat implements PlayerStatComponentI
 
     @Override
     public void setMaxHealth(int health) {
-        this.health = health;
+
     }
 
     @Override

@@ -35,12 +35,14 @@ public class EntityStatSystem extends EntityStat implements EntityStatComponentI
 
     @Override
     public void setHealth(int health) {
-        EntityAttributeInstance entityAttributeInstance = entity.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
-        this.health = health;
-        if (entityAttributeInstance.tryRemoveModifier(BASE_HEALTH_FLAT_KEY)) {
-            // TODO Try Recalculate
+        if (this.health == health) {
+            this.health = health;
+            EntityAttributeInstance entityAttributeInstance = entity.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
+            if (entityAttributeInstance.tryRemoveModifier(BASE_HEALTH_FLAT_KEY)) {
+                entity.setHealth(this.health);
+            }
+            entityAttributeInstance.addPersistentModifier(new EntityAttributeModifier(BASE_HEALTH_FLAT_KEY, "BASE_HEALTH_FLAT", Math.min(this.health - 20, entity.defaultMaxHealth), EntityAttributeModifier.Operation.fromId(0)));
         }
-        entityAttributeInstance.addPersistentModifier(new EntityAttributeModifier(BASE_HEALTH_FLAT_KEY, "BASE_HEALTH_FLAT", health, EntityAttributeModifier.Operation.fromId(0)));
     }
 
     @Override

@@ -56,7 +56,7 @@ public class onMobSpawn {
     }
 
     private static void setName(Entity entity) {
-        MutableText name = Text.literal(StatComponent.ENTITY_STAT.get(entity).getLevel() + " 레벨").formatted(Formatting.BOLD).append(entity.getDisplayName()).formatted(Formatting.AQUA);
+        MutableText name = Text.literal(StatComponent.ENTITY_STAT.get(entity).getLevel() + " 레벨 ").formatted(Formatting.BOLD).append(entity.getDisplayName()).formatted(Formatting.AQUA);
         entity.setCustomName(name);
     }
 }

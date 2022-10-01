@@ -3,6 +3,7 @@ package net.biryeongtrain06.qf_stat_mod.Init;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.biryeongtrain06.qf_stat_mod.commands.setDefense;
+import net.biryeongtrain06.qf_stat_mod.commands.setHealth;
 import net.biryeongtrain06.qf_stat_mod.commands.setLevel;
 import net.biryeongtrain06.qf_stat_mod.sidebar.OpenDebugBar;
 import net.minecraft.command.CommandRegistryAccess;
@@ -31,6 +32,12 @@ public class InitCommand {
                                 .then(CommandManager.argument("value", IntegerArgumentType.integer())
                                         .executes(ctx -> setLevel.onExecuted(EntityArgumentType.getPlayer(ctx, "player"), IntegerArgumentType.getInteger(ctx, "value")))))
 
+        );
+        dispatcher.register(
+                literal("sethealth").requires(serverCommandSource -> serverCommandSource.hasPermissionLevel(2))
+                        .then(CommandManager.argument("player", EntityArgumentType.player())
+                                .then(CommandManager.argument("value", IntegerArgumentType.integer())
+                                        .executes(ctx -> setHealth.onExecuted(EntityArgumentType.getPlayer(ctx, "player"), IntegerArgumentType.getInteger(ctx, "value")))))
         );
     }
 }
