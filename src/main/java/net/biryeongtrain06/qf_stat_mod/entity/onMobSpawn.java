@@ -19,7 +19,7 @@ import net.minecraft.world.GameRules;
 
 
 public class onMobSpawn {
-    public static void onLoad(Entity entity, ServerWorld world) {
+    public static void onLoad(Entity entity) {
         if (entity instanceof PlayerEntity) {
             return;
         }
@@ -30,7 +30,7 @@ public class onMobSpawn {
     }
 
     public static void setUpNewMobOnSpawn(Entity entity) {
-        if (entity.world.isClient) {
+        if (entity.world.isClient()) {
             throw new RuntimeException("Why this running in Client Side?");
         }
         int MAX_LEVEL = ConfigHandler.maxLevel.getValue();

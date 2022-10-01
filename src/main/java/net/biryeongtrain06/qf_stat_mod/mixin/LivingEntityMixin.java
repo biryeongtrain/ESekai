@@ -94,8 +94,6 @@ public class LivingEntityMixin {
     @Inject(method = "onSpawnPacket", at = @At("TAIL"))
     public void onSpawnPacket(EntitySpawnS2CPacket packet, CallbackInfo ci) {
         LivingEntity entity = (LivingEntity) (Object) this;
-        if (entity instanceof MobEntity) {
-            onMobSpawn.onLoad(entity, (ServerWorld) entity.getWorld());
-        }
+            onMobSpawn.onLoad(entity);
     }
 }
