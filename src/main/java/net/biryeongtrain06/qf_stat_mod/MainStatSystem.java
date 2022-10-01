@@ -29,7 +29,7 @@ public class MainStatSystem implements ModInitializer {
 
         debugLogger.info("Hello! qf_Stat_Mod is Initializing!");
         gameRule.setupGameRule();
-        ServerEntityEvents.ENTITY_LOAD.register(onMobSpawn::onLoad);
+        //ServerEntityEvents.ENTITY_LOAD.register(onMobSpawn::onLoad);
         ConfigHandler.setup();
         RegisterStatusEffect.register();
 

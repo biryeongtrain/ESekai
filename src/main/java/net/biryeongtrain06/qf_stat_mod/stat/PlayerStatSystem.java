@@ -1,10 +1,9 @@
 package net.biryeongtrain06.qf_stat_mod.stat;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import net.biryeongtrain06.qf_stat_mod.component.PlayerStatComponentInterface;
+import net.biryeongtrain06.qf_stat_mod.component.PlayerBaseStatComponentInterface;
 import net.biryeongtrain06.qf_stat_mod.util.enums.Stats;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -12,9 +11,10 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 
-import static net.biryeongtrain06.qf_stat_mod.util.MobAttributeModifiers.BASE_HEALTH_FLAT_KEY;
+import static net.biryeongtrain06.qf_stat_mod.util.enums.Stats.*;
+import static net.minecraft.entity.attribute.EntityAttributes.GENERIC_MAX_HEALTH;
 
-public class PlayerStatSystem extends PlayerStat implements PlayerStatComponentInterface, AutoSyncedComponent {
+public class PlayerStatSystem extends PlayerStat implements PlayerBaseStatComponentInterface, AutoSyncedComponent {
 
     private final PlayerEntity player;
     private final int POINT_PER_LEVEL = 5;
@@ -112,7 +112,12 @@ public class PlayerStatSystem extends PlayerStat implements PlayerStatComponentI
 
     @Override
     public void setMaxHealth(int health) {
-
+        this.health = health;
+        EntityAttributeInstance entityAttributeInstance = player.getAttributeInstance(GENERIC_MAX_HEALTH);
+        if (player.getHealth() == health) {
+            player.setHealth(health);
+        }
+        entityAttributeInstance.setBaseValue(health);
     }
 
     @Override
@@ -266,48 +271,48 @@ public class PlayerStatSystem extends PlayerStat implements PlayerStatComponentI
 
     @Override
     public void readFromNbt(NbtCompound tag) {
-        this.health = tag.getInt(HEALTH_KEY);
-        this.defense = tag.getInt(DEFENSE_KEY);
-        this.dodge = tag.getInt(DODGE_KEY);
-        this.mana = tag.getInt(MANA_KEY);
-        this.magic_damage = tag.getDouble(MAGIC_DAMAGE_KEY);
-        this.attack_damage = tag.getDouble(ATTACK_DAMAGE_KEY);
+        this.health = tag.getInt(Health.key);
+        this.defense = tag.getInt(Defense.key);
+        this.dodge = tag.getInt(Dodge.key);
+        this.mana = tag.getInt(Mana.key);
+        this.magic_damage = tag.getDouble(Magic_Damage.key);
+        this.attack_damage = tag.getDouble(Attack_Damage.key);
         this.xp = tag.getInt(XP_KEY);
         this.level = tag.getInt(LEVEL_KEY);
-        this.strength = tag.getInt(STRENGTH_KEY);
-        this.dexterity = tag.getInt(Dexterity_KEY);
-        this.intelligence = tag.getInt(INTELLIGENCE_KEY);
-        this.luck = tag.getInt(LUCK_KEY);
+        this.strength = tag.getInt(Stats.Strength.key);
+        this.dexterity = tag.getInt(Stats.Dexterity.key);
+        this.intelligence = tag.getInt(Stats.Intelligence.key);
+        this.luck = tag.getInt(Stats.Luck.key);
         this.statPoint = tag.getInt(STAT_POINT_KEY);
-        this.fire_resistance = tag.getInt(FIRE_RESISTANCE_KEY);
-        this.water_resistance = tag.getInt(WATER_RESISTANCE_KEY);
-        this.earth_resistance = tag.getInt(EARTH_RESISTANCE_KEY);
-        this.light_resistance = tag.getInt(LIGHT_RESISTANCE_KEY);
-        this.dark_resistance = tag.getInt(DARK_RESISTANCE_KEY);
+        this.fire_resistance = tag.getInt(Stats.Fire_Resistance.key);
+        this.water_resistance = tag.getInt(Stats.Water_Resistance.key);
+        this.earth_resistance = tag.getInt(Stats.Earth_Resistance.key);
+        this.light_resistance = tag.getInt(Stats.Light_Resistance.key);
+        this.dark_resistance = tag.getInt(Stats.Dark_Resistance.key);
         this.reduce_physical_dmg = tag.getInt(Stats.Reduce_Physical_DMG.key);
     }
 
     @Override
     public void writeToNbt(NbtCompound tag) {
-        tag.putInt(HEALTH_KEY, this.health);
-        tag.putInt(DEFENSE_KEY, this.defense);
-        tag.putInt(DODGE_KEY, this.dodge);
-        tag.putInt(MANA_KEY, this.mana);
-        tag.putDouble(MAGIC_DAMAGE_KEY, this.magic_damage);
-        tag.putDouble(ATTACK_DAMAGE_KEY, this.attack_damage);
+        tag.putInt(Health.key, this.health);
+        tag.putInt(Defense.key, this.defense);
+        tag.putInt(Dodge.key, this.dodge);
+        tag.putInt(Mana.key, this.mana);
+        tag.putDouble(Magic_Damage.key ,this.magic_damage);
+        tag.putDouble(Attack_Damage.key, this.attack_damage);
         tag.putInt(XP_KEY, this.xp);
         tag.putInt(LEVEL_KEY, this.level);
-        tag.putInt(STRENGTH_KEY, this.strength);
-        tag.putInt(DEFENSE_KEY, this.defense);
-        tag.putInt(INTELLIGENCE_KEY, this.intelligence);
-        tag.putInt(LUCK_KEY, this.luck);
+        tag.putInt(Strength.key, this.strength);
+        tag.putInt(Dexterity.key, this.dexterity);
+        tag.putInt(Intelligence.key, this.intelligence);
+        tag.putInt(Luck.key, this.luck);
         tag.putInt(STAT_POINT_KEY, this.statPoint);
-        tag.putInt(FIRE_RESISTANCE_KEY, this.fire_resistance);
-        tag.putInt(WATER_RESISTANCE_KEY, this.fire_resistance);
-        tag.putInt(EARTH_RESISTANCE_KEY, this.earth_resistance);
-        tag.putInt(LIGHT_RESISTANCE_KEY, this.light_resistance);
-        tag.putInt(DARK_RESISTANCE_KEY, this.dark_resistance);
-        tag.putInt(Stats.Reduce_Physical_DMG.key, this.reduce_physical_dmg);
+        tag.putInt(Fire_Resistance.key, this.fire_resistance);
+        tag.putInt(Water_Resistance.key, this.fire_resistance);
+        tag.putInt(Earth_Resistance.key, this.earth_resistance);
+        tag.putInt(Light_Resistance.key, this.light_resistance);
+        tag.putInt(Dark_Resistance.key, this.dark_resistance);
+        tag.putInt(Reduce_Physical_DMG.key, this.reduce_physical_dmg);
     }
 
     @Override

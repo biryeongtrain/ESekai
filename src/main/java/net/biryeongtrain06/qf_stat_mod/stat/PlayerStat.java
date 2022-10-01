@@ -2,24 +2,10 @@ package net.biryeongtrain06.qf_stat_mod.stat;
 
 public class PlayerStat {
 
-    public static final String HEALTH_KEY = "health";
-    public static final String DEFENSE_KEY = "defense";
-    public static final String DODGE_KEY = "dodge";
-    public static final String MANA_KEY = "mana";
-    public static final String MAGIC_DAMAGE_KEY = "magic_damage";
-    public static final String ATTACK_DAMAGE_KEY = "attack_damage";
+
     public static final String XP_KEY = "xp";
     public static final String LEVEL_KEY = "level";
-    public static final String STRENGTH_KEY = "strength";
-    public static final String Dexterity_KEY = "dexterity";
-    public static final String INTELLIGENCE_KEY = "intelligence";
-    public static final String LUCK_KEY = "luck";
     public static final String STAT_POINT_KEY = "stat_point";
-    public static final String FIRE_RESISTANCE_KEY = "fire_resistance";
-    public static final String WATER_RESISTANCE_KEY = "water_resistance";
-    public static final String EARTH_RESISTANCE_KEY = "earth_resistance";
-    public static final String LIGHT_RESISTANCE_KEY = "light_resistance";
-    public static final String DARK_RESISTANCE_KEY = "dark_resistance";
 
     protected int health;
     protected int fire_resistance;

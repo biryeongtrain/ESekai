@@ -1,6 +1,7 @@
 package net.biryeongtrain06.qf_stat_mod.mixin;
 
 import net.biryeongtrain06.qf_stat_mod.component.StatComponent;
+import net.biryeongtrain06.qf_stat_mod.entity.onMobSpawn;
 import net.biryeongtrain06.qf_stat_mod.util.DamageSourceAdder;
 import net.biryeongtrain06.qf_stat_mod.util.enums.Elements;
 import net.biryeongtrain06.qf_stat_mod.util.applyDamageHook;
@@ -10,10 +11,14 @@ import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.WardenEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.packet.s2c.play.EntityS2CPacket;
+import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -83,6 +88,14 @@ public class LivingEntityMixin {
                     ci.cancel();
                 }
             }
+        }
+    }
+
+    @Inject(method = "onSpawnPacket", at = @At("TAIL"))
+    public void onSpawnPacket(EntitySpawnS2CPacket packet, CallbackInfo ci) {
+        LivingEntity entity = (LivingEntity) (Object) this;
+        if (entity instanceof MobEntity) {
+            onMobSpawn.onLoad(entity, (ServerWorld) entity.getWorld());
         }
     }
 }

@@ -2,7 +2,7 @@ package net.biryeongtrain06.qf_stat_mod.component;
 
 import dev.onyxstudios.cca.api.v3.component.Component;
 
-public interface PlayerStatComponentInterface extends Component {
+public interface PlayerBaseStatComponentInterface extends Component {
 
     int getStatPoint();
 

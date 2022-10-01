@@ -3,6 +3,7 @@ package net.biryeongtrain06.qf_stat_mod.stat;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.biryeongtrain06.qf_stat_mod.component.EntityStatComponentInterface;
 import net.biryeongtrain06.qf_stat_mod.util.enums.Stats;
+import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -37,17 +38,24 @@ public class EntityStatSystem extends EntityStat implements EntityStatComponentI
     public void setHealth(int health) {
         if (this.health == health) {
             this.health = health;
-            EntityAttributeInstance entityAttributeInstance = entity.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
-            if (entityAttributeInstance.tryRemoveModifier(BASE_HEALTH_FLAT_KEY)) {
+             EntityAttributeInstance entityAttributeInstance = entity.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
+            /*if (entityAttributeInstance.tryRemoveModifier(BASE_HEALTH_FLAT_KEY)) {
                 entity.setHealth(this.health);
             }
             entityAttributeInstance.addPersistentModifier(new EntityAttributeModifier(BASE_HEALTH_FLAT_KEY, "BASE_HEALTH_FLAT", Math.min(this.health - 20, entity.defaultMaxHealth), EntityAttributeModifier.Operation.fromId(0)));
+            */
+            if (entity.getHealth() == health) {
+                entity.setHealth(health);
+            }
+            entityAttributeInstance.setBaseValue(health);
         }
     }
 
     @Override
     public void addHealth(int health) {
         this.health += health;
+        EntityAttributeInstance entityAttributeInstance = entity.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
+        entityAttributeInstance.setBaseValue(health);
     }
 
     @Override
@@ -168,33 +176,33 @@ public class EntityStatSystem extends EntityStat implements EntityStatComponentI
 
     @Override
     public void readFromNbt(NbtCompound tag) {
-        this.health = tag.getInt(HEALTH_KEY);
-        this.defense = tag.getInt(DEFENSE_KEY);
-        this.dodge = tag.getInt(DODGE_KEY);
-        this.attack_damage = tag.getFloat(ATTACK_DAMAGE_KEY);
+        this.health = tag.getInt(Stats.Health.key);
+        this.defense = tag.getInt(Stats.Defense.key);
+        this.dodge = tag.getInt(Stats.Dodge.key);
+        this.attack_damage = tag.getFloat(Stats.Attack_Damage.key);
         this.level = tag.getInt(LEVEL_KEY);
         this.difficulty = tag.getInt(MOB_DIFFICULTY_KEY);
-        this.fire_resistance = tag.getInt(FIRE_RESISTANCE_KEY);
-        this.water_resistance = tag.getInt(WATER_RESISTANCE_KEY);
-        this.earth_resistance = tag.getInt(EARTH_RESISTANCE_KEY);
-        this.light_resistance = tag.getInt(LIGHT_RESISTANCE_KEY);
-        this.dark_resistance = tag.getInt(DARK_RESISTANCE_KEY);
+        this.fire_resistance = tag.getInt(Stats.Fire_Resistance.key);
+        this.water_resistance = tag.getInt(Stats.Water_Resistance.key);
+        this.earth_resistance = tag.getInt(Stats.Earth_Resistance.key);
+        this.light_resistance = tag.getInt(Stats.Light_Resistance.key);
+        this.dark_resistance = tag.getInt(Stats.Dark_Resistance.key);
         this.reduce_physical_dmg = tag.getInt(Stats.Reduce_Physical_DMG.key);
     }
 
     @Override
     public void writeToNbt(NbtCompound tag) {
-        tag.putInt(HEALTH_KEY, this.health);
-        tag.putInt(DEFENSE_KEY, this.defense);
-        tag.putInt(DODGE_KEY, this.dodge);
-        tag.putFloat(ATTACK_DAMAGE_KEY, this.attack_damage);
+        tag.putInt(XP_KEY, this.health);
+        tag.putInt(Stats.Defense.key, this.defense);
+        tag.putInt(Stats.Dodge.key, this.dodge);
+        tag.putFloat(Stats.Attack_Damage.key, this.attack_damage);
         tag.putInt(LEVEL_KEY, this.level);
         tag.putInt(MOB_DIFFICULTY_KEY, this.difficulty);
-        tag.putInt(FIRE_RESISTANCE_KEY, this.fire_resistance);
-        tag.putInt(WATER_RESISTANCE_KEY, this.water_resistance);
-        tag.putInt(EARTH_RESISTANCE_KEY, this.earth_resistance);
-        tag.putInt(LIGHT_RESISTANCE_KEY, this.light_resistance);
-        tag.putInt(DARK_RESISTANCE_KEY, this.dark_resistance);
+        tag.putInt(Stats.Fire_Resistance.key, this.fire_resistance);
+        tag.putInt(Stats.Water_Resistance.key, this.water_resistance);
+        tag.putInt(Stats.Earth_Resistance.key, this.earth_resistance);
+        tag.putInt(Stats.Light_Resistance.key, this.light_resistance);
+        tag.putInt(Stats.Dark_Resistance.key, this.dark_resistance);
         tag.putInt(Stats.Reduce_Physical_DMG.key, this.reduce_physical_dmg);
     }
 }
