@@ -14,9 +14,6 @@
     ],
     "main": [
       "net.biryeongtrain06.qf_stat_mod.MainStatSystem"
-    ],
-    "cardinal-components" : [
-      "net.biryeongtrain06.qf_stat_mod.component.StatComponent"
     ]
   },
   "custom" : {
@@ -31,6 +28,6 @@
   "depends": {
     "fabricloader": ">=0.14.8",
     "fabric": "*",
-    "minecraft": "1.19"
+    "minecraft": "1.19.2"
   }
 }

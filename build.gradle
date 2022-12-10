@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '0.12-SNAPSHOT'
+    id 'fabric-loom' version '1.0-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -23,6 +23,7 @@ repositories {
 }
 
 dependencies {
+
     // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
@@ -35,7 +36,7 @@ dependencies {
 
     modImplementation include("eu.pb4:sgui:1.1.5+1.19.1")
     modImplementation include("eu.pb4:sidebar-api:0.1.1+1.19")
-    modImplementation include("eu.pb4:player-data-api:${project.player_data_api_version}")
+    modImplementation include("eu.pb4:player-data-api:0.2.2+1.19.2")
 
 }
 
