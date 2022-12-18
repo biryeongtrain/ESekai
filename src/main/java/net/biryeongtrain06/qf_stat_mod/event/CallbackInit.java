@@ -5,16 +5,14 @@ import net.biryeongtrain06.qf_stat_mod.command.InitCommand;
 import net.biryeongtrain06.qf_stat_mod.player.IServerPlayerEntity;
 import net.biryeongtrain06.qf_stat_mod.player.PlayerStat;
 import net.biryeongtrain06.qf_stat_mod.sidebar.PlayerStatBar;
+import net.biryeongtrain06.qf_stat_mod.utils.DamageUtils;
+import net.biryeongtrain06.qf_stat_mod.utils.DataUtils;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import org.apache.logging.log4j.core.jmx.Server;
-import utils.DamageUtils;
-import utils.DataUtils;
-
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.DATA_STORAGE;
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.debugLogger;
 

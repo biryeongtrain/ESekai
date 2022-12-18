@@ -6,6 +6,7 @@ import net.biryeongtrain06.qf_stat_mod.player.PlayerStat;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,5 +25,11 @@ public class LivingEntityMixin {
             stat.addCurrentHealth(amount);
             entity.setHealth(stat.getCurrentHealth() / stat.getMaxHealth() * 20);
         }
+    }
+
+    @Inject(method = "onSpawnPacket", at = @At("TAIL"))
+    public void onLoadInit(EntitySpawnS2CPacket packet, CallbackInfo ci) {
+        LivingEntity entity = (LivingEntity) (Object) this;
+
     }
 }

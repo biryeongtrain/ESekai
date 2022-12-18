@@ -6,7 +6,6 @@ public class PlayerStat {
     private int level = 1;
     private int xp = 0;
     private int maxHealth = 100;
-
     private float currentHealth = 100;
 
     public void addXP(int i) {
