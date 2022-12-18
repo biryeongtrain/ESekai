@@ -7,7 +7,8 @@
     "ServerPlayerEntityMixin",
     "PlayerManagerMixin",
     "StyleAccessor",
-    "PlayerEntityMixin"
+    "PlayerEntityMixin",
+    "LivingEntityMixin"
   ],
   "server": [
   ],

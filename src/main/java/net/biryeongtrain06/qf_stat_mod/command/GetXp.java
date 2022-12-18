@@ -8,7 +8,7 @@ import net.minecraft.text.Text;
 
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.DATA_STORAGE;
 
-public class getXP {
+public class GetXp {
     public static int getXP(CommandContext<ServerCommandSource> objectCommandContext) {
         ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();
         PlayerStat playerStat = DATA_STORAGE.load(player);

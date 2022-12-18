@@ -9,7 +9,7 @@ import utils.DataUtils;
 
 import java.util.HashMap;
 
-public class getModifier {
+public class GetModifier {
     public static int getModifier(CommandContext<ServerCommandSource> objectCommandContext) {
         ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();
         HashMap<Identifier, Integer> hashMap = DataUtils.getXpModifier();

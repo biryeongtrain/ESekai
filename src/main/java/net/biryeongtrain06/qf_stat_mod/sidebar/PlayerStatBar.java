@@ -19,6 +19,7 @@ public class PlayerStatBar {
         sidebar.setUpdateRate(1);
 
         sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Player Class : " + PlayerDataApi.getCustomDataFor(p, DATA_STORAGE).getPlayer_class())));
+        sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("HP : " + PlayerDataApi.getCustomDataFor(p, DATA_STORAGE).getCurrentHealth() + " / " + PlayerDataApi.getCustomDataFor(p, DATA_STORAGE).getMaxHealth())));
         sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Level : " + PlayerDataApi.getCustomDataFor(p, DATA_STORAGE).getLevel())));
         sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("XP : " + PlayerDataApi.getCustomDataFor(p, DATA_STORAGE).getXP())));
 

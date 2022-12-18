@@ -11,11 +11,11 @@ public class InitCommand {
     public static void initCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment env) {
         dispatcher.register(
                 literal("getXp")
-                        .executes(getXP::getXP)
+                        .executes(GetXp::getXP)
         );
         dispatcher.register(
                 literal("getModifier")
-                        .executes(getModifier::getModifier)
+                        .executes(GetModifier::getModifier)
         );
     }
 }
