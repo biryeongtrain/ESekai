@@ -13,5 +13,9 @@ public class InitCommand {
                 literal("getXp")
                         .executes(getXP::getXP)
         );
+        dispatcher.register(
+                literal("getModifier")
+                        .executes(getModifier::getModifier)
+        );
     }
 }
