@@ -16,6 +16,7 @@ import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.resource.ResourceType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.system.CallbackI;
 
 
 public class MainStatSystem implements ModInitializer {
@@ -27,10 +28,7 @@ public class MainStatSystem implements ModInitializer {
 
     @Override
     public void onInitialize() {
-
-        CommandRegistrationCallback.EVENT.register(InitCommand::InitCommand);
-        PlayerJoinCallback.EVENT.register(CallbackInit::playerJoinCallback);
-        PlayerKilledOtherCallback.EVENT.register(CallbackInit::playerKilledCallback);
+        CallbackInit.init();
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new MobXpDataLoader());
     }
 }

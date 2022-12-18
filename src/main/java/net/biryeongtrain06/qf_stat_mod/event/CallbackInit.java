@@ -1,9 +1,11 @@
 package net.biryeongtrain06.qf_stat_mod.event;
 
 import eu.pb4.playerdata.api.PlayerDataApi;
+import net.biryeongtrain06.qf_stat_mod.command.InitCommand;
 import net.biryeongtrain06.qf_stat_mod.player.IServerPlayerEntity;
 import net.biryeongtrain06.qf_stat_mod.player.PlayerStat;
 import net.biryeongtrain06.qf_stat_mod.sidebar.PlayerStatBar;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -29,5 +31,11 @@ public class CallbackInit {
         stat.addXP(1);
         PlayerDataApi.setCustomDataFor(killPlayer, DATA_STORAGE, stat);
         debugLogger.debug("Killed!");
+    }
+
+    public static void init() {
+        CommandRegistrationCallback.EVENT.register(InitCommand::initCommand);
+        PlayerJoinCallback.EVENT.register(CallbackInit::playerJoinCallback);
+        PlayerKilledOtherCallback.EVENT.register(CallbackInit::playerKilledCallback);
     }
 }
