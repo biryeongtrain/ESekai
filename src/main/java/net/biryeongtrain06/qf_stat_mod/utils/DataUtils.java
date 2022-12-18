@@ -1,4 +1,4 @@
-package utils;
+package net.biryeongtrain06.qf_stat_mod.utils;
 
 import com.google.gson.JsonObject;
 import it.unimi.dsi.fastutil.Hash;

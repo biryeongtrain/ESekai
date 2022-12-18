@@ -1,4 +1,4 @@
-package utils;
+package net.biryeongtrain06.qf_stat_mod.utils;
 
 import eu.pb4.playerdata.api.PlayerDataApi;
 import net.biryeongtrain06.qf_stat_mod.player.PlayerStat;
