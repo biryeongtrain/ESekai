@@ -17,5 +17,9 @@ public class InitCommand {
                 literal("getModifier")
                         .executes(GetModifier::getModifier)
         );
+        dispatcher.register(
+                literal("toggleSystemMessage")
+                        .executes(DisplaySystemMessage::toggleSystemMessage)
+        );
     }
 }

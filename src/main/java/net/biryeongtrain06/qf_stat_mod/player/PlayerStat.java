@@ -1,6 +1,8 @@
 package net.biryeongtrain06.qf_stat_mod.player;
 
 
+import org.jetbrains.annotations.NotNull;
+
 public class PlayerStat {
     private String player_class = "none";
     private int level = 1;
@@ -8,6 +10,7 @@ public class PlayerStat {
     private int maxHealth = 100;
     private float currentHealth = 100;
 
+    @NotNull
     public void addXP(int i) {
         this.xp += i;
     }

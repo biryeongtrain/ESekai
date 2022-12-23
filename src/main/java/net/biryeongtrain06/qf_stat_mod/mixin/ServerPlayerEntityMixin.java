@@ -11,15 +11,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin implements IServerPlayerEntity {
     private boolean isPlayedBefore = false;
+    private boolean isDisplaySystemMessage = false;
 
     @Inject(at = @At("RETURN"), method = ("writeCustomDataToNbt"))
     public void writeCustomDataToNbt(NbtCompound nbt, CallbackInfo ci) {
         nbt.putBoolean("isPlayedBefore", this.isPlayedBefore);
+        nbt.putBoolean("isDisplaySystemMessage", this.isDisplaySystemMessage);
     }
 
     @Inject(at = @At("RETURN"), method = ("readCustomDataFromNbt"))
     public void readCustomDataToNbt(NbtCompound nbt, CallbackInfo ci){
         this.isPlayedBefore = nbt.getBoolean("isPlayedBefore");
+        this.isDisplaySystemMessage = nbt.getBoolean("isDisplaySystemMessage");
     }
 
     @Override
@@ -32,4 +35,13 @@ public abstract class ServerPlayerEntityMixin implements IServerPlayerEntity {
         this.isPlayedBefore = val;
     }
 
+    @Override
+    public boolean isDisplaySystemMessage() {
+        return this.isDisplaySystemMessage;
+    }
+
+    @Override
+    public void setDisplaySystemMessage(boolean val) {
+        this.isDisplaySystemMessage = val;
+    }
 }

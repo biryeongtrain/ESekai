@@ -13,6 +13,10 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
+import org.jetbrains.annotations.NotNull;
+import org.lwjgl.system.NonnullDefault;
+
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.DATA_STORAGE;
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.debugLogger;
 
@@ -24,20 +28,23 @@ public class CallbackInit {
             var PlayerStat = new PlayerStat();
             PlayerDataApi.setCustomDataFor(player, DATA_STORAGE, PlayerStat);
             PlayerStatBar.Open(player);
+            iPlayer.setPlayedBefore(true);
         }
     }
 
     public static void playerKilledCallback(PlayerEntity killer, LivingEntity victim) {
         ServerPlayerEntity killPlayer = (ServerPlayerEntity) killer;
         PlayerStat stat = PlayerDataApi.getCustomDataFor(killPlayer, DATA_STORAGE);
-        stat.addXP(DataUtils.findXpModifier(victim));
+        int xp = DataUtils.findXpModifier(victim);
+        stat.addXP(xp);
+        if (((IServerPlayerEntity) killPlayer).isDisplaySystemMessage()) {
+            killPlayer.sendMessage(Text.translatable("system_message.killed_mob", victim.getDisplayName(), xp).formatted(Formatting.GREEN));
+        }
         PlayerDataApi.setCustomDataFor(killPlayer, DATA_STORAGE, stat);
-        debugLogger.debug("Killed!");
     }
 
     public static void EntityHitPlayerCallback(PlayerEntity player, LivingEntity entity, DamageSource source, float amount) {
         ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
-        serverPlayerEntity.sendMessage(Text.literal("Hooked!"));
         DamageUtils.PlayerDamageCalculate(player, source, amount);
     }
 

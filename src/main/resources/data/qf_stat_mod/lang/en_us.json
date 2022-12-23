@@ -1,0 +1,5 @@
+{
+  "qf_stat_mod.system_message.enabled" : "System Message enabled.",
+  "qf_stat_mod.system_message.disabled" : "System Message disabled",
+  "qf_stat_mod.system_message.killed" : "Killed %s. Gained %s XP."
+}

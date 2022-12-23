@@ -1,13 +1,12 @@
 package net.biryeongtrain06.qf_stat_mod.utils;
 
 import com.google.gson.JsonObject;
-import it.unimi.dsi.fastutil.Hash;
-import net.minecraft.entity.Entity;
+
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-import net.minecraft.entity.mob.AbstractPiglinEntity;
+
 import net.minecraft.entity.mob.Angerable;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.PathAwareEntity;

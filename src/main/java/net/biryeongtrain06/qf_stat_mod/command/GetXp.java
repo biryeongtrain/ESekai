@@ -10,10 +10,13 @@ import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.DATA_STORAGE;
 
 public class GetXp {
     public static int getXP(CommandContext<ServerCommandSource> objectCommandContext) {
-        ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();
-        PlayerStat playerStat = DATA_STORAGE.load(player);
-        player.sendMessage(Text.literal("XP : " + playerStat.getXP()));
-
+        try {
+            ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();
+            PlayerStat playerStat = DATA_STORAGE.load(player);
+            player.sendMessage(Text.literal("XP : " + playerStat.getXP()));
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
         return 1;
     }
 }

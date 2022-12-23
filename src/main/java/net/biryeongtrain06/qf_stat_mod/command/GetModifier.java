@@ -12,9 +12,13 @@ import java.util.HashMap;
 
 public class GetModifier {
     public static int getModifier(CommandContext<ServerCommandSource> objectCommandContext) {
-        ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();
-        HashMap<Identifier, Integer> hashMap = DataUtils.getXpModifier();
-        hashMap.forEach((key, value) -> player.sendMessage(Text.literal(key.toString() + " : " + value.toString())));
+        try {
+            ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();
+            HashMap<Identifier, Integer> hashMap = DataUtils.getXpModifier();
+            hashMap.forEach((key, value) -> player.sendMessage(Text.literal(key.toString() + " : " + value.toString())));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return 1;
     }
 }
