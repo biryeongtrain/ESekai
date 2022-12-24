@@ -27,5 +27,9 @@
   "qf_stat_mod.rarity_rare" : "Rare",
   "qf_stat_mod.rarity_epic" : "Epic",
   "qf_stat_mod.rarity_legendary" : "Legendary",
-  "qf_stat_mod.rarity.grade" : "Grade"
+  "qf_stat_mod.rarity.grade" : "Grade",
+  "qf_stat_mod.system_message.enabled" : "System Message enabled.",
+  "qf_stat_mod.system_message.disabled" : "System Message disabled",
+  "qf_stat_mod.system_message.killed" : "Killed %s. Gained %s XP."
+
 }

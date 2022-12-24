@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin implements IServerPlayerEntity {
     private boolean isPlayedBefore = false;
-    private boolean isDisplaySystemMessage = false;
+    private boolean isDisplaySystemMessage = true;
 
     @Inject(at = @At("RETURN"), method = ("writeCustomDataToNbt"))
     public void writeCustomDataToNbt(NbtCompound nbt, CallbackInfo ci) {

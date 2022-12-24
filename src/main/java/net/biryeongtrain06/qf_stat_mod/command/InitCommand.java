@@ -21,5 +21,17 @@ public class InitCommand {
                 literal("toggleSystemMessage")
                         .executes(DisplaySystemMessage::toggleSystemMessage)
         );
+        dispatcher.register(
+                literal("setCurrentHP")
+                        .executes(HP::setCurrentHP)
+        );
+        dispatcher.register(
+                literal("addCurrentHP")
+                        .executes(HP::addCurrentHP)
+        );
+        dispatcher.register(
+                literal("changePlayerClass")
+                        .executes(changePlayerClass::setCurrentHP)
+        );
     }
 }
