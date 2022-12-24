@@ -4,7 +4,6 @@ import net.biryeongtrain06.qf_stat_mod.utils.TextUtils;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
 
 public abstract class BasicPlayerClass implements IPlayerClass{
 

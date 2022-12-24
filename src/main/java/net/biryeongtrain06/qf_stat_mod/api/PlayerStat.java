@@ -1,7 +1,6 @@
 package net.biryeongtrain06.qf_stat_mod.api;
 
 
-import net.biryeongtrain06.qf_stat_mod.playerclass.BasicPlayerClass;
 import net.biryeongtrain06.qf_stat_mod.playerclass.IPlayerClass;
 import net.biryeongtrain06.qf_stat_mod.playerclass.NonePlayerClass;
 import net.biryeongtrain06.qf_stat_mod.utils.DataUtils;

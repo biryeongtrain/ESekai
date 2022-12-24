@@ -1,7 +1,6 @@
 package net.biryeongtrain06.qf_stat_mod.command;
 
 import com.mojang.brigadier.context.CommandContext;
-import net.minecraft.network.message.MessageType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
