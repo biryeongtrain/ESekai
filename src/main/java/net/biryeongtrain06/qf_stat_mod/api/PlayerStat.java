@@ -4,27 +4,39 @@ package net.biryeongtrain06.qf_stat_mod.api;
 import net.biryeongtrain06.qf_stat_mod.playerclass.BasicPlayerClass;
 import net.biryeongtrain06.qf_stat_mod.playerclass.IPlayerClass;
 import net.biryeongtrain06.qf_stat_mod.playerclass.NonePlayerClass;
+import net.biryeongtrain06.qf_stat_mod.utils.DataUtils;
+import net.biryeongtrain06.qf_stat_mod.utils.TextUtils;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
 
 public class PlayerStat {
     private IPlayerClass player_class = new NonePlayerClass();
     private int level = 1;
-    private int xp = 0;
+    private float xp = 0;
     private int maxHealth = 100;
     private float currentHealth = 100;
 
+    private float needXpToLevelUp;
+    private int selectPoint = 5;
+
     @NotNull
-    public void addXP(int i) {
+    public void addXP(ServerPlayerEntity player, float i) {
         this.xp += i;
+        this.needXpToLevelUp = (float) (DataUtils.getBaseLevelUpXpValue() * Math.pow(1 + DataUtils.getLevelScaleModifier(), getLevel()));
+        if (xp >= needXpToLevelUp) {
+            this.xp-= needXpToLevelUp;
+            addLevel(player, 1);
+        }
     }
 
     public void setXP(int i) {
         this.xp = i;
     }
 
-    public int getXP() {
+    public float getXP() {
         return this.xp;
     }
 
@@ -32,8 +44,10 @@ public class PlayerStat {
         return this.level;
     }
 
-    public void addLevel(int i) {
+    public void addLevel(ServerPlayerEntity player, int i) {
         this.level += i;
+        player.sendMessage(Text.translatable(TextUtils.createTranslation("system_message.levelUp")).formatted(Formatting.GREEN));
+        addSelectPoint(DataUtils.getAmountSelectionPointWhenLevelUp());
     }
 
     public void setLevel(int i) {
@@ -74,5 +88,17 @@ public class PlayerStat {
     }
     public float getCurrentHealth() {
         return this.currentHealth;
+    }
+
+    public void addSelectPoint(int value) {
+        this.selectPoint += value;
+    }
+
+    public int getSelectPoint() {
+        return this.selectPoint;
+    }
+
+    public void setSelectPoint(int value) {
+        this.selectPoint = value;
     }
 }

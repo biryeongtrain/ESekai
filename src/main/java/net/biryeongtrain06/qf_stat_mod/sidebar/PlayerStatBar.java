@@ -6,6 +6,7 @@ import eu.pb4.sidebars.api.lines.SidebarLine;
 import net.biryeongtrain06.qf_stat_mod.player.IServerPlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 import static net.biryeongtrain06.qf_stat_mod.api.DataStorage.PLAYER_STAT_DATA_STORAGE;
 
@@ -25,7 +26,13 @@ public class PlayerStatBar {
         sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("HP : " + PlayerDataApi.getCustomDataFor(p, PLAYER_STAT_DATA_STORAGE).getCurrentHealth() + " / " + PlayerDataApi.getCustomDataFor(p, PLAYER_STAT_DATA_STORAGE).getMaxHealth())));
         sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Level : " + PlayerDataApi.getCustomDataFor(p, PLAYER_STAT_DATA_STORAGE).getLevel())));
         sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("XP : " + PlayerDataApi.getCustomDataFor(p, PLAYER_STAT_DATA_STORAGE).getXP())));
-        sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Enabled System Message : " + (((IServerPlayerEntity) p).isDisplaySystemMessage() ? "True" : "False"))));
+        sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("HP : ")
+                .append(Text.literal(PlayerDataApi.getCustomDataFor(p, PLAYER_STAT_DATA_STORAGE).getCurrentHealth() + ""))
+                .formatted(
+                        PlayerDataApi.getCustomDataFor(p, PLAYER_STAT_DATA_STORAGE).getCurrentHealth() / PlayerDataApi.getCustomDataFor(p, PLAYER_STAT_DATA_STORAGE).getMaxHealth() * 100 < 80 ?
+                                Formatting.GREEN : PlayerDataApi.getCustomDataFor(p, PLAYER_STAT_DATA_STORAGE).getCurrentHealth() / PlayerDataApi.getCustomDataFor(p, PLAYER_STAT_DATA_STORAGE).getMaxHealth() * 100 < 40 ?
+                                Formatting.GOLD : Formatting.RED
+                )));
 
         return sidebar;
     }

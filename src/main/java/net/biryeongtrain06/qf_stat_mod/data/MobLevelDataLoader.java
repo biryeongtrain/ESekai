@@ -11,7 +11,6 @@ import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
 
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -20,11 +19,13 @@ import java.util.Map;
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.MOD_ID;
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.debugLogger;
 
-public class MobXpDataLoader extends JsonDataLoader implements IdentifiableResourceReloadListener {
+public class MobLevelDataLoader extends JsonDataLoader implements IdentifiableResourceReloadListener {
 
-    public MobXpDataLoader() {
+
+    public MobLevelDataLoader() {
         super(new Gson(), MOD_ID);
     }
+
     @Override
     public Identifier getFabricId() {
         return new Identifier(MOD_ID);
@@ -32,12 +33,12 @@ public class MobXpDataLoader extends JsonDataLoader implements IdentifiableResou
 
     @Override
     protected void apply(Map<Identifier, JsonElement> prepared, ResourceManager manager, Profiler profiler) {
-        manager.findResources("mob", id -> id.getPath().endsWith("xp.json")).forEach((id, resourceRef) -> {
+        manager.findResources("mob", id -> id.getPath().endsWith("level.json")).forEach((id, resourceRef) -> {
             try {
                 InputStream stream = resourceRef.getInputStream();
                 JsonObject data = JsonParser.parseReader(new InputStreamReader(stream)).getAsJsonObject();
-                DataUtils.setXpModifier(data);
-                debugLogger.info("Successfully loaded mob XP data.");
+                DataUtils.initLevelModifier(data);
+                debugLogger.info("Successfully loaded level modifier data.");
             } catch (IOException e) {
                 debugLogger.error("Error occurred while loading resource {}. {}", id.toString(), e.toString());
             }

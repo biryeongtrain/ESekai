@@ -4,6 +4,7 @@ package net.biryeongtrain06.qf_stat_mod;
 import eu.pb4.playerdata.api.storage.JsonDataStorage;
 import eu.pb4.playerdata.api.storage.PlayerDataStorage;
 import net.biryeongtrain06.qf_stat_mod.command.GameRuleKeys;
+import net.biryeongtrain06.qf_stat_mod.data.MobLevelDataLoader;
 import net.biryeongtrain06.qf_stat_mod.data.MobXpDataLoader;
 import net.biryeongtrain06.qf_stat_mod.event.CallbackInit;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
@@ -26,6 +27,7 @@ public class MainStatSystem implements ModInitializer {
     public void onInitialize() {
         CallbackInit.init();
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new MobXpDataLoader());
+        ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new MobLevelDataLoader());
         GameRuleKeys.setupGameRule();
     }
 }

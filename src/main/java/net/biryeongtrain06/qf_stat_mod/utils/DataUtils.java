@@ -18,6 +18,12 @@ import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.debugLogger;
 
 public class DataUtils {
     private static HashMap<Identifier, Integer> xpModifier = new HashMap<>();
+    private static float xpScaleModifier = 1.0f;
+    private static float levelScaleModifier = 2.5f;
+    private static float baseLevelUpXpValue = 100;
+    private static float levelScaleAtHighLevelModifier = 3.0f;
+    private static int amountSelectPointWhenLevelUp = 5;
+
 
     public static void setXpModifier(JsonObject xp) {
         HashMap<Identifier, Integer> xpMap = new HashMap<>();
@@ -27,6 +33,34 @@ public class DataUtils {
         });
         xpModifier = xpMap;
         debugLogger.info("xpModifier has Successfully Loaded!");
+    }
+
+    public static void initLevelModifier(JsonObject LevelData) {
+        baseLevelUpXpValue = LevelData.get("level_value").getAsFloat();
+        levelScaleModifier = LevelData.get("xpRequiresModifier").getAsFloat();
+        levelScaleAtHighLevelModifier = LevelData.get("xpRequiresModifierAtHighLevel").getAsFloat();
+        xpScaleModifier = LevelData.get("xpScaleModifier").getAsFloat();
+        amountSelectPointWhenLevelUp = LevelData.get("amountSelectionPointWhenLevelUp").getAsInt();
+    }
+
+    public static float getXpScaleModifier() {
+        return xpScaleModifier;
+    }
+
+    public static float getLevelScaleModifier() {
+        return levelScaleModifier;
+    }
+
+    public static float getBaseLevelUpXpValue() {
+        return baseLevelUpXpValue;
+    }
+
+    public static float getLevelScaleAtHighLevelModifier() {
+        return levelScaleAtHighLevelModifier;
+    }
+
+    public static int getAmountSelectionPointWhenLevelUp() {
+        return amountSelectPointWhenLevelUp;
     }
 
     public static HashMap<Identifier, Integer> getXpModifier() {

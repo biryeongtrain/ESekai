@@ -36,7 +36,7 @@ public class CallbackInit {
         IServerPlayerEntity iPlayer =(IServerPlayerEntity) killPlayer;
         PlayerStat stat = PlayerDataApi.getCustomDataFor(killPlayer, PLAYER_STAT_DATA_STORAGE);
         int xp = DataUtils.findXpModifier(victim);
-        stat.addXP(xp);
+        stat.addXP(killPlayer, (float) xp);
         if (iPlayer.isDisplaySystemMessage()) {
             killPlayer.sendMessage(Text.translatable(TextUtils.createTranslation("system_message.killed"), victim.getDisplayName(), xp).formatted(Formatting.GREEN));
         }
