@@ -15,5 +15,5 @@ public interface StyleAccessor {
     @Invoker("<init>")
     static Style invokeInit(@Nullable TextColor color, @Nullable Boolean bold, @Nullable Boolean italic, @Nullable Boolean underlined, @Nullable Boolean strikethrough, @Nullable Boolean obfuscated, @Nullable ClickEvent clickEvent, @Nullable HoverEvent hoverEvent, @Nullable String insertion, @Nullable Identifier font) throws Exception {
         throw new Exception();
-    };
+    }
 }
