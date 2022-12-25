@@ -31,6 +31,10 @@ public class PlayerStat {
         }
     }
 
+    public float getNeedXpToLevelUp() {
+        return this.needXpToLevelUp;
+    }
+
     public void setXP(int i) {
         this.xp = i;
     }
