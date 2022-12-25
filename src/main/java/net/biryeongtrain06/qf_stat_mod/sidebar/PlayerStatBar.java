@@ -38,8 +38,8 @@ public class PlayerStatBar {
         ));
 
         sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Lv : " + PlayerDataApi.getCustomDataFor(p, PLAYER_STAT_DATA_STORAGE).getLevel())));
-        sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("XP : " + PlayerDataApi.getCustomDataFor(p, PLAYER_STAT_DATA_STORAGE).getXP())
-                .append(Text.literal( " / " + DataStorage.loadPlayerStat(p).getNeedXpToLevelUp()))));
+        sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("XP : " + (int)PlayerDataApi.getCustomDataFor(p, PLAYER_STAT_DATA_STORAGE).getXP())
+                .append(Text.literal( " / " + (int)DataStorage.loadPlayerStat(p).getNeedXpToLevelUp()))));
 
         return sidebar;
     }
