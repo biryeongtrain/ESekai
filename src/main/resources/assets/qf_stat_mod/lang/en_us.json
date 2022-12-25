@@ -30,7 +30,8 @@
   "qf_stat_mod.rarity.grade" : "Grade",
   "qf_stat_mod.system_message.enabled" : "System Message enabled.",
   "qf_stat_mod.system_message.disabled" : "System Message disabled",
-  "qf_stat_mod.class_warrior.name" : "Warrior",
-  "qf_stat_mod.class_none.name" : "None",
-  "qf_stat_mod.system_message.gain_class" : " - You got this Class."
+  "qf_stat_mod.class.warrior.name" : "Warrior",
+  "qf_stat_mod.class.none.name" : "None",
+  "qf_stat_mod.system_message.gain_class" : " - You got this Class.",
+  "qf_stat_mod.system_message.lost_class" : " - You lost this Class."
 }

@@ -3,8 +3,8 @@ package net.biryeongtrain06.qf_stat_mod.api;
 
 import net.biryeongtrain06.qf_stat_mod.playerclass.IPlayerClass;
 import net.biryeongtrain06.qf_stat_mod.playerclass.NonePlayerClass;
-import net.biryeongtrain06.qf_stat_mod.utils.DataUtils;
-import net.biryeongtrain06.qf_stat_mod.utils.TextUtils;
+import net.biryeongtrain06.qf_stat_mod.utils.PlayerExpHandler;
+import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -24,7 +24,7 @@ public class PlayerStat {
     @NotNull
     public void addXP(ServerPlayerEntity player, float i) {
         this.xp += i;
-        this.needXpToLevelUp = (float) (DataUtils.getBaseLevelUpXpValue() * Math.pow(1 + DataUtils.getLevelScaleModifier(), getLevel()));
+        this.needXpToLevelUp = (float) (PlayerExpHandler.getBaseLevelUpXpValue() * Math.pow(1 + PlayerExpHandler.getLevelScaleModifier(), getLevel()));
         if (xp >= needXpToLevelUp) {
             this.xp-= needXpToLevelUp;
             addLevel(player, 1);
@@ -45,8 +45,8 @@ public class PlayerStat {
 
     public void addLevel(ServerPlayerEntity player, int i) {
         this.level += i;
-        player.sendMessage(Text.translatable(TextUtils.createTranslation("system_message.levelUp")).formatted(Formatting.GREEN));
-        addSelectPoint(DataUtils.getAmountSelectionPointWhenLevelUp());
+        player.sendMessage(Text.translatable(TextHelper.createTranslation("system_message.levelUp")).formatted(Formatting.GREEN));
+        addSelectPoint(PlayerExpHandler.getAmountSelectionPointWhenLevelUp());
     }
 
     public void setLevel(int i) {
@@ -58,11 +58,7 @@ public class PlayerStat {
     }
 
     public void setPlayer_class(ServerPlayerEntity player, IPlayerClass player_class) {
-        player_class.sendClassLostMessage(player);
-        player_class.onGetClass(player);
         this.player_class = player_class;
-        player_class.sendClassGainMessage(player);
-        player_class.onLostClass(player);
     }
 
     public void setMaxHealth(int amount) {
@@ -74,7 +70,7 @@ public class PlayerStat {
     }
 
     public void setCurrentHealth(ServerPlayerEntity player, float amount) {
-        this.currentHealth = MathHelper.clamp(amount, 0, getMaxHealth());
+        this.currentHealth = MathHelper.clamp(amount, 0f, (float) getMaxHealth());
         player.setHealth(getCurrentHealth() / getMaxHealth() * 20);
     }
 
@@ -83,6 +79,7 @@ public class PlayerStat {
     }
     public void addCurrentHealth(ServerPlayerEntity player, float amount) {
         this.currentHealth += amount;
+        this.currentHealth = MathHelper.clamp(this.currentHealth, 0f, (float) getMaxHealth());
         player.setHealth(getCurrentHealth() / getMaxHealth() * 20);
     }
     public float getCurrentHealth() {

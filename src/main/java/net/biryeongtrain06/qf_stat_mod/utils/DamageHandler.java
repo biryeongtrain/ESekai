@@ -8,7 +8,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 import static net.biryeongtrain06.qf_stat_mod.api.DataStorage.PLAYER_STAT_DATA_STORAGE;
 
-public class DamageUtils {
+public class DamageHandler {
     public static void PlayerDamageCalculate(PlayerEntity player, DamageSource source, float amount) {
         if (!player.isInvulnerableTo(source)) {
             ServerPlayerEntity sPlayer = (ServerPlayerEntity) player;

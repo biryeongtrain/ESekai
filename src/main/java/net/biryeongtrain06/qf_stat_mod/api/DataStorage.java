@@ -11,4 +11,7 @@ public class DataStorage {
     public static PlayerStat loadPlayerStat(ServerPlayerEntity player) {
         return PlayerDataApi.getCustomDataFor(player, PLAYER_STAT_DATA_STORAGE);
     }
+    public static void savePlayerStat(ServerPlayerEntity player, PlayerStat playerStat) {
+        PlayerDataApi.setCustomDataFor(player, PLAYER_STAT_DATA_STORAGE, playerStat);
+    }
 }

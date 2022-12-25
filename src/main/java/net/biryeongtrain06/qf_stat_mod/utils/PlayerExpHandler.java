@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.debugLogger;
 
-public class DataUtils {
+public class PlayerExpHandler {
     private static HashMap<Identifier, Integer> xpModifier = new HashMap<>();
     private static float xpScaleModifier = 1.0f;
     private static float levelScaleModifier = 2.5f;

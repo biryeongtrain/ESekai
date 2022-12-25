@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import net.biryeongtrain06.qf_stat_mod.utils.DataUtils;
+import net.biryeongtrain06.qf_stat_mod.utils.PlayerExpHandler;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resource.JsonDataLoader;
 import net.minecraft.resource.ResourceManager;
@@ -36,7 +36,7 @@ public class MobXpDataLoader extends JsonDataLoader implements IdentifiableResou
             try {
                 InputStream stream = resourceRef.getInputStream();
                 JsonObject data = JsonParser.parseReader(new InputStreamReader(stream)).getAsJsonObject();
-                DataUtils.setXpModifier(data);
+                PlayerExpHandler.setXpModifier(data);
                 debugLogger.info("Successfully loaded mob XP data.");
             } catch (IOException e) {
                 debugLogger.error("Error occurred while loading resource {}. {}", id.toString(), e.toString());

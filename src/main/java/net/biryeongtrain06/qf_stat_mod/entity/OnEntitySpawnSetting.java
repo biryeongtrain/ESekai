@@ -1,10 +1,9 @@
 package net.biryeongtrain06.qf_stat_mod.entity;
 
 import net.biryeongtrain06.qf_stat_mod.command.GameRuleKeys;
-import net.biryeongtrain06.qf_stat_mod.utils.PlayerUtils;
+import net.biryeongtrain06.qf_stat_mod.utils.PlayerHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,7 +24,7 @@ public class OnEntitySpawnSetting {
     private  static void setUpNewMobOnSpawn(LivingEntity entity) {
         int MAX_LEVEL = 100;
         int SCALING_DISTANCE = 400;
-        PlayerEntity nearestPlayer = PlayerUtils.getNearestPlayer((ServerWorld) entity.world, entity);
+        PlayerEntity nearestPlayer = PlayerHelper.getNearestPlayer((ServerWorld) entity.world, entity);
 
         GameRules gameRules = entity.getWorld().getGameRules();
 

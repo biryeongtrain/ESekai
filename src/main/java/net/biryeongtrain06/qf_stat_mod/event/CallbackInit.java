@@ -5,9 +5,9 @@ import net.biryeongtrain06.qf_stat_mod.command.InitCommand;
 import net.biryeongtrain06.qf_stat_mod.player.IServerPlayerEntity;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
 import net.biryeongtrain06.qf_stat_mod.sidebar.PlayerStatBar;
-import net.biryeongtrain06.qf_stat_mod.utils.DamageUtils;
-import net.biryeongtrain06.qf_stat_mod.utils.DataUtils;
-import net.biryeongtrain06.qf_stat_mod.utils.TextUtils;
+import net.biryeongtrain06.qf_stat_mod.utils.DamageHandler;
+import net.biryeongtrain06.qf_stat_mod.utils.PlayerExpHandler;
+import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -35,17 +35,17 @@ public class CallbackInit {
         ServerPlayerEntity killPlayer = (ServerPlayerEntity) killer;
         IServerPlayerEntity iPlayer =(IServerPlayerEntity) killPlayer;
         PlayerStat stat = PlayerDataApi.getCustomDataFor(killPlayer, PLAYER_STAT_DATA_STORAGE);
-        int xp = DataUtils.findXpModifier(victim);
+        int xp = PlayerExpHandler.findXpModifier(victim);
         stat.addXP(killPlayer, (float) xp);
         if (iPlayer.isDisplaySystemMessage()) {
-            killPlayer.sendMessage(Text.translatable(TextUtils.createTranslation("system_message.killed"), victim.getDisplayName(), xp).formatted(Formatting.GREEN));
+            killPlayer.sendMessage(Text.translatable(TextHelper.createTranslation("system_message.killed"), victim.getDisplayName(), xp).formatted(Formatting.GREEN));
         }
         PlayerDataApi.setCustomDataFor(killPlayer, PLAYER_STAT_DATA_STORAGE, stat);
     }
 
     public static void EntityHitPlayerCallback(PlayerEntity player, LivingEntity entity, DamageSource source, float amount) {
         ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
-        DamageUtils.PlayerDamageCalculate(player, source, amount);
+        DamageHandler.PlayerDamageCalculate(player, source, amount);
     }
 
     public static void init() {

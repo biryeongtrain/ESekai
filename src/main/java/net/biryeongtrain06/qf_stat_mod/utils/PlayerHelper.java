@@ -1,16 +1,22 @@
 package net.biryeongtrain06.qf_stat_mod.utils;
 
+import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
+import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
+import net.biryeongtrain06.qf_stat_mod.playerclass.IPlayerClass;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.Comparator;
 import java.util.Optional;
 
-public class PlayerUtils {
+import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.debugLogger;
+
+public class PlayerHelper {
 
     public static PlayerEntity getNearestPlayer (ServerWorld world, LivingEntity entity) {
         return getNearestPlayer(world, entity.getPos());
@@ -28,5 +34,12 @@ public class PlayerUtils {
         return player.orElse(null);
     }
 
+    public static void ChangePlayerClass(ServerPlayerEntity player, IPlayerClass playerClass) {
+        PlayerStat playerStat = DataStorage.loadPlayerStat(player).getPlayer_class().onLostClass(player);
+        Text debugPlayerClass = playerStat.getPlayer_class().getClassText();
+        playerStat.setPlayer_class(player, playerClass);
+        playerClass.onGetClass(player, playerStat);
+        debugLogger.info("Player {}'s class is {} changed to {}", player.getPlayerListName(), debugPlayerClass , playerStat.getPlayer_class().getClassText());
+    }
 
 }
