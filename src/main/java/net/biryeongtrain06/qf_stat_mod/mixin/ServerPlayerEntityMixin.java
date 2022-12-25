@@ -3,6 +3,7 @@ package net.biryeongtrain06.qf_stat_mod.mixin;
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
 import net.biryeongtrain06.qf_stat_mod.player.IServerPlayerEntity;
+import net.biryeongtrain06.qf_stat_mod.utils.PlayerHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -38,14 +39,10 @@ public abstract class ServerPlayerEntityMixin implements IServerPlayerEntity {
         PlayerStat playerStat = DataStorage.loadPlayerStat(player);
         int healthPercent = (int) (playerStat.getCurrentHealth() / playerStat.getMaxHealth() * 100);
         player.sendMessage(
-                Text.literal("\t\t\t")
+                Text.empty()
                         .append(Text.translatable(TextHelper.createTranslation("health")).formatted(Formatting.RED))
-                            .append(Text.literal(" : " + playerStat.getCurrentHealth()))
-                        .formatted(
-                                healthPercent >= 80 ?
-                                        Formatting.GREEN : healthPercent >= 40 ?
-                                        Formatting.GOLD : Formatting.RED
-                        )
+                            .append(Text.literal(" : " + (int) playerStat.getCurrentHealth()))
+                        .formatted(PlayerHelper.getPlayerHealthFormat(player))
                         .append(Text.literal(" / " + playerStat.getMaxHealth()))
                 ,true
         );

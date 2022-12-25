@@ -18,7 +18,7 @@ public class PlayerStat {
     private int maxHealth = 100;
     private float currentHealth = 100;
 
-    private float needXpToLevelUp;
+    private float needXpToLevelUp = PlayerExpHandler.getBaseLevelUpXpValue();
     private int selectPoint = 5;
 
     @NotNull

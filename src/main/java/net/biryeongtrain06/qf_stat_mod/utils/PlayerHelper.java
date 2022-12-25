@@ -8,6 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
@@ -40,6 +41,15 @@ public class PlayerHelper {
         playerStat.setPlayer_class(player, playerClass);
         playerClass.onGetClass(player, playerStat);
         debugLogger.info("Player {}'s class is {} changed to {}", player.getPlayerListName(), debugPlayerClass , playerStat.getPlayer_class().getClassText());
+    }
+
+    public static Formatting getPlayerHealthFormat(ServerPlayerEntity player) {
+        PlayerStat playerStat = DataStorage.loadPlayerStat(player);
+        int healthPercent = (int) (playerStat.getCurrentHealth() / playerStat.getMaxHealth() * 100);
+        if (healthPercent >= 80) return Formatting.GREEN;
+        if (healthPercent >= 40) return Formatting.GOLD;
+        if (healthPercent >= 20) return Formatting.RED;
+        return Formatting.DARK_RED;
     }
 
 }
