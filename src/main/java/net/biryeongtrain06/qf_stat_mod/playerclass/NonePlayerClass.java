@@ -19,7 +19,7 @@ public class NonePlayerClass extends BasicPlayerClass implements IPlayerClass{
 
     @Override
     public PlayerStat onLostClass(ServerPlayerEntity player) {
-        sendClassGainMessage(player);
+        sendClassLostMessage(player);
         return DataStorage.loadPlayerStat(player);
     }
 
