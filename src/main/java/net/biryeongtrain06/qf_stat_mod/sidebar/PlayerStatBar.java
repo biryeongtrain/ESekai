@@ -30,7 +30,7 @@ public class PlayerStatBar {
                 .append(PlayerDataApi.getCustomDataFor(p, PLAYER_STAT_DATA_STORAGE).getPlayer_class().getClassText())));
 
        sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("HP : ")
-                .append(Text.literal(PlayerDataApi.getCustomDataFor(p, PLAYER_STAT_DATA_STORAGE).getCurrentHealth() + ""))
+                .append(Text.literal((int) PlayerDataApi.getCustomDataFor(p, PLAYER_STAT_DATA_STORAGE).getCurrentHealth() + ""))
                 .append(Text.literal(" / " + PlayerDataApi.getCustomDataFor(p, PLAYER_STAT_DATA_STORAGE).getMaxHealth()))
                 .formatted(
                         PlayerHelper.getPlayerHealthFormat(p)

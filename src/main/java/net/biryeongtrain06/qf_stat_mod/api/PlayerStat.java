@@ -3,8 +3,10 @@ package net.biryeongtrain06.qf_stat_mod.api;
 
 import net.biryeongtrain06.qf_stat_mod.playerclass.IPlayerClass;
 import net.biryeongtrain06.qf_stat_mod.playerclass.NonePlayerClass;
+import net.biryeongtrain06.qf_stat_mod.utils.DamageSourceAdder;
 import net.biryeongtrain06.qf_stat_mod.utils.PlayerExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -85,6 +87,12 @@ public class PlayerStat {
         this.currentHealth += amount;
         this.currentHealth = MathHelper.clamp(this.currentHealth, 0f, (float) getMaxHealth());
         player.setHealth(getCurrentHealth() / getMaxHealth() * 20);
+    }
+
+    public void damageHealth(DamageSource s, ServerPlayerEntity player, float amount) {
+        this.currentHealth = MathHelper.clamp(this.currentHealth - amount, 0f, (float) getMaxHealth());
+        float calculatedDamage = amount / getMaxHealth();
+        player.damage(new DamageSourceAdder(s, s.getSource(), amount), calculatedDamage);
     }
     public float getCurrentHealth() {
         return this.currentHealth;
