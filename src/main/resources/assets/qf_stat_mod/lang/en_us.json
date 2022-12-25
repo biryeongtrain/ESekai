@@ -33,5 +33,6 @@
   "qf_stat_mod.class.warrior.name" : "Warrior",
   "qf_stat_mod.class.none.name" : "None",
   "qf_stat_mod.system_message.gain_class" : " - You got this Class.",
-  "qf_stat_mod.system_message.lost_class" : " - You lost this Class."
+  "qf_stat_mod.system_message.lost_class" : " - You lost this Class.",
+  "qf_stat_mod.health" : "Health"
 }

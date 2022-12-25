@@ -47,6 +47,7 @@ public abstract class ServerPlayerEntityMixin implements IServerPlayerEntity {
                                         Formatting.GOLD : Formatting.RED
                         )
                         .append(Text.literal(" / " + playerStat.getMaxHealth()))
+                ,true
         );
     }
 
