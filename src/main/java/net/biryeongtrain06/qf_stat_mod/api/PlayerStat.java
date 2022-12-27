@@ -63,12 +63,16 @@ public class PlayerStat {
         return player_class;
     }
 
-    public void setPlayer_class(ServerPlayerEntity player, IPlayerClass player_class) {
+    public void setPlayer_class(IPlayerClass player_class) {
         this.player_class = player_class;
     }
 
-    public void setMaxHealth(int amount) {
+    public void setMaxHealth(ServerPlayerEntity player,int amount) {
+        if (amount <= 0 ) {
+            throw new RuntimeException("value can't be under 0");
+        }
         this.maxHealth = amount;
+        syncPlayerHealth(player);
     }
 
     public void addMaxHealth(int amount) {
@@ -77,7 +81,7 @@ public class PlayerStat {
 
     public void setCurrentHealth(ServerPlayerEntity player, float amount) {
         this.currentHealth = MathHelper.clamp(amount, 0f, (float) getMaxHealth());
-        player.setHealth(getCurrentHealth() / getMaxHealth() * 20);
+        syncPlayerHealth(player);
     }
 
     public int getMaxHealth() {
@@ -86,7 +90,7 @@ public class PlayerStat {
     public void addCurrentHealth(ServerPlayerEntity player, float amount) {
         this.currentHealth += amount;
         this.currentHealth = MathHelper.clamp(this.currentHealth, 0f, (float) getMaxHealth());
-        player.setHealth(getCurrentHealth() / getMaxHealth() * 20);
+        syncPlayerHealth(player);
     }
 
     public void damageHealth(DamageSource s, ServerPlayerEntity player, float amount) {
@@ -108,5 +112,9 @@ public class PlayerStat {
 
     public void setSelectPoint(int value) {
         this.selectPoint = value;
+    }
+
+    public void syncPlayerHealth(ServerPlayerEntity player) {
+        player.setHealth(getCurrentHealth() / getMaxHealth() * 20);
     }
 }

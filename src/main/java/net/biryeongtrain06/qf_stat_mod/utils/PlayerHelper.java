@@ -38,7 +38,7 @@ public class PlayerHelper {
     public static void ChangePlayerClass(ServerPlayerEntity player, IPlayerClass playerClass) {
         PlayerStat playerStat = DataStorage.loadPlayerStat(player).getPlayer_class().onLostClass(player);
         Text debugPlayerClass = playerStat.getPlayer_class().getClassText();
-        playerStat.setPlayer_class(player, playerClass);
+        playerStat.setPlayer_class( playerClass);
         playerClass.onGetClass(player, playerStat);
         debugLogger.info("Player {}'s class is {} changed to {}", player.getPlayerListName(), debugPlayerClass , playerStat.getPlayer_class().getClassText());
     }
