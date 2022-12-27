@@ -38,6 +38,7 @@ dependencies {
     modImplementation include("eu.pb4:sidebar-api:0.1.1+1.19")
     modImplementation include("eu.pb4:player-data-api:0.2.2+1.19.2")
     modImplementation include("fr.catcore:server-translations-api:1.4.18+1.19.2")
+    modImplementation include("eu.pb4:common-economy-api:1.0.0")
 
 }
 
