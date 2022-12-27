@@ -97,8 +97,8 @@ public class PlayerStat {
     public void damageHealth(DamageSource s, PlayerEntity player, float amount) {
         this.currentHealth = MathHelper.clamp(this.currentHealth - amount, 0f, (float) getMaxHealth());
         float calculatedDamage = (amount / getMaxHealth()) * player.getMaxHealth();
-        player.sendMessage(Text.literal(String.valueOf(calculatedDamage)));
-        player.damage(new DamageSourceAdder(s.getSource()), amount);
+        player.hurtTime = 0;
+        player.damage(new DamageSourceAdder(s.getSource()), calculatedDamage);
     }
     public float getCurrentHealth() {
         return this.currentHealth;

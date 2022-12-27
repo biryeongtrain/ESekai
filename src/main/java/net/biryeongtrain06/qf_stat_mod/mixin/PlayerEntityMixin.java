@@ -27,9 +27,11 @@ public class PlayerEntityMixin {
     @Inject(method = "applyDamage", at = @At("HEAD"), cancellable = true)
     public void applyDamageHook(DamageSource source, float amount, CallbackInfo ci) {
         PlayerEntity player = (PlayerEntity) (Object) this;
-        if (!source.equals(DamageSource.OUT_OF_WORLD) || !(source instanceof DamageSourceAdder)) {
-            EntityHitPlayerCallback.EVENT.invoker().onHit(player, (LivingEntity) source.getSource(), source, amount);
-            ci.cancel();
+        if (!source.equals(DamageSource.OUT_OF_WORLD)) {
+            if(!(source instanceof DamageSourceAdder)) {
+                ci.cancel();
+                EntityHitPlayerCallback.EVENT.invoker().onHit(player, (LivingEntity) source.getSource(), source, amount);
+            }
         }
     }
 }
