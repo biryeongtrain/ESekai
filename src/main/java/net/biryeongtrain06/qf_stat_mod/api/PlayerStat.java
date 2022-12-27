@@ -7,6 +7,7 @@ import net.biryeongtrain06.qf_stat_mod.utils.DamageSourceAdder;
 import net.biryeongtrain06.qf_stat_mod.utils.PlayerExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -93,10 +94,11 @@ public class PlayerStat {
         syncPlayerHealth(player);
     }
 
-    public void damageHealth(DamageSource s, ServerPlayerEntity player, float amount) {
+    public void damageHealth(DamageSource s, PlayerEntity player, float amount) {
         this.currentHealth = MathHelper.clamp(this.currentHealth - amount, 0f, (float) getMaxHealth());
-        float calculatedDamage = amount / getMaxHealth();
-        player.damage(new DamageSourceAdder(s, s.getSource(), amount), calculatedDamage);
+        float calculatedDamage = (amount / getMaxHealth()) * player.getMaxHealth();
+        player.sendMessage(Text.literal(String.valueOf(calculatedDamage)));
+        player.damage(new DamageSourceAdder(s.getSource()), amount);
     }
     public float getCurrentHealth() {
         return this.currentHealth;

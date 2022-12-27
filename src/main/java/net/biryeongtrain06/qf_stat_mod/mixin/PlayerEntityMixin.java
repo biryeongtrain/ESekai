@@ -2,6 +2,7 @@ package net.biryeongtrain06.qf_stat_mod.mixin;
 
 import net.biryeongtrain06.qf_stat_mod.event.EntityHitPlayerCallback;
 import net.biryeongtrain06.qf_stat_mod.event.PlayerKilledOtherCallback;
+import net.biryeongtrain06.qf_stat_mod.utils.DamageSourceAdder;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,7 +27,7 @@ public class PlayerEntityMixin {
     @Inject(method = "applyDamage", at = @At("HEAD"), cancellable = true)
     public void applyDamageHook(DamageSource source, float amount, CallbackInfo ci) {
         PlayerEntity player = (PlayerEntity) (Object) this;
-        if (!source.equals(DamageSource.OUT_OF_WORLD)) {
+        if (!source.equals(DamageSource.OUT_OF_WORLD) || !(source instanceof DamageSourceAdder)) {
             EntityHitPlayerCallback.EVENT.invoker().onHit(player, (LivingEntity) source.getSource(), source, amount);
             ci.cancel();
         }
