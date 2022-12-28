@@ -37,7 +37,6 @@ public abstract class ServerPlayerEntityMixin implements IServerPlayerEntity {
     public void displayHealthBar(CallbackInfo ci) {
         ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
         PlayerStat playerStat = DataStorage.loadPlayerStat(player);
-        int healthPercent = (int) (playerStat.getCurrentHealth() / playerStat.getMaxHealth() * 100);
         player.sendMessage(
                 Text.empty()
                         .append(Text.translatable(TextHelper.createTranslation("health")).formatted(Formatting.RED))
