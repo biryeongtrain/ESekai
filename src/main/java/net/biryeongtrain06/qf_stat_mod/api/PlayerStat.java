@@ -23,6 +23,7 @@ public class PlayerStat {
     private int maxMana = 100;
     private float currentMana = 100;
     private boolean isManaUser = true;
+    private int defense = 0;
     private float needXpToLevelUp = ExpHandler.getBaseLevelUpXpValue();
     private int selectPoint = 5;
 
