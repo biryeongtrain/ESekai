@@ -51,8 +51,4 @@ public enum EntityRank {
     public void setSpawn_chance(float spawn_chance) {
         this.spawn_chance = spawn_chance;
     }
-
-    public float getCommonSpawnChance() {
-        return RARE.getSpawn_chance() + UNIQUE.getSpawn_chance() + LEGENDARY.getSpawn_chance() + MYTHIC.getSpawn_chance();
-    }
 }

@@ -12,29 +12,32 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings("unused")
 public class PlayerStat {
     private IPlayerClass player_class = new NonePlayerClass();
     private int level = 1;
     private float xp = 0;
     private int maxHealth = 100;
     private float currentHealth = 100;
-
+    private int maxMana = 100;
+    private float currentMana = 100;
+    private boolean isManaUser = true;
     private float needXpToLevelUp = ExpHandler.getBaseLevelUpXpValue();
     private int selectPoint = 5;
 
-    @NotNull
     public void addXP(ServerPlayerEntity player, float i) {
         this.xp += i;
-        this.needXpToLevelUp = (float) (ExpHandler.getBaseLevelUpXpValue() * Math.pow(1 + ExpHandler.getLevelScaleModifier(), getLevel()));
+
         if (xp >= needXpToLevelUp) {
             this.xp-= needXpToLevelUp;
             addLevel(player, 1);
+            this.needXpToLevelUp = (float) (ExpHandler.getBaseLevelUpXpValue() * Math.pow(1 + ExpHandler.getLevelScaleModifier(), getLevel()));
         }
     }
 
     public float getNeedXpToLevelUp() {
+        this.needXpToLevelUp = (float) (ExpHandler.getBaseLevelUpXpValue() * Math.pow(1 + ExpHandler.getLevelScaleModifier(), getLevel()));
         return this.needXpToLevelUp;
     }
 
@@ -119,4 +122,46 @@ public class PlayerStat {
     public void syncPlayerHealth(ServerPlayerEntity player) {
         player.setHealth(getCurrentHealth() / getMaxHealth() * 20);
     }
+
+    public float getCurrentMana() {
+        return this.currentMana;
+    }
+
+    public void addCurrentMana(float val) {
+        if (!isManaUser) {
+            return;
+        }
+        this.currentMana += MathHelper.clamp(val, 0F, getMaxMana());
+    }
+
+    public void setCurrentMana(float val) {
+        if (!isManaUser) {
+            return;
+        }
+        this.currentMana = MathHelper.clamp(val, 0F, getCurrentMana());
+    }
+
+    public int getMaxMana() {
+        return maxMana;
+    }
+
+    public void addMaxMana(int val) {
+        if (!isManaUser) {
+            return;
+        }
+        this.maxMana += val;
+        this.maxMana = MathHelper.clamp(this.maxMana, 0, Integer.MAX_VALUE);
+    }
+
+    public void setMaxMana(int val) {
+        if (!isManaUser) {
+            return;
+        }
+        if (val <= 0) {
+            val = MathHelper.clamp(val, 0, Integer.MAX_VALUE);
+        }
+        this.maxMana = val;
+    }
+
+
 }

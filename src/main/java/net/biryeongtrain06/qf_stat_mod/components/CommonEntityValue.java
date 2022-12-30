@@ -4,14 +4,13 @@ import net.biryeongtrain06.qf_stat_mod.entity.EntityRank;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.nbt.NbtCompound;
 
-import java.util.Random;
 
 public class CommonEntityValue implements ICommonEntityComponents {
     private int level = 1;
     private int defense = 0;
     private int additionalDefenseRate = 0;
     private EntityRank rank =  EntityRank.UN_DECIDED;
-    private MobEntity provider;
+    private final MobEntity provider;
     private int numMaxAbilities = EntityRank.UN_DECIDED.getAbilities();
     private boolean healthIncreased = false;
 
@@ -21,8 +20,24 @@ public class CommonEntityValue implements ICommonEntityComponents {
 
     public CommonEntityValue(MobEntity provider) {
         this.provider = provider;
-        if (canApplyModifier(provider)) {
+        if (canApplyModifier(this.provider)) {
+            setRankRandomly();
+        }
+    }
 
+    @Override
+    public void setRankRandomly() {
+        if (!(this.rank.equals(EntityRank.UN_DECIDED))) {
+            return;
+        }
+        float value = (float) (Math.random() * 100);
+
+        for (EntityRank rank : EntityRank.values()) {
+            if (value < rank.getSpawn_chance()) {
+                this.rank = rank;
+                break;
+            }
+            value -= rank.getSpawn_chance();
         }
     }
 
@@ -69,16 +84,6 @@ public class CommonEntityValue implements ICommonEntityComponents {
     @Override
     public void addAdditionalDefenseRate(int val) {
         this.additionalDefenseRate += val;
-    }
-
-    @Override
-    public void setRankRandomly() {
-        if (this.rank.equals(EntityRank.UN_DECIDED)) {
-            return;
-        }
-        float value = (float) (Math.random() * 100);
-
-
     }
 
     @Override

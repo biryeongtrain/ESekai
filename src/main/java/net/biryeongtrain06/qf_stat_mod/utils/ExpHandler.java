@@ -1,13 +1,10 @@
 package net.biryeongtrain06.qf_stat_mod.utils;
 
 import com.google.gson.JsonObject;
-
-import net.biryeongtrain06.qf_stat_mod.entity.EntityRank;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-
 import net.minecraft.entity.mob.Angerable;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
@@ -16,7 +13,9 @@ import net.minecraft.util.Identifier;
 import java.util.HashMap;
 
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.debugLogger;
+import static net.biryeongtrain06.qf_stat_mod.entity.EntityRank.*;
 
+@SuppressWarnings("unused")
 public class ExpHandler {
     private static HashMap<Identifier, Integer> xpModifier = new HashMap<>();
     private static float xpScaleModifier = 1.0f;
@@ -45,11 +44,11 @@ public class ExpHandler {
     }
 
     public static void setRaritySpawnChance(JsonObject rarityData) {
-        EntityRank.COMMON.setSpawn_chance(rarityData.get("rare_spawn_chance").getAsFloat());
-        EntityRank.RARE.setSpawn_chance(rarityData.get("unique_spawn_chance").getAsFloat());
-        EntityRank.LEGENDARY.setSpawn_chance(rarityData.get("legendary_spawn_chance").getAsFloat());
-        EntityRank.LEGENDARY.setSpawn_chance(rarityData.get("mythic_spawn_chance").getAsFloat());
-        EntityRank.COMMON.setSpawn_chance(EntityRank.COMMON.getCommonSpawnChance());
+        RARE.setSpawn_chance(rarityData.get("rare_spawn_chance").getAsFloat());
+        UNIQUE.setSpawn_chance(rarityData.get("unique_spawn_chance").getAsFloat());
+        LEGENDARY.setSpawn_chance(rarityData.get("legendary_spawn_chance").getAsFloat());
+        MYTHIC.setSpawn_chance(rarityData.get("mythic_spawn_chance").getAsFloat());
+        COMMON.setSpawn_chance(RARE.getSpawn_chance() + UNIQUE.getSpawn_chance() + LEGENDARY.getSpawn_chance() + MYTHIC.getSpawn_chance());
     }
 
     public static float getXpScaleModifier() {
