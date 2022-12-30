@@ -6,7 +6,7 @@ import net.biryeongtrain06.qf_stat_mod.player.IServerPlayerEntity;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
 import net.biryeongtrain06.qf_stat_mod.sidebar.PlayerStatBar;
 import net.biryeongtrain06.qf_stat_mod.utils.DamageHandler;
-import net.biryeongtrain06.qf_stat_mod.utils.PlayerExpHandler;
+import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.entity.LivingEntity;
@@ -35,7 +35,7 @@ public class CallbackInit {
         ServerPlayerEntity killPlayer = (ServerPlayerEntity) killer;
         IServerPlayerEntity iPlayer =(IServerPlayerEntity) killPlayer;
         PlayerStat stat = PlayerDataApi.getCustomDataFor(killPlayer, PLAYER_STAT_DATA_STORAGE);
-        int xp = PlayerExpHandler.findXpModifier(victim);
+        int xp = ExpHandler.findXpModifier(victim);
         stat.addXP(killPlayer, (float) xp);
         if (iPlayer.isDisplaySystemMessage()) {
             killPlayer.sendMessage(Text.translatable(TextHelper.createTranslation("system_message.killed"), victim.getDisplayName(), xp).formatted(Formatting.GREEN));

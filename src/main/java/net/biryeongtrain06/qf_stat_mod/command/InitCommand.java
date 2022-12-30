@@ -33,5 +33,9 @@ public class InitCommand {
                 literal("changePlayerClass")
                         .executes(changePlayerClass::setCurrentHP)
         );
+        dispatcher.register(
+                literal("getRarityModifier")
+                        .executes(TestCommands::getRarity)
+        );
     }
 }

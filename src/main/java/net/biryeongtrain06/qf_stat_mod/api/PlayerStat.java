@@ -4,7 +4,7 @@ package net.biryeongtrain06.qf_stat_mod.api;
 import net.biryeongtrain06.qf_stat_mod.playerclass.IPlayerClass;
 import net.biryeongtrain06.qf_stat_mod.playerclass.NonePlayerClass;
 import net.biryeongtrain06.qf_stat_mod.utils.DamageSourceAdder;
-import net.biryeongtrain06.qf_stat_mod.utils.PlayerExpHandler;
+import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,13 +21,13 @@ public class PlayerStat {
     private int maxHealth = 100;
     private float currentHealth = 100;
 
-    private float needXpToLevelUp = PlayerExpHandler.getBaseLevelUpXpValue();
+    private float needXpToLevelUp = ExpHandler.getBaseLevelUpXpValue();
     private int selectPoint = 5;
 
     @NotNull
     public void addXP(ServerPlayerEntity player, float i) {
         this.xp += i;
-        this.needXpToLevelUp = (float) (PlayerExpHandler.getBaseLevelUpXpValue() * Math.pow(1 + PlayerExpHandler.getLevelScaleModifier(), getLevel()));
+        this.needXpToLevelUp = (float) (ExpHandler.getBaseLevelUpXpValue() * Math.pow(1 + ExpHandler.getLevelScaleModifier(), getLevel()));
         if (xp >= needXpToLevelUp) {
             this.xp-= needXpToLevelUp;
             addLevel(player, 1);
@@ -53,7 +53,7 @@ public class PlayerStat {
     public void addLevel(ServerPlayerEntity player, int i) {
         this.level += i;
         player.sendMessage(Text.translatable(TextHelper.createTranslation("system_message.levelUp")).formatted(Formatting.GREEN));
-        addSelectPoint(PlayerExpHandler.getAmountSelectionPointWhenLevelUp());
+        addSelectPoint(ExpHandler.getAmountSelectionPointWhenLevelUp());
     }
 
     public void setLevel(int i) {

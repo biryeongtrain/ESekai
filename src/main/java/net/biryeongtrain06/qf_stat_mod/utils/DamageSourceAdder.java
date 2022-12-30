@@ -7,5 +7,8 @@ public class DamageSourceAdder extends EntityDamageSource {
 
     public DamageSourceAdder(Entity source) {
         super("custom_damage", source);
+        this.setBypassesArmor();
+        this.setUnblockable();
+        this.setBypassesProtection();
     }
 }

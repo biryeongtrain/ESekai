@@ -1,0 +1,6 @@
+{
+  "rare_spawn_chance" : 20,
+  "unique_spawn_chance" : 10,
+  "legendary_spawn_chance" : 5,
+  "mythic_spawn_chance" : 1
+}

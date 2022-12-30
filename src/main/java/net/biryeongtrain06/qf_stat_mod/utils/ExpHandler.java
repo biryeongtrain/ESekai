@@ -2,6 +2,7 @@ package net.biryeongtrain06.qf_stat_mod.utils;
 
 import com.google.gson.JsonObject;
 
+import net.biryeongtrain06.qf_stat_mod.entity.EntityRank;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.WitherEntity;
@@ -16,7 +17,7 @@ import java.util.HashMap;
 
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.debugLogger;
 
-public class PlayerExpHandler {
+public class ExpHandler {
     private static HashMap<Identifier, Integer> xpModifier = new HashMap<>();
     private static float xpScaleModifier = 1.0f;
     private static float levelScaleModifier = 2.5f;
@@ -41,6 +42,14 @@ public class PlayerExpHandler {
         levelScaleAtHighLevelModifier = LevelData.get("xpRequiresModifierAtHighLevel").getAsFloat();
         xpScaleModifier = LevelData.get("xpScaleModifier").getAsFloat();
         amountSelectPointWhenLevelUp = LevelData.get("amountSelectionPointWhenLevelUp").getAsInt();
+    }
+
+    public static void setRaritySpawnChance(JsonObject rarityData) {
+        EntityRank.COMMON.setSpawn_chance(rarityData.get("rare_spawn_chance").getAsFloat());
+        EntityRank.RARE.setSpawn_chance(rarityData.get("unique_spawn_chance").getAsFloat());
+        EntityRank.LEGENDARY.setSpawn_chance(rarityData.get("legendary_spawn_chance").getAsFloat());
+        EntityRank.LEGENDARY.setSpawn_chance(rarityData.get("mythic_spawn_chance").getAsFloat());
+        EntityRank.COMMON.setSpawn_chance(EntityRank.COMMON.getCommonSpawnChance());
     }
 
     public static float getXpScaleModifier() {
