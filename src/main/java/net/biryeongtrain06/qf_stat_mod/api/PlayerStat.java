@@ -28,6 +28,9 @@ public class PlayerStat {
     private float currentMana = 100;
     private boolean isManaUser = true;
     private int defense = 0;
+    private float projectileDamageFlat = 0;
+    private float projectileDamageAdd = 0;
+    private float projectileDamageMulti = 0;
     private float needXpToLevelUp = ExpHandler.getBaseLevelUpXpValue();
     private int selectPoint = 5;
 
@@ -108,31 +111,8 @@ public class PlayerStat {
         this.currentHealth = MathHelper.clamp(this.currentHealth, 0f, (float) getMaxHealth());
         syncPlayerHealth(player);
     }
-
-    public void damageHealth(DamageSource s, PlayerEntity player, float amount) {
-        this.currentHealth = MathHelper.clamp(this.currentHealth - amount, 0f, (float) getMaxHealth());
-        float calculatedDamage = (amount / getMaxHealth()) * player.getMaxHealth();
-        player.hurtTime = 0;
-        player.damage(new DamageSourceAdder(s.getSource()), calculatedDamage);
-    }
     public float getCurrentHealth() {
         return this.currentHealth;
-    }
-
-    public void addSelectPoint(int value) {
-        this.selectPoint += value;
-    }
-
-    public int getSelectPoint() {
-        return this.selectPoint;
-    }
-
-    public void setSelectPoint(int value) {
-        this.selectPoint = value;
-    }
-
-    public void syncPlayerHealth(ServerPlayerEntity player) {
-        player.setHealth(getCurrentHealth() / getMaxHealth() * 20);
     }
 
     public float getCurrentMana() {
@@ -152,7 +132,6 @@ public class PlayerStat {
         }
         this.currentMana = MathHelper.clamp(val, 0F, getCurrentMana());
     }
-
     public int getMaxMana() {
         return maxMana;
     }
@@ -175,5 +154,24 @@ public class PlayerStat {
         this.maxMana = val;
     }
 
+    public void addSelectPoint(int value) {
+        this.selectPoint += value;
+    }
 
+    public int getSelectPoint() {
+        return this.selectPoint;
+    }
+
+    public void setSelectPoint(int value) {
+        this.selectPoint = value;
+    }
+    public void damageHealth(DamageSource s, PlayerEntity player, float amount) {
+        this.currentHealth = MathHelper.clamp(this.currentHealth - amount, 0f, (float) getMaxHealth());
+        float calculatedDamage = (amount / getMaxHealth()) * player.getMaxHealth();
+        player.hurtTime = 0;
+        player.damage(new DamageSourceAdder(s.getSource()), calculatedDamage);
+    }
+    public void syncPlayerHealth(ServerPlayerEntity player) {
+        player.setHealth(getCurrentHealth() / getMaxHealth() * 20);
+    }
 }
