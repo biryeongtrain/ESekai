@@ -2,6 +2,8 @@ package net.biryeongtrain06.qf_stat_mod.command;
 
 import com.mojang.brigadier.context.CommandContext;
 import net.biryeongtrain06.qf_stat_mod.entity.EntityRank;
+import net.biryeongtrain06.qf_stat_mod.gui.PlayerMainGui;
+import net.biryeongtrain06.qf_stat_mod.gui.PlayerStatBar;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -27,6 +29,16 @@ public class TestCommands {
             player.sendMessage(Text.literal("Unique : " + EntityRank.UNIQUE.getSpawn_chance()));
             player.sendMessage(Text.literal("Legendary : " + EntityRank.LEGENDARY.getSpawn_chance()));
             player.sendMessage(Text.literal("Mythic : " + EntityRank.MYTHIC.getSpawn_chance()));
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return 1;
+    }
+    public static int openGUI(CommandContext<ServerCommandSource> objectCommandContext) {
+        try {
+            ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();
+            PlayerMainGui playerMainGui = new PlayerMainGui(player);
+            playerMainGui.open();
         } catch(Exception e) {
             e.printStackTrace();
         }

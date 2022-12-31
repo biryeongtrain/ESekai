@@ -4,7 +4,7 @@ import eu.pb4.playerdata.api.PlayerDataApi;
 import net.biryeongtrain06.qf_stat_mod.command.InitCommand;
 import net.biryeongtrain06.qf_stat_mod.player.IServerPlayerEntity;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
-import net.biryeongtrain06.qf_stat_mod.sidebar.PlayerStatBar;
+import net.biryeongtrain06.qf_stat_mod.gui.PlayerStatBar;
 import net.biryeongtrain06.qf_stat_mod.utils.DamageHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;

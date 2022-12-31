@@ -35,5 +35,6 @@
   "qf_stat_mod.system_message.gain_class" : " - You got this Class.",
   "qf_stat_mod.system_message.lost_class" : " - You lost this Class.",
   "qf_stat_mod.health" : "Health",
+  "qf_stat_mod.mana" : "Mana",
   "qf_stat_mod.sidebar.title" : "Stat"
 }

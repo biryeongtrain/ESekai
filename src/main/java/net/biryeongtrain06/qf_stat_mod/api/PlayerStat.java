@@ -11,11 +11,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
 @SuppressWarnings("unused")
 public class PlayerStat {
     private IPlayerClass player_class = new NonePlayerClass();
+    private Identifier playerClassId = new NonePlayerClass().getClassId();
     private int level = 1;
     private float xp = 0;
     private int maxHealth = 100;

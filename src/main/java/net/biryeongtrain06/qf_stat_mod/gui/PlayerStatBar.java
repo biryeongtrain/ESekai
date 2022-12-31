@@ -1,15 +1,13 @@
-package net.biryeongtrain06.qf_stat_mod.sidebar;
+package net.biryeongtrain06.qf_stat_mod.gui;
 
 import eu.pb4.playerdata.api.PlayerDataApi;
 import eu.pb4.sidebars.api.Sidebar;
 import eu.pb4.sidebars.api.lines.SidebarLine;
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
-import net.biryeongtrain06.qf_stat_mod.player.IServerPlayerEntity;
 import net.biryeongtrain06.qf_stat_mod.utils.PlayerHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 
 import static net.biryeongtrain06.qf_stat_mod.api.DataStorage.PLAYER_STAT_DATA_STORAGE;
 

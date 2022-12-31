@@ -5,6 +5,10 @@ import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
 import net.biryeongtrain06.qf_stat_mod.playerclass.IPlayerClass;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
@@ -51,5 +55,11 @@ public class PlayerHelper {
         if (healthPercent >= 20) return Formatting.RED;
         return Formatting.DARK_RED;
     }
-
+    public static ItemStack getHead(ServerPlayerEntity player) {
+        ItemStack stack = new ItemStack(Items.PLAYER_HEAD);
+        stack.setCustomName(player.getDisplayName());
+        NbtCompound ownerTag = stack.getOrCreateSubNbt("SkullOwner");
+        ownerTag.putUuid("Id", player.getUuid());
+        return stack;
+    }
 }

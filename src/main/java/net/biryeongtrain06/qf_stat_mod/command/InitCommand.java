@@ -37,5 +37,9 @@ public class InitCommand {
                 literal("getRarityModifier")
                         .executes(TestCommands::getRarity)
         );
+        dispatcher.register(
+                literal("openGUI")
+                        .executes(TestCommands::openGUI)
+        );
     }
 }

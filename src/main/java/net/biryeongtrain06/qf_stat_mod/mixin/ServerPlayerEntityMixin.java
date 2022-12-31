@@ -43,7 +43,7 @@ public abstract class ServerPlayerEntityMixin implements IServerPlayerEntity {
                             .append(Text.literal(" : " + (int) playerStat.getCurrentHealth()))
                         .formatted(PlayerHelper.getPlayerHealthFormat(player))
                         .append(Text.literal(" / " + playerStat.getMaxHealth()))
-                        .append(Text.literal("           "))
+                        .append(Text.literal("         "))
                         .append(Text.translatable(TextHelper.createTranslation("mana")).formatted(Formatting.BLUE))
                         .append(Text.literal(" : " + (int) playerStat.getCurrentMana()))
                         .append(Text.literal(" / " + playerStat.getMaxMana()))
