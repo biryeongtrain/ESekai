@@ -1,5 +1,7 @@
 package net.biryeongtrain06.qf_stat_mod.player;
 
+import net.minecraft.util.Identifier;
+
 public interface IServerPlayerEntity {
     boolean isPlayedBefore();
 
@@ -7,4 +9,7 @@ public interface IServerPlayerEntity {
 
     boolean isDisplaySystemMessage();
     void setDisplaySystemMessage(boolean val);
+
+    Identifier getPlayerClass();
+    void setPlayerClass(Identifier val);
 }

@@ -25,16 +25,16 @@ public class PlayerStatBar {
         sidebar.setUpdateRate(1);
 
         sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Class : ")
-                .append(PlayerDataApi.getCustomDataFor(p, PLAYER_STAT_DATA_STORAGE).getPlayer_class().getClassText())));
+                .append(PlayerHelper.getPlayerClass(DataStorage.loadPlayerStat(p).getPlayerClassId()).getClassText())));
 
-       sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("HP : ")
+        /*sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("HP : ")
                 .append(Text.literal((int) PlayerDataApi.getCustomDataFor(p, PLAYER_STAT_DATA_STORAGE).getCurrentHealth() + ""))
                 .append(Text.literal(" / " + PlayerDataApi.getCustomDataFor(p, PLAYER_STAT_DATA_STORAGE).getMaxHealth()))
                 .formatted(
                         PlayerHelper.getPlayerHealthFormat(p)
                 )
         ));
-
+        */
         sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Lv : " + PlayerDataApi.getCustomDataFor(p, PLAYER_STAT_DATA_STORAGE).getLevel())));
         sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("XP : " + (int)PlayerDataApi.getCustomDataFor(p, PLAYER_STAT_DATA_STORAGE).getXP())
                 .append(Text.literal( " / " + (int)DataStorage.loadPlayerStat(p).getNeedXpToLevelUp()))));

@@ -8,6 +8,7 @@ import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -16,8 +17,9 @@ import net.minecraft.util.math.MathHelper;
 
 @SuppressWarnings("unused")
 public class PlayerStat {
-    private IPlayerClass player_class = new NonePlayerClass();
-    private Identifier playerClassId = new NonePlayerClass().getClassId();
+    private Identifier playerClassId;
+    private Text classTranslatableText;
+    private Formatting playerClassFormat;
     private int level = 1;
     private float xp = 0;
     private int maxHealth = 100;
@@ -28,6 +30,20 @@ public class PlayerStat {
     private int defense = 0;
     private float needXpToLevelUp = ExpHandler.getBaseLevelUpXpValue();
     private int selectPoint = 5;
+
+    public void setPlayer_class(ServerPlayerEntity player, IPlayerClass player_class) {
+        this.playerClassId = player_class.getClassId();
+        this.classTranslatableText = player_class.getClassText();
+        this.playerClassFormat = player_class.getTextFormat();
+    }
+
+    public Identifier getPlayerClassId() {
+        return playerClassId;
+    }
+
+    public void setPlayerClassId(Identifier playerClassId) {
+        this.playerClassId = playerClassId;
+    }
 
     public void addXP(ServerPlayerEntity player, float i) {
         this.xp += i;
@@ -66,13 +82,6 @@ public class PlayerStat {
         this.level = i;
     }
 
-    public IPlayerClass getPlayer_class() {
-        return player_class;
-    }
-
-    public void setPlayer_class(IPlayerClass player_class) {
-        this.player_class = player_class;
-    }
 
     public void setMaxHealth(ServerPlayerEntity player,int amount) {
         if (amount <= 0 ) {
