@@ -19,6 +19,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +28,7 @@ import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.debugLogger;
 
 public class PlayerHelper {
 
-    private static List<IPlayerClass> playerClassList;
+    private static List<IPlayerClass> playerClassList = new ArrayList<>();
     public static PlayerEntity getNearestPlayer (ServerWorld world, LivingEntity entity) {
         return getNearestPlayer(world, entity.getPos());
     }

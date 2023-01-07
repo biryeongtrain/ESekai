@@ -21,7 +21,7 @@ public class OnEntitySpawnSetting {
         setUpNewMobOnSpawn(entity);
     }
 
-    private  static void setUpNewMobOnSpawn(LivingEntity entity) {
+    private static void setUpNewMobOnSpawn(LivingEntity entity) {
         int MAX_LEVEL = 100;
         int SCALING_DISTANCE = 400;
         PlayerEntity nearestPlayer = PlayerHelper.getNearestPlayer((ServerWorld) entity.world, entity);

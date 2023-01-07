@@ -17,9 +17,6 @@ import net.minecraft.util.math.MathHelper;
 
 @SuppressWarnings("unused")
 public class PlayerStat {
-    private Identifier playerClassId;
-    private Text classTranslatableText;
-    private Formatting playerClassFormat;
     private int level = 1;
     private float xp = 0;
     private int maxHealth = 100;
@@ -34,18 +31,26 @@ public class PlayerStat {
     private float needXpToLevelUp = ExpHandler.getBaseLevelUpXpValue();
     private int selectPoint = 5;
 
+    private String playerClassId;
+
+
+    public PlayerStat() {
+        var noneClass = new NonePlayerClass();
+        this.playerClassId = noneClass.getClassId().toString();
+
+    }
+
     public void setPlayer_class(ServerPlayerEntity player, IPlayerClass player_class) {
-        this.playerClassId = player_class.getClassId();
-        this.classTranslatableText = player_class.getClassText();
-        this.playerClassFormat = player_class.getTextFormat();
+        this.playerClassId = player_class.getClassId().toString();
+
     }
 
     public Identifier getPlayerClassId() {
-        return playerClassId;
+        return new Identifier(playerClassId);
     }
 
     public void setPlayerClassId(Identifier playerClassId) {
-        this.playerClassId = playerClassId;
+        this.playerClassId = playerClassId.toString();
     }
 
     public void addXP(ServerPlayerEntity player, float i) {
