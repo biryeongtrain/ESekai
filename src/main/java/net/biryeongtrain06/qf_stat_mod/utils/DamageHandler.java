@@ -12,7 +12,6 @@ public class DamageHandler {
         if (!player.isInvulnerableTo(source)) {
             ServerPlayerEntity sPlayer = (ServerPlayerEntity) player;
             PlayerStat stat = DataStorage.loadPlayerStat(sPlayer);
-            //stat.addCurrentHealth((ServerPlayerEntity) player, -amount);
             stat.damageHealth(source, player, amount);
             DataStorage.savePlayerStat(sPlayer, stat);
         }

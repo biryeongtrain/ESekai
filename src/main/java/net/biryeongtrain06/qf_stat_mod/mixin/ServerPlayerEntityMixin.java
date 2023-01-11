@@ -9,13 +9,10 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import javax.security.auth.callback.Callback;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin implements IServerPlayerEntity {
@@ -24,7 +21,6 @@ public abstract class ServerPlayerEntityMixin implements IServerPlayerEntity {
 
     @Inject(at = @At("RETURN"), method = ("writeCustomDataToNbt"))
     public void writeCustomDataToNbt(NbtCompound nbt, CallbackInfo ci) {
-        ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
         nbt.putBoolean("isPlayedBefore", this.isPlayedBefore);
         nbt.putBoolean("isDisplaySystemMessage", this.isDisplaySystemMessage);
     }
