@@ -31,7 +31,7 @@ public class InitCommand {
         );
         dispatcher.register(
                 literal("changePlayerClass")
-                        .executes(changePlayerClass::setCurrentHP)
+                        .executes(ChangePlayerClass::setCurrentHP)
         );
         dispatcher.register(
                 literal("getRarityModifier")
@@ -40,6 +40,10 @@ public class InitCommand {
         dispatcher.register(
                 literal("openGUI")
                         .executes(TestCommands::openGUI)
+        );
+        dispatcher.register(
+                literal("setTest")
+                        .executes(TestCommands::setTest)
         );
     }
 }

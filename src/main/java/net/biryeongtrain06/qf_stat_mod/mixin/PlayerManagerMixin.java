@@ -1,7 +1,7 @@
 package net.biryeongtrain06.qf_stat_mod.mixin;
 
 import eu.pb4.playerdata.api.PlayerDataApi;
-import net.biryeongtrain06.qf_stat_mod.event.PlayerJoinCallback;
+import net.biryeongtrain06.qf_stat_mod.callback.PlayerJoinCallback;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.PlayerManager;

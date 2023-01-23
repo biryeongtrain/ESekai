@@ -1,4 +1,4 @@
-package net.biryeongtrain06.qf_stat_mod.event;
+package net.biryeongtrain06.qf_stat_mod.callback;
 
 import eu.pb4.playerdata.api.PlayerDataApi;
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
@@ -20,15 +20,15 @@ import net.minecraft.util.Formatting;
 
 
 import static net.biryeongtrain06.qf_stat_mod.api.DataStorage.PLAYER_STAT_DATA_STORAGE;
-import static net.biryeongtrain06.qf_stat_mod.api.DataStorage.TEST_DATA_PLAYER_DATA_STORAGE;
+import static net.biryeongtrain06.qf_stat_mod.api.DataStorage.TEST_PLAYER_DATA_STORAGE;
 
 
 public class CallbackInit {
     public static void playerJoinCallback(ServerPlayerEntity player) {
         IServerPlayerEntity iPlayer = (IServerPlayerEntity) player;
-        if (PlayerDataApi.getCustomDataFor(player, TEST_DATA_PLAYER_DATA_STORAGE) == null) {
+        if (PlayerDataApi.getCustomDataFor(player, TEST_PLAYER_DATA_STORAGE) == null) {
             var testStat = new TestData();
-            PlayerDataApi.setCustomDataFor(player, TEST_DATA_PLAYER_DATA_STORAGE, testStat);
+            PlayerDataApi.setCustomDataFor(player, TEST_PLAYER_DATA_STORAGE, testStat);
         }
         if (!iPlayer.isPlayedBefore() || DataStorage.loadPlayerStat(player) == null) {
             var PlayerStat = new PlayerStat();

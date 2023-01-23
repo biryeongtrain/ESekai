@@ -6,7 +6,7 @@ import net.biryeongtrain06.qf_stat_mod.utils.PlayerHelper;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-public class changePlayerClass {
+public class ChangePlayerClass {
     public static int setCurrentHP(CommandContext<ServerCommandSource> objectCommandContext) {
         try {
             ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();

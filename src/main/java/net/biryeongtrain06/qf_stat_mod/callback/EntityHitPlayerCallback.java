@@ -1,4 +1,4 @@
-package net.biryeongtrain06.qf_stat_mod.event;
+package net.biryeongtrain06.qf_stat_mod.callback;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;

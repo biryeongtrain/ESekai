@@ -4,7 +4,7 @@ package net.biryeongtrain06.qf_stat_mod;
 import net.biryeongtrain06.qf_stat_mod.command.GameRuleKeys;
 import net.biryeongtrain06.qf_stat_mod.data.MobLevelDataLoader;
 import net.biryeongtrain06.qf_stat_mod.data.MobXpDataLoader;
-import net.biryeongtrain06.qf_stat_mod.event.CallbackInit;
+import net.biryeongtrain06.qf_stat_mod.callback.CallbackInit;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.resource.ResourceType;
