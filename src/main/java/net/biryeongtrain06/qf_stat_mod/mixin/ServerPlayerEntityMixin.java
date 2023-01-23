@@ -9,6 +9,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import org.apache.logging.log4j.core.jmx.Server;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -49,6 +50,15 @@ public abstract class ServerPlayerEntityMixin implements IServerPlayerEntity {
         );
     }
 
+    @Inject(at = @At("RETURN"), method = ("tick"))
+    public void qfCustomHeal(CallbackInfo ci) {
+        ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
+        if (player.getHealth() < player.getMaxHealth() && player.age % 20 == 0) {
+            PlayerStat playerStat = DataStorage.loadPlayerStat(player);
+            playerStat.addCurrentHealth(player, playerStat.getRegenPerSecond());
+            DataStorage.savePlayerStat(player, playerStat);
+        }
+    }
     @Override
     public boolean isPlayedBefore() {
         return this.isPlayedBefore;

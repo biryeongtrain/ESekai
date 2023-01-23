@@ -20,6 +20,7 @@ public class PlayerStat {
     private float xp;
     private int maxHealth;
     private float currentHealth;
+    private float regenPerSecond;
     private int maxMana;
     private float currentMana;
     private boolean isManaUser;
@@ -40,6 +41,7 @@ public class PlayerStat {
         this.xp = 1;
         this.maxHealth = 100;
         this.currentHealth = getMaxHealth();
+        this.regenPerSecond = 5f;
         this.maxMana = 100;
         this.currentMana = getMaxMana();
         this.isManaUser = true;
@@ -134,6 +136,14 @@ public class PlayerStat {
         return this.currentHealth;
     }
 
+    public float getRegenPerSecond() {
+        return regenPerSecond;
+    }
+
+    public void setRegenPerSecond(float regenPerSecond) {
+        this.regenPerSecond = regenPerSecond;
+    }
+
     public float getCurrentMana() {
         return this.currentMana;
     }
@@ -185,6 +195,6 @@ public class PlayerStat {
         player.damage(new QfCustomDamage(s, s.getSource(), amount), calculatedDamage);
     }
     public void syncPlayerHealth(ServerPlayerEntity player) {
-        player.setHealth(getCurrentHealth() / getMaxHealth() * 20);
+        player.setHealth(MathHelper.clamp((float) Math.floor(getCurrentHealth() / getMaxHealth() * 20), 1f, player.getMaxHealth()));
     }
 }

@@ -22,7 +22,6 @@ public class MainStatSystem implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        DataStorage.register();
         CallbackInit.init();
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new MobXpDataLoader());
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new MobLevelDataLoader());

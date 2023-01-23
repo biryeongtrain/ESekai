@@ -15,7 +15,11 @@ public class DataStorage {
         PlayerDataApi.setCustomDataFor(player, PLAYER_STAT_DATA_STORAGE, playerStat);
     }
 
-    public static void register() {
-        PlayerDataApi.register(PLAYER_STAT_DATA_STORAGE);
+    private static <T extends PlayerDataStorage<?>> void register(T DataStorage) {
+        PlayerDataApi.register(DataStorage);
+    }
+
+    static {
+        register(PLAYER_STAT_DATA_STORAGE);
     }
 }
