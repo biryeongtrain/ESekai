@@ -2,11 +2,10 @@ package net.biryeongtrain06.qf_stat_mod.callback;
 
 import eu.pb4.playerdata.api.PlayerDataApi;
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
-import net.biryeongtrain06.qf_stat_mod.api.TestData;
-import net.biryeongtrain06.qf_stat_mod.command.InitCommand;
-import net.biryeongtrain06.qf_stat_mod.player.IServerPlayerEntity;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
+import net.biryeongtrain06.qf_stat_mod.command.InitCommand;
 import net.biryeongtrain06.qf_stat_mod.gui.PlayerStatBar;
+import net.biryeongtrain06.qf_stat_mod.player.IServerPlayerEntity;
 import net.biryeongtrain06.qf_stat_mod.utils.DamageHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
@@ -18,18 +17,12 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-
 import static net.biryeongtrain06.qf_stat_mod.api.DataStorage.PLAYER_STAT_DATA_STORAGE;
-import static net.biryeongtrain06.qf_stat_mod.api.DataStorage.TEST_PLAYER_DATA_STORAGE;
 
 
 public class CallbackInit {
     public static void playerJoinCallback(ServerPlayerEntity player) {
         IServerPlayerEntity iPlayer = (IServerPlayerEntity) player;
-        if (PlayerDataApi.getCustomDataFor(player, TEST_PLAYER_DATA_STORAGE) == null) {
-            var testStat = new TestData();
-            PlayerDataApi.setCustomDataFor(player, TEST_PLAYER_DATA_STORAGE, testStat);
-        }
         if (!iPlayer.isPlayedBefore() || DataStorage.loadPlayerStat(player) == null) {
             var PlayerStat = new PlayerStat();
             DataStorage.savePlayerStat(player, PlayerStat);

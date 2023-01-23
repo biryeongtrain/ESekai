@@ -41,9 +41,5 @@ public class InitCommand {
                 literal("openGUI")
                         .executes(TestCommands::openGUI)
         );
-        dispatcher.register(
-                literal("setTest")
-                        .executes(TestCommands::setTest)
-        );
     }
 }

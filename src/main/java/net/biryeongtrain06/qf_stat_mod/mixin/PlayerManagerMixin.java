@@ -15,10 +15,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import static net.biryeongtrain06.qf_stat_mod.api.DataStorage.PLAYER_STAT_DATA_STORAGE;
 
 
-@Mixin(PlayerManager.class)
+@Mixin(value = PlayerManager.class, priority = 499)
 public class PlayerManagerMixin {
 
-    @Inject(at = @At("RETURN"), method = "onPlayerConnect")
+    @Inject(at = @At("TAIL"), method = "onPlayerConnect")
     public void onPlayerJoin(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
         PlayerJoinCallback.EVENT.invoker().join(player);
     }
