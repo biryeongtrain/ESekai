@@ -3,6 +3,7 @@ package net.biryeongtrain06.qf_stat_mod.api;
 
 import net.biryeongtrain06.qf_stat_mod.playerclass.IPlayerClass;
 import net.biryeongtrain06.qf_stat_mod.playerclass.NonePlayerClass;
+import net.biryeongtrain06.qf_stat_mod.utils.Elements;
 import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.QfCustomDamage;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
@@ -24,7 +25,13 @@ public class PlayerStat {
     private int maxMana;
     private float currentMana;
     private boolean isManaUser;
-    private int defense;
+    private int armor;
+    private int dodge;
+    private float fire_resistance;
+    private float water_resistance;
+    private float earth_resistance;
+    private float light_resistance;
+    private float dark_resistance;
     private float projectileDamageFlat;
     private float projectileDamagePercent;
     private float projectileDamageMulti;
@@ -45,11 +52,15 @@ public class PlayerStat {
         this.maxMana = 100;
         this.currentMana = getMaxMana();
         this.isManaUser = true;
-        this.defense = 0;
+        this.armor = 0;
+        this.dodge = 0;
+        this.fire_resistance = 0;
+        this.water_resistance = 0;
+        this.earth_resistance = 0;
+        this.light_resistance = 0;
+        this.dark_resistance = 0;
         this.projectileDamageFlat = 0;
-        projectileDamagePercent = 0;
         this.projectileDamagePercent = 0;
-        projectileDamageMulti = 0;
         this.projectileDamageMulti = 0;
         this.needXpToLevelUp = ExpHandler.getBaseLevelUpXpValue();
         this.selectPoint = 5;
@@ -127,6 +138,7 @@ public class PlayerStat {
     public int getMaxHealth() {
         return this.maxHealth;
     }
+
     public void addCurrentHealth(ServerPlayerEntity player, float amount) {
         this.currentHealth += amount;
         this.currentHealth = MathHelper.clamp(this.currentHealth, 0f, (float) getMaxHealth());
@@ -142,6 +154,62 @@ public class PlayerStat {
 
     public void setRegenPerSecond(float regenPerSecond) {
         this.regenPerSecond = regenPerSecond;
+    }
+
+    public int getArmor() {
+        return armor;
+    }
+
+    public void setArmor(int armor) {
+        this.armor = armor;
+    }
+
+    public int getDodge() {
+        return dodge;
+    }
+
+    public void setDodge(int dodge) {
+        this.dodge = dodge;
+    }
+
+    public float getFire_resistance() {
+        return fire_resistance;
+    }
+
+    public void setFire_resistance(int fire_resistance) {
+        this.fire_resistance = fire_resistance;
+    }
+
+    public float getWater_resistance() {
+        return water_resistance;
+    }
+
+    public void setWater_resistance(int water_resistance) {
+        this.water_resistance = water_resistance;
+    }
+
+    public float getEarth_resistance() {
+        return earth_resistance;
+    }
+
+    public void setEarth_resistance(int earth_resistance) {
+        this.earth_resistance = earth_resistance;
+    }
+
+    public float getLight_resistance() {
+        return light_resistance;
+    }
+
+    public void setLight_resistance(int light_resistance) {
+        this.light_resistance = light_resistance;
+    }
+
+    public float getDark_resistance() {
+        return dark_resistance;
+    }
+
+    public void setDark_resistance(int dark_resistance) {
+        this.dark_resistance = dark_resistance;
     }
 
     public float getCurrentMana() {
@@ -188,11 +256,12 @@ public class PlayerStat {
     public void setSelectPoint(int value) {
         this.selectPoint = value;
     }
+
     public void damageHealth(DamageSource s, PlayerEntity player, float amount) {
         this.currentHealth = MathHelper.clamp(this.currentHealth - amount, 0f, (float) getMaxHealth());
         float calculatedDamage = (amount / getMaxHealth()) * player.getMaxHealth();
         player.hurtTime = 0;
-        player.damage(new QfCustomDamage(s, s.getSource(), amount), calculatedDamage);
+        player.damage(new QfCustomDamage(s, s.getSource(), Elements.PHYSICAL ,amount), calculatedDamage);
     }
     public void syncPlayerHealth(ServerPlayerEntity player) {
         player.setHealth(MathHelper.clamp((float) Math.floor(getCurrentHealth() / getMaxHealth() * 20), 1f, player.getMaxHealth()));

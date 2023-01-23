@@ -8,13 +8,15 @@ public class QfCustomDamage extends EntityDamageSource {
 
     final DamageSource originalDamageSource;
     final float damage;
+    final Elements element;
 
-    public QfCustomDamage(DamageSource originalDamageSource, Entity source, float amount) {
+    public QfCustomDamage(DamageSource originalDamageSource, Entity source,Elements element, float amount) {
         super("custom_damage", source);
         this.setBypassesArmor();
         this.setUnblockable();
         this.setBypassesProtection();
         this.originalDamageSource = originalDamageSource;
+        this.element = element;
         this.damage = amount;
     }
 }
