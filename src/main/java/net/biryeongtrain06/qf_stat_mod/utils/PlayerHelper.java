@@ -11,6 +11,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
@@ -69,6 +71,24 @@ public class PlayerHelper {
         NbtCompound ownerTag = stack.getOrCreateSubNbt("SkullOwner");
         ownerTag.putUuid("Id", player.getUuid());
         return stack;
+    }
+
+    private static void setHeadLore(ItemStack stack, ServerPlayerEntity player) {
+        PlayerStat playerStat = DataStorage.loadPlayerStat(player);
+        NbtList lore = new NbtList();
+        NbtCompound itemNBT = stack.getOrCreateSubNbt(ItemStack.LORE_KEY);
+        lore.add(NbtString.of(Text.Serializer.toJson(Text.empty()
+                .append(StatEnums.HEALTH.getTranslatableName())
+                .append(Text.literal(" : " + playerStat.getMaxHealth())))
+                .formatted(StatEnums.HEALTH.getFormat())));
+        lore.add(NbtString.of(Text.Serializer.toJson(Text.empty()
+                    .append(StatEnums.MANA.getTranslatableName())
+                    .append(Text.literal(" : " + playerStat.getMaxMana()))
+                    .formatted(StatEnums.MANA.getFormat()))));
+        lore.add(NbtString.of(Text.Serializer.toJson(Text.empty()
+                .append(StatEnums.ARMOR.getTranslatableName())
+                .append(Text.literal(" : ")))));
+
     }
     public static void register(IPlayerClass playerClass) {
         playerClassList.add(playerClass);

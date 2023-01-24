@@ -48,7 +48,7 @@ public class PlayerStat {
         this.xp = 1;
         this.maxHealth = 100;
         this.currentHealth = getMaxHealth();
-        this.regenPerSecond = 5f;
+        this.regenPerSecond = 1f;
         this.maxMana = 100;
         this.currentMana = getMaxMana();
         this.isManaUser = true;
@@ -257,13 +257,15 @@ public class PlayerStat {
         this.selectPoint = value;
     }
 
-    public void damageHealth(DamageSource s, PlayerEntity player, float amount) {
+    public void damageHealth(QfCustomDamage s, PlayerEntity player, float amount) {
         this.currentHealth = MathHelper.clamp(this.currentHealth - amount, 0f, (float) getMaxHealth());
         float calculatedDamage = (amount / getMaxHealth()) * player.getMaxHealth();
         player.hurtTime = 0;
-        player.damage(new QfCustomDamage(s, s.getSource(), Elements.PHYSICAL ,amount), calculatedDamage);
+        player.sendMessage(Text.literal(String.valueOf(amount)));
+        player.sendMessage(Text.literal(String.valueOf(calculatedDamage)));
+        player.damage(s, calculatedDamage);
     }
     public void syncPlayerHealth(ServerPlayerEntity player) {
-        player.setHealth(MathHelper.clamp((float) Math.floor(getCurrentHealth() / getMaxHealth() * 20), 1f, player.getMaxHealth()));
+        player.setHealth(MathHelper.clamp((float) Math.floor(getCurrentHealth() / getMaxHealth() * 20), 0f, player.getMaxHealth()));
     }
 }

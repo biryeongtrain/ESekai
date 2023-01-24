@@ -44,8 +44,9 @@ public class CallbackInit {
     }
 
     public static void EntityHitPlayerCallback(PlayerEntity player, LivingEntity entity, DamageSource source, float amount) {
+        DamageHandler dmgHandler = new DamageHandler();
         ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
-        DamageHandler.PlayerDamageCalculate(player, source, amount);
+        dmgHandler.PlayerDamageCalculate(player, source, amount);
     }
 
     public static void init() {

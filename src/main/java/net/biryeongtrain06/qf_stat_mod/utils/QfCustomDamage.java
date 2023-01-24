@@ -19,4 +19,8 @@ public class QfCustomDamage extends EntityDamageSource {
         this.element = element;
         this.damage = amount;
     }
+
+    public Elements getElement() {
+        return element;
+    }
 }

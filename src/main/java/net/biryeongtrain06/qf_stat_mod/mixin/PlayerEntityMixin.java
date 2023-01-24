@@ -27,13 +27,13 @@ public class PlayerEntityMixin {
         PlayerEntity player = (PlayerEntity)(Object) this;
         PlayerKilledOtherCallback.EVENT.invoker().onKilledOther(player, entity);
     }
-    @Inject(method = "applyDamage", at = @At("HEAD"), cancellable = true)
-    public void applyDamageHook(DamageSource source, float amount, CallbackInfo ci) {
+    @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
+    public void applyDamageHook(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         PlayerEntity player = (PlayerEntity) (Object) this;
         if (!source.equals(DamageSource.OUT_OF_WORLD)) {
             if (!(source instanceof QfCustomDamage)) {
-                ci.cancel();
                 EntityHitPlayerCallback.EVENT.invoker().onHit(player, (LivingEntity) source.getSource(), source, amount);
+                cir.cancel();
             }
         }
     }
