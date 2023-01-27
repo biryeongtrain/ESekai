@@ -10,6 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.SkullItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
@@ -68,8 +69,9 @@ public class PlayerHelper {
     public static ItemStack getHead(ServerPlayerEntity player) {
         ItemStack stack = new ItemStack(Items.PLAYER_HEAD);
         stack.setCustomName(player.getDisplayName());
-        NbtCompound ownerTag = stack.getOrCreateSubNbt("SkullOwner");
+        NbtCompound ownerTag = stack.getOrCreateSubNbt(SkullItem.SKULL_OWNER_KEY);
         ownerTag.putUuid("Id", player.getUuid());
+        setHeadLore(stack, player);
         return stack;
     }
 
@@ -87,8 +89,13 @@ public class PlayerHelper {
                     .formatted(StatEnums.MANA.getFormat()))));
         lore.add(NbtString.of(Text.Serializer.toJson(Text.empty()
                 .append(StatEnums.ARMOR.getTranslatableName())
-                .append(Text.literal(" : ")))));
-
+                .append(Text.literal(" : " + playerStat.getArmor()))
+                .formatted(StatEnums.ARMOR.getFormat()))));
+        lore.add(NbtString.of(Text.Serializer.toJson(Text.empty()
+                .append(StatEnums.DODGE.getTranslatableName())
+                .append(Text.literal(" : " + playerStat.getDodge()))
+                .formatted(StatEnums.DODGE.getFormat()))));
+        itemNBT.put(ItemStack.LORE_KEY, lore);
     }
     public static void register(IPlayerClass playerClass) {
         playerClassList.add(playerClass);

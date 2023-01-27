@@ -21,7 +21,7 @@ import static net.biryeongtrain06.qf_stat_mod.api.DataStorage.PLAYER_STAT_DATA_S
 
 
 public class CallbackInit {
-    public static void playerJoinCallback(ServerPlayerEntity player) {
+    private static void playerJoinCallback(ServerPlayerEntity player) {
         IServerPlayerEntity iPlayer = (IServerPlayerEntity) player;
         if (!iPlayer.isPlayedBefore() || DataStorage.loadPlayerStat(player) == null) {
             var PlayerStat = new PlayerStat();
@@ -31,7 +31,7 @@ public class CallbackInit {
         PlayerStatBar.Open(player);
     }
 
-    public static void playerKilledCallback(PlayerEntity killer, LivingEntity victim) {
+    private static void playerKilledCallback(PlayerEntity killer, LivingEntity victim) {
         ServerPlayerEntity killPlayer = (ServerPlayerEntity) killer;
         IServerPlayerEntity iPlayer =(IServerPlayerEntity) killPlayer;
         PlayerStat stat = PlayerDataApi.getCustomDataFor(killPlayer, PLAYER_STAT_DATA_STORAGE);
@@ -43,7 +43,7 @@ public class CallbackInit {
         PlayerDataApi.setCustomDataFor(killPlayer, PLAYER_STAT_DATA_STORAGE, stat);
     }
 
-    public static void EntityHitPlayerCallback(PlayerEntity player, LivingEntity entity, DamageSource source, float amount) {
+    private static void EntityHitPlayerCallback(PlayerEntity player, LivingEntity entity, DamageSource source, float amount) {
         DamageHandler dmgHandler = new DamageHandler();
         ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
         dmgHandler.PlayerDamageCalculate(player, source, amount);
