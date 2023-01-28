@@ -4,11 +4,11 @@ import net.minecraft.util.Formatting;
 
 public enum EntityRank {
     UN_DECIDED("un_decided", 0, Formatting.WHITE, 0F, 0),
-    COMMON("common", 0, Formatting.WHITE, 1, 64),
-    RARE("rare", 1, Formatting.AQUA, 1.25F, 20),
-    UNIQUE("unique", 3, Formatting.LIGHT_PURPLE, 1.75F, 10),
-    LEGENDARY("legendary", 5, Formatting.GOLD, 3F, 5),
-    MYTHIC("mythic", 7, Formatting.RED, 5F, 1);
+    COMMON("common", 0, Formatting.WHITE, 1, 82),
+    RARE("rare", 1, Formatting.AQUA, 1.25F, 10),
+    UNIQUE("unique", 3, Formatting.LIGHT_PURPLE, 1.75F, 5),
+    LEGENDARY("legendary", 5, Formatting.GOLD, 3F, 2.5f),
+    MYTHIC("mythic", 7, Formatting.RED, 5F, 0.5f);
 
     EntityRank(String translationKey, int abilities, Formatting color, float expScaling, float spawn_chance) {
         this.translationKey = "mob_rank" + translationKey;

@@ -1,13 +1,14 @@
-package net.biryeongtrain06.qf_stat_mod.command;
+package net.biryeongtrain06.qf_stat_mod.register;
 
 import com.mojang.brigadier.CommandDispatcher;
+import net.biryeongtrain06.qf_stat_mod.command.*;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 
 import static net.minecraft.server.command.CommandManager.literal;
 
-public class InitCommand {
+public class QfStatSystemCommands {
     public static void initCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment env) {
         dispatcher.register(
                 literal("getXp")

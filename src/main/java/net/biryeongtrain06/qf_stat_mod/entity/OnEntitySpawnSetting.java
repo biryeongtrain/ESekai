@@ -1,13 +1,11 @@
 package net.biryeongtrain06.qf_stat_mod.entity;
 
-import net.biryeongtrain06.qf_stat_mod.command.GameRuleKeys;
+import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemGameRules;
+import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.PlayerHelper;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttributeInstance;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 
 public class OnEntitySpawnSetting {
@@ -17,22 +15,10 @@ public class OnEntitySpawnSetting {
             return;
         }
         int MAX_LEVEL = 100;
-        int SCALING_DISTANCE = 400;
-        PlayerEntity nearestPlayer = PlayerHelper.getNearestPlayer((ServerWorld) entity.world, entity);
+        final float SCALING_DISTANCE = ExpHandler.getLevelScaleModifier();
+        ServerPlayerEntity nearestPlayer = PlayerHelper.getNearestPlayer((ServerWorld) entity.world, entity);
 
-        GameRules gameRules = entity.getWorld().getGameRules();
+        boolean gameRules = entity.getWorld().getGameRules().getBoolean(QfStatSystemGameRules.ENTITY_FOLLOWS_PLAYER_LEVEL_SCALING);
 
-        if (gameRules.getBoolean(GameRuleKeys.ENTITY_FOLLOWS_PLAYER_LEVEL_SCALING)) {
-            if (nearestPlayer == null) {
-                float hp = (float) (Math.random() * 200 + 50);
-                EntityAttributeInstance entityAttributeInstance = entity.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
-                entityAttributeInstance.setBaseValue(hp);
-                entity.setHealth(hp);
-            }
-            else {
-                entity.setHealth((float) (Math.random() * (50 * 5) + 50));
-                //TODO ADD HEALTH MODIFIER
-            }
-        }
     }
 }

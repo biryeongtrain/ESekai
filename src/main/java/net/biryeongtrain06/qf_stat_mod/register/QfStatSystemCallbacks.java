@@ -1,9 +1,12 @@
-package net.biryeongtrain06.qf_stat_mod.callback;
+package net.biryeongtrain06.qf_stat_mod.register;
 
 import eu.pb4.playerdata.api.PlayerDataApi;
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
-import net.biryeongtrain06.qf_stat_mod.command.InitCommand;
+import net.biryeongtrain06.qf_stat_mod.callback.EntityHitPlayerCallback;
+import net.biryeongtrain06.qf_stat_mod.callback.MobSpawningCallback;
+import net.biryeongtrain06.qf_stat_mod.callback.PlayerJoinCallback;
+import net.biryeongtrain06.qf_stat_mod.callback.PlayerKilledOtherCallback;
 import net.biryeongtrain06.qf_stat_mod.entity.OnEntitySpawnSetting;
 import net.biryeongtrain06.qf_stat_mod.gui.PlayerStatBar;
 import net.biryeongtrain06.qf_stat_mod.player.IServerPlayerEntity;
@@ -16,7 +19,6 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
@@ -24,7 +26,7 @@ import net.minecraft.world.World;
 import static net.biryeongtrain06.qf_stat_mod.api.DataStorage.PLAYER_STAT_DATA_STORAGE;
 
 
-public class CallbackInit {
+public class QfStatSystemCallbacks {
     private static void playerJoinCallback(ServerPlayerEntity player) {
         IServerPlayerEntity iPlayer = (IServerPlayerEntity) player;
         if (!iPlayer.isPlayedBefore() || DataStorage.loadPlayerStat(player) == null) {
@@ -64,10 +66,10 @@ public class CallbackInit {
     }
 
     public static void init() {
-        CommandRegistrationCallback.EVENT.register(InitCommand::initCommand);
-        PlayerJoinCallback.EVENT.register(CallbackInit::playerJoinCallback);
-        PlayerKilledOtherCallback.EVENT.register(CallbackInit::playerKilledCallback);
-        EntityHitPlayerCallback.EVENT.register(CallbackInit::entityHitPlayerCallback);
-        MobSpawningCallback.EVENT.register(CallbackInit::onMobSpawned);
+        CommandRegistrationCallback.EVENT.register(QfStatSystemCommands::initCommand);
+        PlayerJoinCallback.EVENT.register(QfStatSystemCallbacks::playerJoinCallback);
+        PlayerKilledOtherCallback.EVENT.register(QfStatSystemCallbacks::playerKilledCallback);
+        EntityHitPlayerCallback.EVENT.register(QfStatSystemCallbacks::entityHitPlayerCallback);
+        MobSpawningCallback.EVENT.register(QfStatSystemCallbacks::onMobSpawned);
     }
 }

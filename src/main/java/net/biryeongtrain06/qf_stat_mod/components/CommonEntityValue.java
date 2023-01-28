@@ -9,13 +9,14 @@ public class CommonEntityValue implements ICommonEntityComponents {
     private int level = 1;
     private int defense = 0;
     private int additionalDefenseRate = 0;
+    private int dodge = 0;
     private EntityRank rank =  EntityRank.UN_DECIDED;
     private final MobEntity provider;
     private int numMaxAbilities = EntityRank.UN_DECIDED.getAbilities();
     private boolean healthIncreased = false;
 
     public boolean canApplyModifier(MobEntity provider) {
-        return this.rank.equals(EntityRank.UN_DECIDED) && provider.hasCustomName();
+        return this.rank.equals(EntityRank.UN_DECIDED) && !provider.hasCustomName();
     }
 
     public CommonEntityValue(MobEntity provider) {
@@ -88,7 +89,9 @@ public class CommonEntityValue implements ICommonEntityComponents {
 
     @Override
     public void setModifierRandomly() {
+        if (rank != EntityRank.COMMON && rank != EntityRank.UN_DECIDED) {
 
+        }
     }
 
     @Override

@@ -21,6 +21,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import org.apache.logging.log4j.core.jmx.Server;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -32,15 +33,15 @@ import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.debugLogger;
 public class PlayerHelper {
 
     private static List<IPlayerClass> playerClassList = new ArrayList<>();
-    public static PlayerEntity getNearestPlayer (ServerWorld world, LivingEntity entity) {
+    public static ServerPlayerEntity getNearestPlayer (ServerWorld world, LivingEntity entity) {
         return getNearestPlayer(world, entity.getPos());
     }
 
-    public static PlayerEntity getNearestPlayer (ServerWorld world, BlockPos pos) {
+    public static ServerPlayerEntity getNearestPlayer (ServerWorld world, BlockPos pos) {
         return getNearestPlayer(world, new Vec3d(pos.getX(), pos.getY(), pos.getZ()));
     }
 
-    public static PlayerEntity getNearestPlayer (ServerWorld world, Vec3d pos) {
+    public static ServerPlayerEntity getNearestPlayer (ServerWorld world, Vec3d pos) {
         Optional<ServerPlayerEntity> player = world.getPlayers()
                 .stream()
                 .min(Comparator.comparingDouble(x -> x.squaredDistanceTo(pos)));
@@ -100,6 +101,7 @@ public class PlayerHelper {
                 .append(Text.literal(" : " + playerStat.getSelectPoint()))
                 .formatted(StatEnums.SELECT_POINT.getFormat()))));
         itemNBT.put(ItemStack.LORE_KEY, lore);
+
     }
     public static void register(IPlayerClass playerClass) {
         playerClassList.add(playerClass);
