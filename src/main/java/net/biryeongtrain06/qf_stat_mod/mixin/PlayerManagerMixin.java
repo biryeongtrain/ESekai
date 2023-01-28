@@ -26,7 +26,7 @@ public class PlayerManagerMixin {
     @Inject(at = @At("TAIL"), method = "respawnPlayer")
     public void initPlayerStat(ServerPlayerEntity player, boolean alive, CallbackInfoReturnable<ServerPlayerEntity> cir) {
         PlayerStat playerStat = PlayerDataApi.getCustomDataFor(player, PLAYER_STAT_DATA_STORAGE);
-        playerStat.setCurrentHealth(player, playerStat.getMaxHealth());
+        playerStat.setCurrentHealth(playerStat.getMaxHealth());
         PlayerDataApi.setCustomDataFor(player, PLAYER_STAT_DATA_STORAGE, playerStat);
     }
 }

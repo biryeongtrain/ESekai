@@ -14,7 +14,7 @@ public class HP {
         try {
             ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();
             PlayerStat playerStat = DataStorage.loadPlayerStat(player);
-            playerStat.setCurrentHealth(player, 10);
+            playerStat.setCurrentHealth(10);
             PlayerDataApi.setCustomDataFor(player, PLAYER_STAT_DATA_STORAGE, playerStat);
         } catch(Exception e) {
             e.printStackTrace();
@@ -26,7 +26,7 @@ public class HP {
         try {
             ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();
             PlayerStat playerStat = DataStorage.loadPlayerStat(player);
-            playerStat.addCurrentHealth(player, 10);
+            playerStat.addCurrentHealth(10);
             PlayerDataApi.setCustomDataFor(player, PLAYER_STAT_DATA_STORAGE, playerStat);
 
         } catch(Exception e) {

@@ -53,7 +53,7 @@ public class PlayerHelper {
         IPlayerClass originalPlayerClass = getPlayerClass(playerStat.getPlayerClassId());
         playerStat = originalPlayerClass.onLostClass(player);
         Text debugPlayerClass = originalPlayerClass.getClassText();
-        playerStat.setPlayer_class(player, playerClass);
+        playerStat.setPlayer_class(playerClass);
         playerClass.onGetClass(player, playerStat);
         debugLogger.info("Player {}'s class changed : {} -> {}", player.getDisplayName(), debugPlayerClass, playerClass.getClassText());
     }
@@ -78,7 +78,7 @@ public class PlayerHelper {
     private static void setHeadLore(ItemStack stack, ServerPlayerEntity player) {
         PlayerStat playerStat = DataStorage.loadPlayerStat(player);
         NbtList lore = new NbtList();
-        NbtCompound itemNBT = stack.getOrCreateSubNbt(ItemStack.LORE_KEY);
+        NbtCompound itemNBT = stack.getOrCreateSubNbt(ItemStack.DISPLAY_KEY);
         lore.add(NbtString.of(Text.Serializer.toJson(Text.empty()
                 .append(StatEnums.HEALTH.getTranslatableName())
                 .append(Text.literal(" : " + playerStat.getMaxHealth())))
@@ -95,6 +95,10 @@ public class PlayerHelper {
                 .append(StatEnums.DODGE.getTranslatableName())
                 .append(Text.literal(" : " + playerStat.getDodge()))
                 .formatted(StatEnums.DODGE.getFormat()))));
+        lore.add(NbtString.of(Text.Serializer.toJson(Text.empty()
+                .append(StatEnums.SELECT_POINT.getTranslatableName())
+                .append(Text.literal(" : " + playerStat.getSelectPoint()))
+                .formatted(StatEnums.SELECT_POINT.getFormat()))));
         itemNBT.put(ItemStack.LORE_KEY, lore);
     }
     public static void register(IPlayerClass playerClass) {

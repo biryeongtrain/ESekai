@@ -28,5 +28,9 @@
   "qf_stat_mod.earth_resistance" : "Earth Resistance",
   "qf_stat_mod.light_resistance" : "Light Resistance",
   "qf_stat_mod.dark_resistance" : "Dark Resistance",
+  "qf_stat_mod.strength" : "Strength",
+  "qf_stat_mod.dexterity" : "Dexterity",
+  "qf_stat_mod.wisdom" : "Wisdom",
+  "qf_stat_mod.select_point" : "Selection Point",
   "qf_stat_mod.sidebar.title" : "Stat"
 }

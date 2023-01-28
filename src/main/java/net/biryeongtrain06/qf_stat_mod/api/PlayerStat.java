@@ -3,12 +3,9 @@ package net.biryeongtrain06.qf_stat_mod.api;
 
 import net.biryeongtrain06.qf_stat_mod.playerclass.IPlayerClass;
 import net.biryeongtrain06.qf_stat_mod.playerclass.NonePlayerClass;
-import net.biryeongtrain06.qf_stat_mod.utils.Elements;
 import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.QfCustomDamage;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -17,6 +14,7 @@ import net.minecraft.util.math.MathHelper;
 
 @SuppressWarnings("unused")
 public class PlayerStat {
+    final ServerPlayerEntity player;
     private int level;
     private float xp;
     private int maxHealth;
@@ -37,11 +35,16 @@ public class PlayerStat {
     private float projectileDamageMulti;
     private float needXpToLevelUp;
     private int selectPoint;
+    private int strength = 0;
+    private int dexterity = 0;
+    private int intelligence = 0;
+    private int wisdom = 0;
 
     private String playerClassId;
 
 
-    public PlayerStat() {
+    public PlayerStat(ServerPlayerEntity player) {
+        this.player = player;
         var noneClass = new NonePlayerClass();
         this.playerClassId = noneClass.getClassId().toString();
         this.level = 1;
@@ -66,7 +69,7 @@ public class PlayerStat {
         this.selectPoint = 5;
     }
 
-    public void setPlayer_class(ServerPlayerEntity player, IPlayerClass player_class) {
+    public void setPlayer_class(IPlayerClass player_class) {
         this.playerClassId = player_class.getClassId().toString();
 
     }
@@ -79,12 +82,12 @@ public class PlayerStat {
         this.playerClassId = playerClassId.toString();
     }
 
-    public void addXP(ServerPlayerEntity player, float i) {
+    public void addXP(float i) {
         this.xp += i;
 
         if (xp >= needXpToLevelUp) {
             this.xp-= needXpToLevelUp;
-            addLevel(player, 1);
+            addLevel(1);
             this.needXpToLevelUp = (float) (ExpHandler.getBaseLevelUpXpValue() * Math.pow(1 + ExpHandler.getLevelScaleModifier(), getLevel()));
         }
     }
@@ -106,9 +109,9 @@ public class PlayerStat {
         return this.level;
     }
 
-    public void addLevel(ServerPlayerEntity player, int i) {
+    public void addLevel(int i) {
         this.level += i;
-        player.sendMessage(Text.translatable(TextHelper.createTranslation("system_message.levelUp")).formatted(Formatting.GREEN));
+        this.player.sendMessage(Text.translatable(TextHelper.createTranslation("system_message.levelUp")).formatted(Formatting.GREEN));
         addSelectPoint(ExpHandler.getAmountSelectionPointWhenLevelUp());
     }
 
@@ -117,32 +120,32 @@ public class PlayerStat {
     }
 
 
-    public void setMaxHealth(ServerPlayerEntity player,int amount) {
+    public void setMaxHealth(int amount) {
         if (amount <= 0 ) {
             throw new RuntimeException("value can't be under 0");
         }
         this.maxHealth = amount;
-        syncPlayerHealth(player);
+        syncPlayerHealth();
     }
 
-    public void addMaxHealth(ServerPlayerEntity player, int amount) {
-        this.maxHealth += amount;
-        syncPlayerHealth(player);
+    public void addMaxHealth(int amount) {
+        this.maxHealth = MathHelper.clamp(this.maxHealth + amount, 1, Integer.MAX_VALUE);
+        syncPlayerHealth();
     }
 
-    public void setCurrentHealth(ServerPlayerEntity player, float amount) {
+    public void setCurrentHealth(float amount) {
         this.currentHealth = MathHelper.clamp(amount, 0f, (float) getMaxHealth());
-        syncPlayerHealth(player);
+        syncPlayerHealth();
     }
 
     public int getMaxHealth() {
         return this.maxHealth;
     }
 
-    public void addCurrentHealth(ServerPlayerEntity player, float amount) {
+    public void addCurrentHealth(float amount) {
         this.currentHealth += amount;
         this.currentHealth = MathHelper.clamp(this.currentHealth, 0f, (float) getMaxHealth());
-        syncPlayerHealth(player);
+        syncPlayerHealth();
     }
     public float getCurrentHealth() {
         return this.currentHealth;
@@ -168,8 +171,12 @@ public class PlayerStat {
         return dodge;
     }
 
-    public void setDodge(int dodge) {
-        this.dodge = dodge;
+    public void setDodge(int value) {
+        this.dodge = MathHelper.clamp(value, 0, 90);
+    }
+
+    public void addDodge(int value) {
+        this.dodge += MathHelper.clamp(value, 0, 90);
     }
 
     public float getFire_resistance() {
@@ -220,7 +227,7 @@ public class PlayerStat {
         if (!isManaUser) {
             return;
         }
-        this.currentMana += MathHelper.clamp(val, 0F, getMaxMana());
+        this.currentMana = MathHelper.clamp(this.currentMana + val, 0F, getMaxMana());
     }
 
     public void setCurrentMana(float val) {
@@ -234,8 +241,7 @@ public class PlayerStat {
     }
 
     public void addMaxMana(int val) {
-        this.maxMana += val;
-        this.maxMana = MathHelper.clamp(this.maxMana, 0, Integer.MAX_VALUE);
+        this.maxMana = MathHelper.clamp(this.maxMana + val, 0, Integer.MAX_VALUE);
     }
 
     public void setMaxMana(int val) {
@@ -257,15 +263,75 @@ public class PlayerStat {
         this.selectPoint = value;
     }
 
-    public void damageHealth(QfCustomDamage s, PlayerEntity player, float amount) {
+    public void damageHealth(QfCustomDamage s, float amount) {
         this.currentHealth = MathHelper.clamp(this.currentHealth - amount, 0f, (float) getMaxHealth());
-        float calculatedDamage = (amount / getMaxHealth()) * player.getMaxHealth();
-        player.hurtTime = 0;
-        player.sendMessage(Text.literal(String.valueOf(amount)));
-        player.sendMessage(Text.literal(String.valueOf(calculatedDamage)));
-        player.damage(s, calculatedDamage);
+        float calculatedDamage = (amount / getMaxHealth()) * this.player.getMaxHealth();
+        this.player.hurtTime = 0;
+        this.player.sendMessage(Text.literal(String.valueOf(amount)));
+        this.player.sendMessage(Text.literal(String.valueOf(calculatedDamage)));
+        this.player.damage(s, calculatedDamage);
     }
-    public void syncPlayerHealth(ServerPlayerEntity player) {
-        player.setHealth(MathHelper.clamp((float) Math.floor(getCurrentHealth() / getMaxHealth() * 20), 0f, player.getMaxHealth()));
+    public void syncPlayerHealth() {
+        this.player.setHealth(MathHelper.clamp((float) Math.floor(getCurrentHealth() / getMaxHealth() * 20), 0f, player.getMaxHealth()));
+    }
+
+    public boolean hasSelectPoint() {
+        return this.selectPoint >= 1;
+    }
+
+    public boolean tryRemoveSelectPoint() {
+        if (hasSelectPoint()) {
+            this.setSelectPoint(MathHelper.clamp(this.getSelectPoint() - 1, 0, Integer.MAX_VALUE));
+            return true;
+        }
+        return false;
+    }
+
+    public void addStrength(int value) {
+        int changedValue = 0;
+        if (this.strength != 0) {
+            changedValue -= strength * 2;
+        }
+        this.strength = MathHelper.clamp(strength + value, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        if (strength != 0) {
+            changedValue += strength * 2;
+        }
+        addMaxHealth(changedValue);
+    }
+
+    public void addDexterity(int value) {
+        int changedValue = 0;
+        if (this.dexterity != 0) {
+            changedValue -= this.dexterity;
+        }
+        this.dexterity = MathHelper.clamp(dexterity + value, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        if (this.dexterity != 0) {
+            changedValue += dexterity;
+        }
+        addDodge(changedValue);
+    }
+
+    public void addWisdom(int value) {
+        int changedValue = 0;
+        if (this.wisdom != 0) {
+            changedValue -= this.wisdom * 7;
+        }
+        this.wisdom = MathHelper.clamp(this.wisdom + value, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        if (this.wisdom != 0) {
+            changedValue += this.wisdom * 7;
+        }
+        addMaxMana(changedValue);
+    }
+
+    public int getStrength() {
+        return strength;
+    }
+
+    public int getDexterity() {
+        return dexterity;
+    }
+
+    public int getWisdom() {
+        return wisdom;
     }
 }

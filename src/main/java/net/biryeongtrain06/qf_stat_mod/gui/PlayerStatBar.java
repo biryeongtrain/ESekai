@@ -1,11 +1,13 @@
 package net.biryeongtrain06.qf_stat_mod.gui;
 
 import eu.pb4.playerdata.api.PlayerDataApi;
+import eu.pb4.sgui.api.ClickType;
 import eu.pb4.sidebars.api.Sidebar;
 import eu.pb4.sidebars.api.lines.SidebarLine;
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.utils.PlayerHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
+import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
@@ -17,6 +19,8 @@ public class PlayerStatBar {
 
         sidebar.addPlayer(player);
         sidebar.show();
+
+
     }
 
     public static Sidebar getSidebar() {
@@ -33,5 +37,4 @@ public class PlayerStatBar {
 
         return sidebar;
     }
-
 }

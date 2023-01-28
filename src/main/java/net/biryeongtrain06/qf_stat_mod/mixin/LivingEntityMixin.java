@@ -2,6 +2,7 @@ package net.biryeongtrain06.qf_stat_mod.mixin;
 
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
+import net.biryeongtrain06.qf_stat_mod.callback.MobSpawningCallback;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
@@ -19,7 +20,7 @@ public class LivingEntityMixin {
         if (entity instanceof PlayerEntity) {
             ServerPlayerEntity player = (ServerPlayerEntity) entity;
             PlayerStat stat = DataStorage.loadPlayerStat(player);
-            stat.addCurrentHealth(player, amount);
+            stat.addCurrentHealth(amount);
             DataStorage.savePlayerStat(player, stat);
         }
     }
@@ -27,6 +28,6 @@ public class LivingEntityMixin {
     @Inject(method = "onSpawnPacket", at = @At("TAIL"))
     public void onLoadInit(EntitySpawnS2CPacket packet, CallbackInfo ci) {
         LivingEntity entity = (LivingEntity) (Object) this;
-
+        MobSpawningCallback.EVENT.invoker().onSpawn(entity, entity.getWorld());
     }
 }
