@@ -2,6 +2,9 @@ package net.biryeongtrain06.qf_stat_mod.entity;
 
 import net.minecraft.util.Formatting;
 
+import java.util.Arrays;
+import java.util.List;
+
 public enum EntityRank {
     UN_DECIDED("un_decided", 0, Formatting.WHITE, 0F, 0),
     COMMON("common", 0, Formatting.WHITE, 1, 82),
@@ -51,4 +54,11 @@ public enum EntityRank {
     public void setSpawn_chance(float spawn_chance) {
         this.spawn_chance = spawn_chance;
     }
+
+    public static List<EntityRank> getRanks() {
+        List<EntityRank> list = Arrays.stream(values()).toList();
+        list.remove(UN_DECIDED);
+        return list;
+    }
+
 }

@@ -3,6 +3,7 @@ package net.biryeongtrain06.qf_stat_mod;
 
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
+import dev.onyxstudios.cca.api.v3.component.ComponentRegistryV3;
 import net.biryeongtrain06.qf_stat_mod.components.ICommonEntityComponents;
 import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemGameRules;
 import net.biryeongtrain06.qf_stat_mod.data.MobLevelDataLoader;
@@ -21,7 +22,7 @@ public class MainStatSystem implements ModInitializer {
     public static final String MOD_ID ="qf_stat_mod";
     final public static Logger debugLogger = LogManager.getLogger("Qf Stat Debug");
 
-    public static final ComponentKey<ICommonEntityComponents> ENTITY_MODIFIERS = ComponentRegistry.getOrCreate(new Identifier(MOD_ID, "entity_modifiers"), ICommonEntityComponents.class);
+    public static final ComponentKey<ICommonEntityComponents> ENTITY_MODIFIERS = ComponentRegistryV3.INSTANCE.getOrCreate(new Identifier(MOD_ID, "entity_modifiers"), ICommonEntityComponents.class);
 
     @Override
     public void onInitialize() {

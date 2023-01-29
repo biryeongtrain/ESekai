@@ -34,12 +34,16 @@ public class CommonEntityValue implements ICommonEntityComponents {
         }
         float value = (float) (Math.random() * 100);
 
-        for (EntityRank rank : EntityRank.values()) {
-            if (value < rank.getSpawn_chance()) {
-                this.rank = rank;
-                break;
+        for(EntityRank rank : EntityRank.values()) {
+            if (rank == EntityRank.UN_DECIDED) {
+                continue;
             }
-            value -= rank.getSpawn_chance();
+            if (value < rank.getSpawn_chance()) {
+                value -= rank.getSpawn_chance();
+            } else {
+                this.rank = rank;
+                return;
+            }
         }
     }
 

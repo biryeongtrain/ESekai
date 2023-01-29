@@ -17,7 +17,7 @@ public class DamageHandler {
             QfCustomDamage qfDamageSource = new QfCustomDamage(source, source.getSource(), Elements.PHYSICAL, amount);
             if (stat.getDodge() < (Math.random() * 100)) {
                 amount *= getDamageResistance(qfDamageSource.getElement(), amount, stat);
-                stat.damageHealth(qfDamageSource, amount);
+                stat.damageHealth(qfDamageSource,sPlayer, amount);
                 DataStorage.savePlayerStat(sPlayer, stat);
             }
         }

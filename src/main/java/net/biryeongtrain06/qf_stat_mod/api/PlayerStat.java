@@ -1,24 +1,21 @@
 package net.biryeongtrain06.qf_stat_mod.api;
 
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import net.biryeongtrain06.qf_stat_mod.playerclass.IPlayerClass;
 import net.biryeongtrain06.qf_stat_mod.playerclass.NonePlayerClass;
 import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.QfCustomDamage;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
-import java.util.UUID;
-
 @SuppressWarnings("unused")
 public class PlayerStat {
-    final UUID player;
     private int level;
     private float xp;
     private int maxHealth;
@@ -47,8 +44,7 @@ public class PlayerStat {
     private String playerClassId;
 
 
-    public PlayerStat(ServerPlayerEntity player) {
-        this.player = player.getUuid();
+    public PlayerStat() {
         var noneClass = new NonePlayerClass();
         this.playerClassId = noneClass.getClassId().toString();
         this.level = 1;
@@ -77,9 +73,6 @@ public class PlayerStat {
         this.playerClassId = player_class.getClassId().toString();
 
     }
-    private ServerPlayerEntity getPlayer(UUID uuid) {
-
-    }
     public Identifier getPlayerClassId() {
         return new Identifier(playerClassId);
     }
@@ -88,12 +81,12 @@ public class PlayerStat {
         this.playerClassId = playerClassId.toString();
     }
 
-    public void addXP(float i) {
+    public void addXP(ServerPlayerEntity player, float i) {
         this.xp += i;
 
         if (xp >= needXpToLevelUp) {
             this.xp-= needXpToLevelUp;
-            addLevel(1);
+            addLevel(player, 1);
             this.needXpToLevelUp = (float) (ExpHandler.getBaseLevelUpXpValue() * Math.pow(1 + ExpHandler.getLevelScaleModifier(), getLevel()));
         }
     }
@@ -115,9 +108,9 @@ public class PlayerStat {
         return this.level;
     }
 
-    public void addLevel(int i) {
+    public void addLevel(ServerPlayerEntity player, int i) {
         this.level += i;
-        this.player.sendMessage(Text.translatable(TextHelper.createTranslation("system_message.levelUp")).formatted(Formatting.GREEN));
+        player.sendMessage(Text.translatable(TextHelper.createTranslation("system_message.levelUp")).formatted(Formatting.GREEN));
         addSelectPoint(ExpHandler.getAmountSelectionPointWhenLevelUp());
     }
 
@@ -126,32 +119,32 @@ public class PlayerStat {
     }
 
 
-    public void setMaxHealth(int amount) {
+    public void setMaxHealth(ServerPlayerEntity player, int amount) throws CommandSyntaxException {
         if (amount <= 0 ) {
-            throw new RuntimeException("value can't be under 0");
+            throw new CommandSyntaxException(new SimpleCommandExceptionType(Text.literal("Value can not be under 0.")), Text.literal("Value Can not be under 0"));
         }
         this.maxHealth = amount;
-        syncPlayerHealth();
+        syncPlayerHealth(player);
     }
 
-    public void addMaxHealth(int amount) {
+    public void addMaxHealth(ServerPlayerEntity player, int amount) {
         this.maxHealth = MathHelper.clamp(this.maxHealth + amount, 1, Integer.MAX_VALUE);
-        syncPlayerHealth();
+        syncPlayerHealth(player);
     }
 
-    public void setCurrentHealth(float amount) {
+    public void setCurrentHealth(ServerPlayerEntity player, float amount) {
         this.currentHealth = MathHelper.clamp(amount, 0f, (float) getMaxHealth());
-        syncPlayerHealth();
+        syncPlayerHealth(player);
     }
 
     public int getMaxHealth() {
         return this.maxHealth;
     }
 
-    public void addCurrentHealth(float amount) {
+    public void addCurrentHealth(ServerPlayerEntity player, float amount) {
         this.currentHealth += amount;
         this.currentHealth = MathHelper.clamp(this.currentHealth, 0f, (float) getMaxHealth());
-        syncPlayerHealth();
+        syncPlayerHealth(player);
     }
     public float getCurrentHealth() {
         return this.currentHealth;
@@ -269,16 +262,16 @@ public class PlayerStat {
         this.selectPoint = value;
     }
 
-    public void damageHealth(QfCustomDamage s, float amount) {
+    public void damageHealth(QfCustomDamage s,ServerPlayerEntity player, float amount) {
         this.currentHealth = MathHelper.clamp(this.currentHealth - amount, 0f, (float) getMaxHealth());
-        float calculatedDamage = (amount / getMaxHealth()) * this.player.getMaxHealth();
-        this.player.hurtTime = 0;
-        this.player.sendMessage(Text.literal(String.valueOf(amount)));
-        this.player.sendMessage(Text.literal(String.valueOf(calculatedDamage)));
-        this.player.damage(s, calculatedDamage);
+        float calculatedDamage = (amount / getMaxHealth()) * player.getMaxHealth();
+        player.hurtTime = 0;
+        player.sendMessage(Text.literal(String.valueOf(amount)));
+        player.sendMessage(Text.literal(String.valueOf(calculatedDamage)));
+        player.damage(s, calculatedDamage);
     }
-    public void syncPlayerHealth() {
-        this.player.setHealth(MathHelper.clamp((float) Math.floor(getCurrentHealth() / getMaxHealth() * 20), 0f, player.getMaxHealth()));
+    public void syncPlayerHealth(ServerPlayerEntity player) {
+        player.setHealth(MathHelper.clamp((float) Math.floor(getCurrentHealth() / getMaxHealth() * 20), 0f, player.getMaxHealth()));
     }
 
     public boolean hasSelectPoint() {
@@ -293,7 +286,7 @@ public class PlayerStat {
         return false;
     }
 
-    public void addStrength(int value) {
+    public void addStrength(ServerPlayerEntity player, int value) {
         int changedValue = 0;
         if (this.strength != 0) {
             changedValue -= strength * 2;
@@ -302,7 +295,7 @@ public class PlayerStat {
         if (strength != 0) {
             changedValue += strength * 2;
         }
-        addMaxHealth(changedValue);
+        addMaxHealth(player, changedValue);
     }
 
     public void addDexterity(int value) {

@@ -9,7 +9,7 @@ import net.biryeongtrain06.qf_stat_mod.callback.PlayerJoinCallback;
 import net.biryeongtrain06.qf_stat_mod.callback.PlayerKilledOtherCallback;
 import net.biryeongtrain06.qf_stat_mod.entity.OnEntitySpawnSetting;
 import net.biryeongtrain06.qf_stat_mod.gui.PlayerStatBar;
-import net.biryeongtrain06.qf_stat_mod.duck.IServerPlayerEntity;
+import net.biryeongtrain06.qf_stat_mod.duck.IServerPlayerEntityDuck;
 import net.biryeongtrain06.qf_stat_mod.utils.DamageHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
@@ -28,9 +28,9 @@ import static net.biryeongtrain06.qf_stat_mod.api.DataStorage.PLAYER_STAT_DATA_S
 
 public class QfStatSystemCallbacks {
     private static void playerJoinCallback(ServerPlayerEntity player) {
-        IServerPlayerEntity iPlayer = (IServerPlayerEntity) player;
+        IServerPlayerEntityDuck iPlayer = (IServerPlayerEntityDuck) player;
         if (!iPlayer.isPlayedBefore() || DataStorage.loadPlayerStat(player) == null) {
-            var PlayerStat = new PlayerStat(player);
+            var PlayerStat = new PlayerStat();
             DataStorage.savePlayerStat(player, PlayerStat);
             iPlayer.setPlayedBefore(true);
         }
@@ -39,10 +39,10 @@ public class QfStatSystemCallbacks {
 
     private static void playerKilledCallback(PlayerEntity killer, LivingEntity victim) {
         ServerPlayerEntity killPlayer = (ServerPlayerEntity) killer;
-        IServerPlayerEntity iPlayer =(IServerPlayerEntity) killPlayer;
+        IServerPlayerEntityDuck iPlayer =(IServerPlayerEntityDuck) killPlayer;
         PlayerStat stat = PlayerDataApi.getCustomDataFor(killPlayer, PLAYER_STAT_DATA_STORAGE);
         int xp = ExpHandler.findXpModifier(victim);
-        stat.addXP((float) xp);
+        stat.addXP(killPlayer, (float) xp);
         if (iPlayer.isDisplaySystemMessage()) {
             killPlayer.sendMessage(Text.translatable(TextHelper.createTranslation("system_message.killed"), victim.getDisplayName(), xp).formatted(Formatting.GREEN));
         }

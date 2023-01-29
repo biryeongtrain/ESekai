@@ -2,7 +2,7 @@ package net.biryeongtrain06.qf_stat_mod.mixin;
 
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
-import net.biryeongtrain06.qf_stat_mod.duck.IServerPlayerEntity;
+import net.biryeongtrain06.qf_stat_mod.duck.IServerPlayerEntityDuck;
 import net.biryeongtrain06.qf_stat_mod.utils.PlayerHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.minecraft.nbt.NbtCompound;
@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerPlayerEntity.class)
-public abstract class   ServerPlayerEntityMixin implements IServerPlayerEntity {
+public abstract class   ServerPlayerEntityMixin implements IServerPlayerEntityDuck {
     private boolean isPlayedBefore = false;
     private boolean isDisplaySystemMessage = true;
 
@@ -54,7 +54,7 @@ public abstract class   ServerPlayerEntityMixin implements IServerPlayerEntity {
         ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
         if (player.getHealth() < player.getMaxHealth() && player.age % 20 == 0) {
             PlayerStat playerStat = DataStorage.loadPlayerStat(player);
-            playerStat.addCurrentHealth(playerStat.getRegenPerSecond());
+            playerStat.addCurrentHealth(player, playerStat.getRegenPerSecond());
             DataStorage.savePlayerStat(player, playerStat);
         }
     }

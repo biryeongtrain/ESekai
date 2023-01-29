@@ -9,7 +9,11 @@ public class DataStorage {
     public static final PlayerDataStorage<PlayerStat> PLAYER_STAT_DATA_STORAGE = new JsonDataStorage<>("player_stat", PlayerStat.class);
 
     public static PlayerStat loadPlayerStat(ServerPlayerEntity player) {
-        return PlayerDataApi.getCustomDataFor(player, PLAYER_STAT_DATA_STORAGE);
+        PlayerStat playerStat = PlayerDataApi.getCustomDataFor(player, PLAYER_STAT_DATA_STORAGE);
+        if (playerStat == null) {
+            return null;
+        }
+        return playerStat;
     }
     public static void savePlayerStat(ServerPlayerEntity player, PlayerStat playerStat) {
         PlayerDataApi.setCustomDataFor(player, PLAYER_STAT_DATA_STORAGE, playerStat);

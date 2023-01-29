@@ -14,6 +14,9 @@
     ],
     "main": [
       "net.biryeongtrain06.qf_stat_mod.MainStatSystem"
+    ],
+    "cardinal-components-entity" : [
+      "net.biryeongtrain06.qf_stat_mod.register.QfStatSystemComponents"
     ]
   },
   "custom" : {
