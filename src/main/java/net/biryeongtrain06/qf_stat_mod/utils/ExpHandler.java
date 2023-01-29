@@ -23,6 +23,7 @@ public class ExpHandler {
     private static float baseLevelUpXpValue = 100;
     private static float levelScaleAtHighLevelModifier = 3.0f;
     private static int amountSelectPointWhenLevelUp = 5;
+    private static int scalingDistance = 250;
 
 
     public static void setXpModifier(JsonObject xp) {
@@ -41,6 +42,7 @@ public class ExpHandler {
         levelScaleAtHighLevelModifier = LevelData.get("xpRequiresModifierAtHighLevel").getAsFloat();
         xpScaleModifier = LevelData.get("xpScaleModifier").getAsFloat();
         amountSelectPointWhenLevelUp = LevelData.get("amountSelectionPointWhenLevelUp").getAsInt();
+        scalingDistance = LevelData.get("scalingDistance").getAsInt();
     }
 
     public static void setRaritySpawnChance(JsonObject rarityData) {
@@ -69,6 +71,14 @@ public class ExpHandler {
 
     public static int getAmountSelectionPointWhenLevelUp() {
         return amountSelectPointWhenLevelUp;
+    }
+
+    public static int getAmountSelectPointWhenLevelUp() {
+        return amountSelectPointWhenLevelUp;
+    }
+
+    public static int getScalingDistance() {
+        return scalingDistance;
     }
 
     public static HashMap<Identifier, Integer> getXpModifier() {

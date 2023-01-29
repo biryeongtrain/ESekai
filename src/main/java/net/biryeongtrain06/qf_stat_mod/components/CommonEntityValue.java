@@ -1,9 +1,15 @@
 package net.biryeongtrain06.qf_stat_mod.components;
 
 import net.biryeongtrain06.qf_stat_mod.entity.EntityRank;
+import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemGameRules;
+import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
+import net.biryeongtrain06.qf_stat_mod.utils.PlayerHelper;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.world.GameRules;
 
 
 public class CommonEntityValue implements ICommonEntityComponents {
@@ -95,6 +101,24 @@ public class CommonEntityValue implements ICommonEntityComponents {
     @Override
     public void setModifierRandomly() {
         if (rank != EntityRank.COMMON && rank != EntityRank.UN_DECIDED) {
+
+        }
+    }
+
+    @Override
+    public void tryHealthIncrease() {
+        if (healthIncreased) {
+            return;
+        }
+        if (provider.world.isClient) {
+            return;
+        }
+        final int MAX_LEVEL = 100;
+        final int SCALING_DISTANCE = ExpHandler.getScalingDistance();
+        boolean gameRule = provider.getWorld().getGameRules().getBoolean(QfStatSystemGameRules.ENTITY_FOLLOWS_PLAYER_LEVEL_SCALING);
+
+        if (gameRule) {
+            ServerPlayerEntity nearestPlayer = PlayerHelper.getNearestPlayer((ServerWorld) provider.world, provider);
 
         }
     }

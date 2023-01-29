@@ -3,5 +3,6 @@
   "xpRequiresModifier" : 0.1,
   "xpRequiresModifierAtHighLevel" : 0.2,
   "xpScaleModifier" : 1.0,
-  "amountSelectionPointWhenLevelUp" : 5
+  "amountSelectionPointWhenLevelUp" : 5,
+  "ScalingDistance" : 250
 }
