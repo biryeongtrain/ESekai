@@ -1,6 +1,7 @@
 package net.biryeongtrain06.qf_stat_mod.components;
 
 import net.biryeongtrain06.qf_stat_mod.entity.EntityRank;
+import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.nbt.NbtCompound;
 
@@ -16,7 +17,7 @@ public class CommonEntityValue implements ICommonEntityComponents {
     private boolean healthIncreased = false;
 
     public boolean canApplyModifier(MobEntity provider) {
-        return this.rank.equals(EntityRank.UN_DECIDED) && !provider.hasCustomName();
+        return this.rank.equals(EntityRank.UN_DECIDED) && !provider.hasCustomName() && provider instanceof HostileEntity;
     }
 
     public CommonEntityValue(MobEntity provider) {

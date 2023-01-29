@@ -21,7 +21,7 @@ public class MainStatSystem implements ModInitializer {
     public static final String MOD_ID ="qf_stat_mod";
     final public static Logger debugLogger = LogManager.getLogger("Qf Stat Debug");
 
-    public static final ComponentKey<ICommonEntityComponents> ENTITY_MODIFIERS = ComponentRegistry.getOrCreate(new Identifier(MOD_ID, "entity_modifier"), ICommonEntityComponents.class);
+    public static final ComponentKey<ICommonEntityComponents> ENTITY_MODIFIERS = ComponentRegistry.getOrCreate(new Identifier(MOD_ID, "entity_modifiers"), ICommonEntityComponents.class);
 
     @Override
     public void onInitialize() {

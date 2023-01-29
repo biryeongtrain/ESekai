@@ -18,8 +18,7 @@
   },
   "custom" : {
     "cardinal-components" : [
-      "qf_stat_mod:playerstat",
-      "qf_stat_mod:entitystat"
+      "qf_stat_mod:entity_modifiers"
     ]
   },
   "mixins": [
