@@ -9,7 +9,7 @@ import net.biryeongtrain06.qf_stat_mod.callback.PlayerJoinCallback;
 import net.biryeongtrain06.qf_stat_mod.callback.PlayerKilledOtherCallback;
 import net.biryeongtrain06.qf_stat_mod.entity.OnEntitySpawnSetting;
 import net.biryeongtrain06.qf_stat_mod.gui.PlayerStatBar;
-import net.biryeongtrain06.qf_stat_mod.player.IServerPlayerEntity;
+import net.biryeongtrain06.qf_stat_mod.duck.IServerPlayerEntity;
 import net.biryeongtrain06.qf_stat_mod.utils.DamageHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;

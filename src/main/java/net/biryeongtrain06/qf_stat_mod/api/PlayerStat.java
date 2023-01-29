@@ -6,15 +6,19 @@ import net.biryeongtrain06.qf_stat_mod.playerclass.NonePlayerClass;
 import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.QfCustomDamage;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
+import java.util.UUID;
+
 @SuppressWarnings("unused")
 public class PlayerStat {
-    final ServerPlayerEntity player;
+    final UUID player;
     private int level;
     private float xp;
     private int maxHealth;
@@ -44,7 +48,7 @@ public class PlayerStat {
 
 
     public PlayerStat(ServerPlayerEntity player) {
-        this.player = player;
+        this.player = player.getUuid();
         var noneClass = new NonePlayerClass();
         this.playerClassId = noneClass.getClassId().toString();
         this.level = 1;
@@ -73,7 +77,9 @@ public class PlayerStat {
         this.playerClassId = player_class.getClassId().toString();
 
     }
+    private ServerPlayerEntity getPlayer(UUID uuid) {
 
+    }
     public Identifier getPlayerClassId() {
         return new Identifier(playerClassId);
     }

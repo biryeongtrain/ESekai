@@ -2,21 +2,20 @@ package net.biryeongtrain06.qf_stat_mod.mixin;
 
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
-import net.biryeongtrain06.qf_stat_mod.player.IServerPlayerEntity;
+import net.biryeongtrain06.qf_stat_mod.duck.IServerPlayerEntity;
 import net.biryeongtrain06.qf_stat_mod.utils.PlayerHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import org.apache.logging.log4j.core.jmx.Server;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerPlayerEntity.class)
-public abstract class ServerPlayerEntityMixin implements IServerPlayerEntity {
+public abstract class   ServerPlayerEntityMixin implements IServerPlayerEntity {
     private boolean isPlayedBefore = false;
     private boolean isDisplaySystemMessage = true;
 

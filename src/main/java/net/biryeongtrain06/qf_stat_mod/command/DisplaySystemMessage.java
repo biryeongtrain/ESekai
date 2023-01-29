@@ -1,7 +1,7 @@
 package net.biryeongtrain06.qf_stat_mod.command;
 
 import com.mojang.brigadier.context.CommandContext;
-import net.biryeongtrain06.qf_stat_mod.player.IServerPlayerEntity;
+import net.biryeongtrain06.qf_stat_mod.duck.IServerPlayerEntity;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;

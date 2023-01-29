@@ -1,4 +1,4 @@
-package net.biryeongtrain06.qf_stat_mod.player;
+package net.biryeongtrain06.qf_stat_mod.duck;
 
 import net.minecraft.util.Identifier;
 
