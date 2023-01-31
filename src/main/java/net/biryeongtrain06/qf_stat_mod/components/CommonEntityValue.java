@@ -1,14 +1,19 @@
 package net.biryeongtrain06.qf_stat_mod.components;
 
+import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.entity.EntityRank;
 import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemGameRules;
 import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.PlayerHelper;
+import net.minecraft.entity.boss.WitherEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GameRules;
 
 
@@ -31,6 +36,7 @@ public class CommonEntityValue implements ICommonEntityComponents {
         if (canApplyModifier(this.provider)) {
             setRankRandomly();
         }
+        setLevel();
     }
 
     @Override
@@ -110,17 +116,36 @@ public class CommonEntityValue implements ICommonEntityComponents {
         if (healthIncreased) {
             return;
         }
+
+    }
+
+    @Override
+    public void setLevel() {
+        final int MAX_LEVEL = ExpHandler.getMaxLevel();
+        if (provider instanceof EnderDragonEntity) {
+            this.level = (int) (MAX_LEVEL / 0.8);
+        }
+        if (provider instanceof WitherEntity) {
+            this.level =  (int) (MAX_LEVEL / 0.6);
+        }
         if (provider.world.isClient) {
             return;
         }
-        final int MAX_LEVEL = 100;
+
         final int SCALING_DISTANCE = ExpHandler.getScalingDistance();
         boolean gameRule = provider.getWorld().getGameRules().getBoolean(QfStatSystemGameRules.ENTITY_FOLLOWS_PLAYER_LEVEL_SCALING);
+        final ServerPlayerEntity nearestPlayer = PlayerHelper.getNearestPlayer((ServerWorld) provider.world, provider);
 
-        if (gameRule) {
-            ServerPlayerEntity nearestPlayer = PlayerHelper.getNearestPlayer((ServerWorld) provider.world, provider);
-
+        if (gameRule || nearestPlayer != null) {
+            final int nearestPlayerLevel = DataStorage.loadPlayerStat(nearestPlayer).getLevel();
+            final int MIN = MathHelper.clamp(nearestPlayerLevel - 5, 0, MAX_LEVEL);
+            final int MAX = MathHelper.clamp(nearestPlayerLevel + 5, 0, MAX_LEVEL);
+            this.level = (int) Math.random() * MAX + MIN;
+            return;
         }
+        BlockPos spawnPos = provider.getWorld().getSpawnPos();
+        double distance = spawnPos.getManhattanDistance(provider.getBlockPos());
+        this.level = (int) (distance % SCALING_DISTANCE) + 1;
     }
 
     @Override

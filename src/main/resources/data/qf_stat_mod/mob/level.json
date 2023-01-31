@@ -1,5 +1,6 @@
 {
-  "level_value" : 100,
+  "maxLevel" : 100,
+  "baseXpValue" : 100,
   "xpRequiresModifier" : 0.1,
   "xpRequiresModifierAtHighLevel" : 0.2,
   "xpScaleModifier" : 1.0,

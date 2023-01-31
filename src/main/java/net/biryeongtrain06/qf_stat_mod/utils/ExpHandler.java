@@ -17,6 +17,7 @@ import static net.biryeongtrain06.qf_stat_mod.entity.EntityRank.*;
 
 @SuppressWarnings("unused")
 public class ExpHandler {
+    private static int maxLevel = 100;
     private static HashMap<Identifier, Integer> xpModifier = new HashMap<>();
     private static float xpScaleModifier = 1.0f;
     private static float levelScaleModifier = 2.5f;
@@ -37,7 +38,8 @@ public class ExpHandler {
     }
 
     public static void initLevelModifier(JsonObject LevelData) {
-        baseLevelUpXpValue = LevelData.get("level_value").getAsFloat();
+        maxLevel = LevelData.get("maxLevel").getAsInt();
+        baseLevelUpXpValue = LevelData.get("baseXpValue").getAsFloat();
         levelScaleModifier = LevelData.get("xpRequiresModifier").getAsFloat();
         levelScaleAtHighLevelModifier = LevelData.get("xpRequiresModifierAtHighLevel").getAsFloat();
         xpScaleModifier = LevelData.get("xpScaleModifier").getAsFloat();
@@ -79,6 +81,10 @@ public class ExpHandler {
 
     public static int getScalingDistance() {
         return scalingDistance;
+    }
+
+    public static int getMaxLevel() {
+        return maxLevel;
     }
 
     public static HashMap<Identifier, Integer> getXpModifier() {

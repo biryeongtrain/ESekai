@@ -19,5 +19,5 @@ public interface ICommonEntityComponents extends Component, ServerTickingCompone
     void setRankRandomly();
     void setModifierRandomly();
     void tryHealthIncrease();
-
+    void setLevel();
 }
