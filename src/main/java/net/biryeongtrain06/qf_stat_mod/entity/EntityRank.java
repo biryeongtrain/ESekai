@@ -6,27 +6,28 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum EntityRank {
-    UN_DECIDED("un_decided", 0, Formatting.WHITE, 0F, 0),
-    COMMON("common", 0, Formatting.WHITE, 1, 82),
-    RARE("rare", 1, Formatting.AQUA, 1.25F, 10),
-    UNIQUE("unique", 3, Formatting.LIGHT_PURPLE, 1.75F, 5),
-    LEGENDARY("legendary", 5, Formatting.GOLD, 3F, 2.5f),
-    MYTHIC("mythic", 7, Formatting.RED, 5F, 0.5f);
+    UN_DECIDED("un_decided", 0, Formatting.WHITE, 1F, 0, 1F),
+    COMMON("common", 0, Formatting.WHITE, 1, 82, 1F),
+    RARE("rare", 1, Formatting.AQUA, 1.25F, 10, 1.5F),
+    UNIQUE("unique", 3, Formatting.LIGHT_PURPLE, 2F, 5, 3F),
+    LEGENDARY("legendary", 5, Formatting.GOLD, 5F, 2.5f, 5F),
+    MYTHIC("mythic", 7, Formatting.RED, 7F, 0.5f, 10F);
 
-    EntityRank(String translationKey, int abilities, Formatting color, float expScaling, float spawn_chance) {
+    EntityRank(String translationKey, int abilities, Formatting color, float expScaling, float spawnChance, float statMultiplier) {
         this.translationKey = "mob_rank" + translationKey;
         this.abilities = abilities;
         this.color = color;
         this.expScaling = expScaling;
-        this.spawn_chance = spawn_chance;
+        this.spawnChance = spawnChance;
+        this.statMultiplier = statMultiplier;
     }
 
     private String translationKey;
     private int abilities;
     private Formatting color;
     private double expScaling;
-    private float spawn_chance;
-
+    private float spawnChance;
+    private float statMultiplier;
     public String getTranslationKey() {
         return translationKey;
     }
@@ -39,8 +40,8 @@ public enum EntityRank {
         return color;
     }
 
-    public float getSpawn_chance() {
-        return spawn_chance;
+    public float getSpawnChance() {
+        return spawnChance;
     }
 
     public double getExpScaling() {
@@ -51,8 +52,12 @@ public enum EntityRank {
         this.expScaling = expScaling;
     }
 
-    public void setSpawn_chance(float spawn_chance) {
-        this.spawn_chance = spawn_chance;
+    public void setSpawnChance(float spawnChance) {
+        this.spawnChance = spawnChance;
+    }
+
+    public float getStatMultiplier() {
+        return statMultiplier;
     }
 
     public static List<EntityRank> getRanks() {

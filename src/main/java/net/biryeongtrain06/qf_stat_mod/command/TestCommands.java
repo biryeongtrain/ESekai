@@ -23,11 +23,11 @@ public class TestCommands {
     public static int getRarity(CommandContext<ServerCommandSource> objectCommandContext) {
         try {
             ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();
-            player.sendMessage(Text.literal("Common : " + EntityRank.COMMON.getSpawn_chance()));
-            player.sendMessage(Text.literal("Rare : " + EntityRank.RARE.getSpawn_chance()));
-            player.sendMessage(Text.literal("Unique : " + EntityRank.UNIQUE.getSpawn_chance()));
-            player.sendMessage(Text.literal("Legendary : " + EntityRank.LEGENDARY.getSpawn_chance()));
-            player.sendMessage(Text.literal("Mythic : " + EntityRank.MYTHIC.getSpawn_chance()));
+            player.sendMessage(Text.literal("Common : " + EntityRank.COMMON.getSpawnChance()));
+            player.sendMessage(Text.literal("Rare : " + EntityRank.RARE.getSpawnChance()));
+            player.sendMessage(Text.literal("Unique : " + EntityRank.UNIQUE.getSpawnChance()));
+            player.sendMessage(Text.literal("Legendary : " + EntityRank.LEGENDARY.getSpawnChance()));
+            player.sendMessage(Text.literal("Mythic : " + EntityRank.MYTHIC.getSpawnChance()));
         } catch(Exception e) {
             e.printStackTrace();
         }

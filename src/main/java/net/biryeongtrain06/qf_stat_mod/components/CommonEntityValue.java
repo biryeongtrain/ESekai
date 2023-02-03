@@ -5,6 +5,9 @@ import net.biryeongtrain06.qf_stat_mod.entity.EntityRank;
 import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemGameRules;
 import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.PlayerHelper;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.mob.HostileEntity;
@@ -14,7 +17,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.GameRules;
 
 
 public class CommonEntityValue implements ICommonEntityComponents {
@@ -36,6 +38,7 @@ public class CommonEntityValue implements ICommonEntityComponents {
         if (canApplyModifier(this.provider)) {
             setRankRandomly();
         }
+        else this.rank = EntityRank.COMMON;
         setLevel();
     }
 
@@ -50,8 +53,8 @@ public class CommonEntityValue implements ICommonEntityComponents {
             if (rank == EntityRank.UN_DECIDED) {
                 continue;
             }
-            if (value < rank.getSpawn_chance()) {
-                value -= rank.getSpawn_chance();
+            if (value < rank.getSpawnChance()) {
+                value -= rank.getSpawnChance();
             } else {
                 this.rank = rank;
                 return;
@@ -116,7 +119,15 @@ public class CommonEntityValue implements ICommonEntityComponents {
         if (healthIncreased) {
             return;
         }
+        EntityAttributeInstance entityAttributeInstance = provider.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
+        int randomValue = (int) ((Math.random() * 0.5) + 0.5);
+        int value = (int) (provider.getMaxHealth() * (this.level + randomValue + this.rank.getStatMultiplier()));
+        if (entityAttributeInstance.hasModifier(getModifier(rank, value))) entityAttributeInstance.addPersistentModifier(getModifier(rank, value));
+        provider.setHealth((float) provider.getAttributeValue(EntityAttributes.GENERIC_MAX_HEALTH));
+    }
 
+    public EntityAttributeModifier getModifier(EntityRank rank, int value) {
+        return new EntityAttributeModifier(rank.name() + "_HEALTH_BOOST", value, EntityAttributeModifier.Operation.ADDITION);
     }
 
     @Override
@@ -151,6 +162,7 @@ public class CommonEntityValue implements ICommonEntityComponents {
     @Override
     public void serverTick() {
 
+        tryHealthIncrease();
     }
 
     @Override

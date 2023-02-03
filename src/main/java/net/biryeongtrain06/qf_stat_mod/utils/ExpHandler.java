@@ -48,11 +48,11 @@ public class ExpHandler {
     }
 
     public static void setRaritySpawnChance(JsonObject rarityData) {
-        RARE.setSpawn_chance(rarityData.get("rare_spawn_chance").getAsFloat());
-        UNIQUE.setSpawn_chance(rarityData.get("unique_spawn_chance").getAsFloat());
-        LEGENDARY.setSpawn_chance(rarityData.get("legendary_spawn_chance").getAsFloat());
-        MYTHIC.setSpawn_chance(rarityData.get("mythic_spawn_chance").getAsFloat());
-        COMMON.setSpawn_chance(RARE.getSpawn_chance() + UNIQUE.getSpawn_chance() + LEGENDARY.getSpawn_chance() + MYTHIC.getSpawn_chance());
+        RARE.setSpawnChance(rarityData.get("rare_spawn_chance").getAsFloat());
+        UNIQUE.setSpawnChance(rarityData.get("unique_spawn_chance").getAsFloat());
+        LEGENDARY.setSpawnChance(rarityData.get("legendary_spawn_chance").getAsFloat());
+        MYTHIC.setSpawnChance(rarityData.get("mythic_spawn_chance").getAsFloat());
+        COMMON.setSpawnChance(RARE.getSpawnChance() + UNIQUE.getSpawnChance() + LEGENDARY.getSpawnChance() + MYTHIC.getSpawnChance());
     }
 
     public static float getXpScaleModifier() {
