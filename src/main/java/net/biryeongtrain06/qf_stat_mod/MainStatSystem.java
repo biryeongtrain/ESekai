@@ -2,18 +2,22 @@ package net.biryeongtrain06.qf_stat_mod;
 
 
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
+import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistryV3;
 import net.biryeongtrain06.qf_stat_mod.components.ICommonEntityComponents;
 import net.biryeongtrain06.qf_stat_mod.data.MobLevelDataLoader;
 import net.biryeongtrain06.qf_stat_mod.data.MobXpDataLoader;
 import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemCallbacks;
 import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemGameRules;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.HashMap;
 
 
 public class MainStatSystem implements ModInitializer {
@@ -29,6 +33,10 @@ public class MainStatSystem implements ModInitializer {
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new MobXpDataLoader());
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new MobLevelDataLoader());
         QfStatSystemGameRules.setupGameRule();
+    }
+
+    public static HashMap<StatEnums, Integer> getEntityDefensiveMap(ComponentProvider provider) {
+        return ENTITY_MODIFIERS.get(provider).getDefensiveMap();
     }
 }
 

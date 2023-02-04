@@ -20,6 +20,7 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 
@@ -63,6 +64,11 @@ public class QfStatSystemCallbacks {
             return;
         }
         OnEntitySpawnSetting.setUpNewMobOnSpawn(entity, world);
+    }
+
+    private static ActionResult onEntityDamaged(LivingEntity attacker, LivingEntity victim, DamageSource source, float amount) {
+
+        return ActionResult.PASS;
     }
 
     public static void init() {

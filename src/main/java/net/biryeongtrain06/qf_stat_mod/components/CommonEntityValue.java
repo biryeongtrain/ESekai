@@ -14,6 +14,9 @@ import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtInt;
+import net.minecraft.nbt.NbtIntArray;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -24,8 +27,8 @@ import java.util.HashMap;
 
 public class CommonEntityValue implements ICommonEntityComponents {
     private int level = 1;
-    private int defense = 0;
     private int additionalDefenseRate = 0;
+    private int damage = 0;
     private HashMap<StatEnums, Integer> defensiveMap = new HashMap<>();
     private EntityRank rank =  EntityRank.UN_DECIDED;
     private final MobEntity provider;
@@ -81,20 +84,6 @@ public class CommonEntityValue implements ICommonEntityComponents {
         this.level += val;
     }
 
-    @Override
-    public int getDefense() {
-        return this.defense;
-    }
-
-    @Override
-    public void setDefense(int val) {
-        this.defense = val;
-    }
-
-    @Override
-    public void addDefense(int val) {
-        this.defense += val;
-    }
 
     @Override
     public int getAdditionalDefenseRate() {
@@ -164,6 +153,11 @@ public class CommonEntityValue implements ICommonEntityComponents {
     }
 
     @Override
+    public HashMap<StatEnums, Integer> getDefensiveMap() {
+        return this.defensiveMap;
+    }
+
+    @Override
     public void serverTick() {
 
         tryHealthIncrease();
@@ -171,7 +165,12 @@ public class CommonEntityValue implements ICommonEntityComponents {
 
     @Override
     public void readFromNbt(NbtCompound tag) {
+        tag.putInt("level", this.level);
+        tag.putBoolean("healthIncreased", this.healthIncreased);
 
+        NbtCompound armorStat = new NbtCompound();
+        this.defensiveMap.forEach((statEnums, value) -> armorStat.putInt(statEnums.getName(), value));
+        tag.put("armorStat", armorStat);
     }
 
     @Override
@@ -185,4 +184,35 @@ public class CommonEntityValue implements ICommonEntityComponents {
             this.defensiveMap.put(stat, 0);
         }
     }
+
+    @Override
+    public int getDefense() {
+        return defensiveMap.get(StatEnums.ARMOR);
+    }
+
+    @Override
+    public void setDefense(int val) {
+        this.defensiveMap.replace(StatEnums.ARMOR, val);
+    }
+
+    @Override
+    public void addDefense(int val) {
+        this.defensiveMap.replace(StatEnums.ARMOR, val + getDefense());
+    }
+
+    @Override
+    public int getDodge() {
+        return this.defensiveMap.get(StatEnums.DODGE);
+    }
+
+    @Override
+    public void setDodge(int val) {
+        this.defensiveMap.replace(StatEnums.DODGE, MathHelper.clamp(val, 0, 100));
+    }
+
+    @Override
+    public void addDodge(int val) {
+        this.defensiveMap.replace(StatEnums.DODGE, MathHelper.clamp(val+ getDodge(), 0, 100));
+    }
+
 }

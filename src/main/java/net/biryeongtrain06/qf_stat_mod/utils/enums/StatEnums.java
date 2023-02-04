@@ -25,15 +25,21 @@ public enum StatEnums {
     DEXTERITY("dexterity", Formatting.GREEN, PERK, false),
     WISDOM("wisdom", Formatting.LIGHT_PURPLE, PERK, false),
     SELECT_POINT("select_point", Formatting.WHITE, PERK, false);
+    public final String name;
     public final Text translatableName;
     public final Formatting format;
     public final SubStatTag tag;
     public final Boolean isPlayerStat;
     StatEnums(String name, Formatting format, SubStatTag tag, boolean isPlayerStat) {
+        this.name = name;
         this.translatableName = Text.translatable(TextHelper.createTranslation(name));
         this.format = format;
         this.tag = tag;
         this.isPlayerStat = isPlayerStat;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Text getTranslatableName() {
@@ -55,6 +61,7 @@ public enum StatEnums {
     public boolean isPlayerStat(StatEnums val) {
         return val.isPlayerStat;
     }
+
 
     public static StatEnums[] getDefensiveStats(boolean isPlayer) {
         List<StatEnums> val = new ArrayList<>();
