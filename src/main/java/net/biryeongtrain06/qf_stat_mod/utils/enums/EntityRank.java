@@ -1,4 +1,4 @@
-package net.biryeongtrain06.qf_stat_mod.entity;
+package net.biryeongtrain06.qf_stat_mod.utils.enums;
 
 import net.minecraft.util.Formatting;
 

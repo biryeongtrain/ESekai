@@ -1,10 +1,11 @@
 package net.biryeongtrain06.qf_stat_mod.components;
 
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
-import net.biryeongtrain06.qf_stat_mod.entity.EntityRank;
 import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemGameRules;
 import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.PlayerHelper;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.EntityRank;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -18,12 +19,14 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
+import java.util.HashMap;
+
 
 public class CommonEntityValue implements ICommonEntityComponents {
     private int level = 1;
     private int defense = 0;
     private int additionalDefenseRate = 0;
-    private int dodge = 0;
+    private HashMap<StatEnums, Integer> defensiveMap = new HashMap<>();
     private EntityRank rank =  EntityRank.UN_DECIDED;
     private final MobEntity provider;
     private int numMaxAbilities = EntityRank.UN_DECIDED.getAbilities();
@@ -35,6 +38,7 @@ public class CommonEntityValue implements ICommonEntityComponents {
 
     public CommonEntityValue(MobEntity provider) {
         this.provider = provider;
+        initDefensiveMap();
         if (canApplyModifier(this.provider)) {
             setRankRandomly();
         }
@@ -173,5 +177,12 @@ public class CommonEntityValue implements ICommonEntityComponents {
     @Override
     public void writeToNbt(NbtCompound tag) {
 
+    }
+
+    private void initDefensiveMap() {
+        StatEnums[] defensiveMap = StatEnums.getDefensiveStats(false);
+        for (StatEnums stat : defensiveMap) {
+            this.defensiveMap.put(stat, 0);
+        }
     }
 }

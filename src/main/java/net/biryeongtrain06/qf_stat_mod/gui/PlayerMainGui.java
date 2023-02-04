@@ -7,7 +7,7 @@ import eu.pb4.sgui.api.gui.SimpleGui;
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
 import net.biryeongtrain06.qf_stat_mod.utils.PlayerHelper;
-import net.biryeongtrain06.qf_stat_mod.utils.StatEnums;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums;
 import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.SlotActionType;

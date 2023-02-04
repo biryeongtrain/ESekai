@@ -2,13 +2,12 @@ package net.biryeongtrain06.qf_stat_mod;
 
 
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
-import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistryV3;
 import net.biryeongtrain06.qf_stat_mod.components.ICommonEntityComponents;
-import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemGameRules;
 import net.biryeongtrain06.qf_stat_mod.data.MobLevelDataLoader;
 import net.biryeongtrain06.qf_stat_mod.data.MobXpDataLoader;
 import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemCallbacks;
+import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemGameRules;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.resource.ResourceType;

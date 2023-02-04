@@ -1,5 +1,6 @@
-package net.biryeongtrain06.qf_stat_mod.utils;
+package net.biryeongtrain06.qf_stat_mod.utils.enums;
 
+import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.minecraft.util.Identifier;
 
 public enum Elements {

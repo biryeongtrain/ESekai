@@ -2,6 +2,7 @@ package net.biryeongtrain06.qf_stat_mod.utils;
 
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.Elements;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.entity.player.PlayerEntity;

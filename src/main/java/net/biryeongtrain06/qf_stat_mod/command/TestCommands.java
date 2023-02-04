@@ -1,8 +1,8 @@
 package net.biryeongtrain06.qf_stat_mod.command;
 
 import com.mojang.brigadier.context.CommandContext;
-import net.biryeongtrain06.qf_stat_mod.entity.EntityRank;
 import net.biryeongtrain06.qf_stat_mod.gui.PlayerMainGui;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.EntityRank;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;

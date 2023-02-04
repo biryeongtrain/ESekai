@@ -13,7 +13,7 @@ import net.minecraft.util.Identifier;
 import java.util.HashMap;
 
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.debugLogger;
-import static net.biryeongtrain06.qf_stat_mod.entity.EntityRank.*;
+import static net.biryeongtrain06.qf_stat_mod.utils.enums.EntityRank.*;
 
 @SuppressWarnings("unused")
 public class ExpHandler {

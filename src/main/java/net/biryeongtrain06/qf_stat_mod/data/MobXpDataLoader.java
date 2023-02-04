@@ -11,7 +11,6 @@ import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
 
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
