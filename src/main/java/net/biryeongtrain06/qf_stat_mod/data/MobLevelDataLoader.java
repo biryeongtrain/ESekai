@@ -39,7 +39,7 @@ public class MobLevelDataLoader extends JsonDataLoader implements IdentifiableRe
                 JsonObject data = JsonParser.parseReader(new InputStreamReader(stream)).getAsJsonObject();
                 ExpHandler.initLevelModifier(data);
                 debugLogger.info("Successfully loaded level modifier data.");
-            } catch (IOException e) {
+            } catch (Exception e) {
                 debugLogger.error("Error occurred while loading resource {}. {}", id.toString(), e.toString());
             }
         });

@@ -21,6 +21,16 @@ public interface ICommonEntityComponents extends Component, ServerTickingCompone
     int getAdditionalDefenseRate();
     void setAdditionalDefenseRate(int val);
     void addAdditionalDefenseRate(int val);
+    int getFireResistance();
+    void setFireResistance(int val);
+    int getWaterResistance();
+    void setWaterResistance(int val);
+    int getEarthResistance();
+    void setEarthResistance(int val);
+    int getLightResistance();
+    void setLightResistance(int val);
+    int getDarkResistance();
+    void setDarkResistance(int val);
 
     void setRankRandomly();
     void setModifierRandomly();

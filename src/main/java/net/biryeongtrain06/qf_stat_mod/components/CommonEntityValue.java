@@ -19,10 +19,14 @@ import net.minecraft.nbt.NbtIntArray;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.HashMap;
+
+import static net.biryeongtrain06.qf_stat_mod.utils.enums.EntityRank.getRankById;
+import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums.*;
 
 
 public class CommonEntityValue implements ICommonEntityComponents {
@@ -47,6 +51,7 @@ public class CommonEntityValue implements ICommonEntityComponents {
         }
         else this.rank = EntityRank.COMMON;
         setLevel();
+        provider.getServer().sendMessage(Text.literal("Entity Spawned, Level : " + level + ", Rank : " + this.rank.getName()));
     }
 
     @Override
@@ -98,6 +103,56 @@ public class CommonEntityValue implements ICommonEntityComponents {
     @Override
     public void addAdditionalDefenseRate(int val) {
         this.additionalDefenseRate += val;
+    }
+
+    @Override
+    public int getFireResistance() {
+        return getDefensiveMap().get(FIRE_RESISTANCE);
+    }
+
+    @Override
+    public void setFireResistance(int val) {
+        this.defensiveMap.replace(FIRE_RESISTANCE, val);
+    }
+
+    @Override
+    public int getWaterResistance() {
+        return getDefensiveMap().get(WATER_RESISTANCE);
+    }
+
+    @Override
+    public void setWaterResistance(int val) {
+        getDefensiveMap().replace(WATER_RESISTANCE, val);
+    }
+
+    @Override
+    public int getEarthResistance() {
+        return getDefensiveMap().get(EARTH_RESISTANCE);
+    }
+
+    @Override
+    public void setEarthResistance(int val) {
+        getDefensiveMap().replace(EARTH_RESISTANCE, val);
+    }
+
+    @Override
+    public int getLightResistance() {
+        return getDefensiveMap().get(LIGHT_RESISTANCE);
+    }
+
+    @Override
+    public void setLightResistance(int val) {
+        getDefensiveMap().replace(LIGHT_RESISTANCE, val);
+    }
+
+    @Override
+    public int getDarkResistance() {
+        return getDefensiveMap().get(DARK_RESISTANCE);
+    }
+
+    @Override
+    public void setDarkResistance(int val) {
+        getDefensiveMap().replace(DARK_RESISTANCE, val);
     }
 
     @Override
@@ -165,17 +220,29 @@ public class CommonEntityValue implements ICommonEntityComponents {
 
     @Override
     public void readFromNbt(NbtCompound tag) {
+        this.level = tag.getInt("level");
+        this.healthIncreased = tag.getBoolean("healthIncreased");
+        this.rank = getRankById(tag.getString("rank"));
+
+        NbtCompound armorStat = (NbtCompound) tag.get("armorStat");
+        this.setDefense(armorStat.getInt(ARMOR.getName()));
+        this.setDodge(armorStat.getInt(DODGE.getName()));
+        this.setFireResistance(armorStat.getInt(FIRE_RESISTANCE.getName()));
+        this.setWaterResistance(armorStat.getInt(WATER_RESISTANCE.getName()));
+        this.setEarthResistance(armorStat.getInt(EARTH_RESISTANCE.getName()));
+        this.setLightResistance(armorStat.getInt(LIGHT_RESISTANCE.getName()));
+        this.setDarkResistance(armorStat.getInt(DARK_RESISTANCE.getName()));
+    }
+
+    @Override
+    public void writeToNbt(NbtCompound tag) {
         tag.putInt("level", this.level);
         tag.putBoolean("healthIncreased", this.healthIncreased);
 
         NbtCompound armorStat = new NbtCompound();
         this.defensiveMap.forEach((statEnums, value) -> armorStat.putInt(statEnums.getName(), value));
         tag.put("armorStat", armorStat);
-    }
-
-    @Override
-    public void writeToNbt(NbtCompound tag) {
-
+        tag.putString("rank", this.rank.getName());
     }
 
     private void initDefensiveMap() {
@@ -187,32 +254,32 @@ public class CommonEntityValue implements ICommonEntityComponents {
 
     @Override
     public int getDefense() {
-        return defensiveMap.get(StatEnums.ARMOR);
+        return defensiveMap.get(ARMOR);
     }
 
     @Override
     public void setDefense(int val) {
-        this.defensiveMap.replace(StatEnums.ARMOR, val);
+        this.defensiveMap.replace(ARMOR, val);
     }
 
     @Override
     public void addDefense(int val) {
-        this.defensiveMap.replace(StatEnums.ARMOR, val + getDefense());
+        this.defensiveMap.replace(ARMOR, val + getDefense());
     }
 
     @Override
     public int getDodge() {
-        return this.defensiveMap.get(StatEnums.DODGE);
+        return this.defensiveMap.get(DODGE);
     }
 
     @Override
     public void setDodge(int val) {
-        this.defensiveMap.replace(StatEnums.DODGE, MathHelper.clamp(val, 0, 100));
+        this.defensiveMap.replace(DODGE, MathHelper.clamp(val, 0, 100));
     }
 
     @Override
     public void addDodge(int val) {
-        this.defensiveMap.replace(StatEnums.DODGE, MathHelper.clamp(val+ getDodge(), 0, 100));
+        this.defensiveMap.replace(DODGE, MathHelper.clamp(val+ getDodge(), 0, 100));
     }
 
 }

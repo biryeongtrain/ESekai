@@ -13,13 +13,20 @@ public enum EntityRank {
     LEGENDARY("legendary", 5, Formatting.GOLD, 5F, 2.5f, 5F),
     MYTHIC("mythic", 7, Formatting.RED, 7F, 0.5f, 10F);
 
-    EntityRank(String translationKey, int abilities, Formatting color, float expScaling, float spawnChance, float statMultiplier) {
-        this.translationKey = "mob_rank" + translationKey;
+    EntityRank(String name, int abilities, Formatting color, float expScaling, float spawnChance, float statMultiplier) {
+        this.name = name;
+        this.translationKey = "mob_rank" + name;
         this.abilities = abilities;
         this.color = color;
         this.expScaling = expScaling;
         this.spawnChance = spawnChance;
         this.statMultiplier = statMultiplier;
+    }
+
+    private String name;
+
+    public String getName() {
+        return name;
     }
 
     private String translationKey;
@@ -66,4 +73,12 @@ public enum EntityRank {
         return list;
     }
 
+    public static EntityRank getRankById(String name) {
+        for (EntityRank rank : values()) {
+            if (rank.getName().equals(name)) {
+                return rank;
+            }
+        }
+        return null;
+    }
 }
