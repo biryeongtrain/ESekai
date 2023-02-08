@@ -4,6 +4,7 @@ import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemGameRules;
 import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.PlayerHelper;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.Elements;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.EntityRank;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
@@ -25,12 +26,16 @@ import net.minecraft.util.math.MathHelper;
 
 import java.util.HashMap;
 
+import static net.biryeongtrain06.qf_stat_mod.utils.enums.Elements.*;
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.EntityRank.getRankById;
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums.*;
 
-
+/**
+ * 엔티티에게만 적용되는 Cardinal Components용 Class 입니다.
+ */
 public class CommonEntityValue implements ICommonEntityComponents {
     private int level = 1;
+    private Elements attackElement = PHYSICAL;
     private int additionalDefenseRate = 0;
     private int damage = 0;
     private HashMap<StatEnums, Integer> defensiveMap = new HashMap<>();
@@ -43,6 +48,7 @@ public class CommonEntityValue implements ICommonEntityComponents {
         return this.rank.equals(EntityRank.UN_DECIDED) && !provider.hasCustomName() && provider instanceof HostileEntity;
     }
 
+
     public CommonEntityValue(MobEntity provider) {
         this.provider = provider;
         initDefensiveMap();
@@ -52,8 +58,13 @@ public class CommonEntityValue implements ICommonEntityComponents {
         else this.rank = EntityRank.COMMON;
         setLevel();
         provider.getServer().sendMessage(Text.literal("Entity Spawned, Level : " + level + ", Rank : " + this.rank.getName()));
+        getDefensiveMap().forEach(((statEnums, integer) -> provider.getServer().sendMessage(Text.literal(statEnums.getName() + " : " + integer))));
     }
 
+    /**
+     * 엔티티의 기본적인 등급을 정합니다. 등급은 데이터팩의 rarity.json 을 토대로 작성됩니다.
+     * @see EntityRank
+     */
     @Override
     public void setRankRandomly() {
         if (!(this.rank.equals(EntityRank.UN_DECIDED))) {
@@ -162,6 +173,10 @@ public class CommonEntityValue implements ICommonEntityComponents {
         }
     }
 
+    /**
+     * 엔티티의 체력을 변경합니다. 이미 변경이 완료된 엔티티는 실행되지 않습니다.
+     * @see EntityRank EntityRank에서 엔티티의 체력 배수를 볼 수 있습니다.
+     */
     @Override
     public void tryHealthIncrease() {
         if (healthIncreased) {
@@ -172,12 +187,23 @@ public class CommonEntityValue implements ICommonEntityComponents {
         int value = (int) (provider.getMaxHealth() * (this.level + randomValue + this.rank.getStatMultiplier()));
         if (entityAttributeInstance.hasModifier(getModifier(rank, value))) entityAttributeInstance.addPersistentModifier(getModifier(rank, value));
         provider.setHealth((float) provider.getAttributeValue(EntityAttributes.GENERIC_MAX_HEALTH));
+        this.healthIncreased = true;
     }
 
+    /**
+     * @param rank
+     * @param value
+     * @return rank 에 따른 이름과 value에 따른 수치를 가진 Attribute를 반환합니다.
+     */
     public EntityAttributeModifier getModifier(EntityRank rank, int value) {
         return new EntityAttributeModifier(rank.name() + "_HEALTH_BOOST", value, EntityAttributeModifier.Operation.ADDITION);
     }
 
+    /**
+     * 엔티티의 레벨을 설정합니다. 엔티티의 레벨은 게임 룰에 따라서 변경됩니다.
+     * true 일 경우 근처 플레이어의 레벨을 따르고, false 일 경우 스폰 지역에서의 거리를 따릅니다.
+     * @see QfStatSystemGameRules
+     */
     @Override
     public void setLevel() {
         final int MAX_LEVEL = ExpHandler.getMaxLevel();
@@ -205,6 +231,30 @@ public class CommonEntityValue implements ICommonEntityComponents {
         BlockPos spawnPos = provider.getWorld().getSpawnPos();
         double distance = spawnPos.getManhattanDistance(provider.getBlockPos());
         this.level = (int) (distance % SCALING_DISTANCE) + 1;
+    }
+
+    /**
+     * 엔티티가 공격하는 원소의 종류를 정합니다.
+     * EntityElementSelectionType 이 True 일 경우 날짜마다 엔티티가 가질 원소의 확률이 달라집니다.
+     * 아닐 경우 고정된 확률로 발생합니다.
+     */
+    @Override
+    public void initElement() {
+        HashMap<Elements, Integer> percent = Elements.getPercent();
+        boolean gameRule = provider.getWorld().getGameRules().getBoolean(QfStatSystemGameRules.ENTITY_ELEMENT_SELECTION_TYPE);
+        if (gameRule) {
+            long time = provider.getWorld().getTimeOfDay();
+            long date = time % 24000;
+            int day = (int) (date % 7);
+            switch (day) {
+                case 1 : setPeakElement(PHYSICAL);
+                case 2 : setPeakElement(FIRE);
+                case 3 : setPeakElement(WATER);
+                case 4 : setPeakElement(EARTH);
+                case 5 : setPeakElement(LIGHT);
+                case 6 : setPeakElement(DARK);
+            }
+        }
     }
 
     @Override
@@ -279,7 +329,7 @@ public class CommonEntityValue implements ICommonEntityComponents {
 
     @Override
     public void addDodge(int val) {
-        this.defensiveMap.replace(DODGE, MathHelper.clamp(val+ getDodge(), 0, 100));
+        this.defensiveMap.replace(DODGE, MathHelper.clamp(val + getDodge(), 0, 100));
     }
 
 }

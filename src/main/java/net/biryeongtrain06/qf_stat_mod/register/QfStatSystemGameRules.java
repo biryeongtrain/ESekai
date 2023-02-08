@@ -6,8 +6,10 @@ import net.minecraft.world.GameRules;
 
 public class QfStatSystemGameRules {
     public static GameRules.Key<GameRules.BooleanRule> ENTITY_FOLLOWS_PLAYER_LEVEL_SCALING;
+    public static GameRules.Key<GameRules.BooleanRule> ENTITY_ELEMENT_SELECTION_TYPE;
 
     public static void setupGameRule() {
         ENTITY_FOLLOWS_PLAYER_LEVEL_SCALING = GameRuleRegistry.register("EntityLevelScalingType", GameRules.Category.MOBS, GameRuleFactory.createBooleanRule(true));
+        ENTITY_ELEMENT_SELECTION_TYPE = GameRuleRegistry.register("EntityElementSelectionType", GameRules.Category.MOBS, GameRuleFactory.createBooleanRule(true));
     }
 }
