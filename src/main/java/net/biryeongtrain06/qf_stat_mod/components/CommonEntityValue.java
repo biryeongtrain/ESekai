@@ -240,21 +240,21 @@ public class CommonEntityValue implements ICommonEntityComponents {
      */
     @Override
     public void initElement() {
-        HashMap<Elements, Integer> percent;
+
         boolean gameRule = provider.getWorld().getGameRules().getBoolean(QfStatSystemGameRules.ENTITY_ELEMENT_SELECTION_TYPE);
         if (gameRule) {
             long time = provider.getWorld().getTimeOfDay();
             long date = time % 24000;
             int day = (int) (date % 7);
-            switch (day) {
-                case 1 -> percent = setPeakElement(PHYSICAL);
-                case 2 -> percent = setPeakElement(FIRE);
-                case 3 -> percent = setPeakElement(WATER);
-                case 4 -> percent = setPeakElement(EARTH);
-                case 5 -> percent = setPeakElement(LIGHT);
-                case 6 -> percent = setPeakElement(DARK);
-                default -> percent = getPercent();
-            }
+            HashMap<Elements, Integer> percent = switch (day) {
+                case 1 -> setPeakElement(PHYSICAL);
+                case 2 -> setPeakElement(FIRE);
+                case 3 -> setPeakElement(WATER);
+                case 4 -> setPeakElement(EARTH);
+                case 5 -> setPeakElement(LIGHT);
+                case 6 -> setPeakElement(DARK);
+                default -> getPercent();
+            };
         }
     }
 
