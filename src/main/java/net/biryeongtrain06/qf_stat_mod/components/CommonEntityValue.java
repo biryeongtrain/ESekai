@@ -247,31 +247,13 @@ public class CommonEntityValue implements ICommonEntityComponents {
             long date = time % 24000;
             int day = (int) (date % 7);
             switch (day) {
-                case 1 : {
-                    percent = setPeakElement(PHYSICAL);
-                    break;
-                }
-                case 2 : {
-                    percent = setPeakElement(FIRE);
-                    break;
-                }
-                case 3 : {
-                    percent = setPeakElement(WATER);
-                    break;
-                }
-                case 4 : {
-                    percent = setPeakElement(EARTH);
-                    break;
-                }
-                case 5 : {
-                    percent = setPeakElement(LIGHT);
-                    break;
-                }
-                case 6 : {
-                    percent = setPeakElement(DARK);
-                    break;
-                }
-                default : percent = getPercent();
+                case 1 -> percent = setPeakElement(PHYSICAL);
+                case 2 -> percent = setPeakElement(FIRE);
+                case 3 -> percent = setPeakElement(WATER);
+                case 4 -> percent = setPeakElement(EARTH);
+                case 5 -> percent = setPeakElement(LIGHT);
+                case 6 -> percent = setPeakElement(DARK);
+                default -> percent = getPercent();
             }
         }
     }
