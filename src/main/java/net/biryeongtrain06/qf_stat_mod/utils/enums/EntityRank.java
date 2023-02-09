@@ -15,7 +15,7 @@ public enum EntityRank {
 
     EntityRank(String name, int abilities, Formatting color, float expScaling, float spawnChance, float statMultiplier) {
         this.name = name;
-        this.translationKey = "mob_rank" + name;
+        this.translationKey = "mob_rank_" + name;
         this.abilities = abilities;
         this.color = color;
         this.expScaling = expScaling;

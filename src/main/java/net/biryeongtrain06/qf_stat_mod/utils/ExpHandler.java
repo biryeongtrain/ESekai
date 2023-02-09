@@ -52,7 +52,7 @@ public class ExpHandler {
         UNIQUE.setSpawnChance(rarityData.get("unique_spawn_chance").getAsFloat());
         LEGENDARY.setSpawnChance(rarityData.get("legendary_spawn_chance").getAsFloat());
         MYTHIC.setSpawnChance(rarityData.get("mythic_spawn_chance").getAsFloat());
-        COMMON.setSpawnChance(RARE.getSpawnChance() + UNIQUE.getSpawnChance() + LEGENDARY.getSpawnChance() + MYTHIC.getSpawnChance());
+        COMMON.setSpawnChance(100 - (RARE.getSpawnChance() + UNIQUE.getSpawnChance() + LEGENDARY.getSpawnChance() + MYTHIC.getSpawnChance()));
     }
 
     public static float getXpScaleModifier() {

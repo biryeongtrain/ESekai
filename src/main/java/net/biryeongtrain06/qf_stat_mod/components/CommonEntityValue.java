@@ -56,8 +56,6 @@ public class CommonEntityValue implements ICommonEntityComponents {
         }
         else this.rank = EntityRank.COMMON;
         setLevel();
-        provider.getWorld().getServer().sendMessage(Text.literal("Entity Spawned, Level : " + level + ", Rank : " + this.rank.getName() + "Elements : " + this.attackElement.name()));
-        getDefensiveMap().forEach(((statEnums, integer) -> provider.getServer().sendMessage(Text.literal(statEnums.getName() + " : " + integer))));
     }
 
     /**
@@ -75,7 +73,7 @@ public class CommonEntityValue implements ICommonEntityComponents {
             if (rank == EntityRank.UN_DECIDED) {
                 continue;
             }
-            if (value < rank.getSpawnChance()) {
+            if (value > rank.getSpawnChance()) {
                 value -= rank.getSpawnChance();
             } else {
                 this.rank = rank;
@@ -182,11 +180,12 @@ public class CommonEntityValue implements ICommonEntityComponents {
             return;
         }
         EntityAttributeInstance entityAttributeInstance = provider.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
-        int randomValue = (int) ((Math.random() * 0.5) + 0.5);
+        int randomValue = (int) Math.round(((Math.random() * 0.5) + 0.5));
         int value = (int) (provider.getMaxHealth() * (this.level + randomValue + this.rank.getStatMultiplier()));
         if (entityAttributeInstance.hasModifier(getModifier(rank, value))) entityAttributeInstance.addPersistentModifier(getModifier(rank, value));
         provider.setHealth((float) provider.getAttributeValue(EntityAttributes.GENERIC_MAX_HEALTH));
         this.healthIncreased = true;
+        provider.getWorld().getServer().sendMessage(Text.literal(("health : " + value)));
     }
 
     /**
@@ -220,16 +219,16 @@ public class CommonEntityValue implements ICommonEntityComponents {
         boolean gameRule = provider.getWorld().getGameRules().getBoolean(QfStatSystemGameRules.ENTITY_FOLLOWS_PLAYER_LEVEL_SCALING);
         final ServerPlayerEntity nearestPlayer = PlayerHelper.getNearestPlayer((ServerWorld) provider.world, provider);
 
-        if (gameRule || nearestPlayer != null) {
+        if (gameRule && nearestPlayer != null && DataStorage.loadPlayerStat(nearestPlayer) != null) {
             final int nearestPlayerLevel = DataStorage.loadPlayerStat(nearestPlayer).getLevel();
-            final int MIN = MathHelper.clamp(nearestPlayerLevel - 5, 0, MAX_LEVEL);
+            final int MIN = MathHelper.clamp(nearestPlayerLevel - 5, 1, MAX_LEVEL);
             final int MAX = MathHelper.clamp(nearestPlayerLevel + 5, 0, MAX_LEVEL);
-            this.level = (int) Math.random() * MAX + MIN;
+            this.level = (int) Math.round(Math.random() * MAX + MIN);
             return;
         }
         BlockPos spawnPos = provider.getWorld().getSpawnPos();
         double distance = spawnPos.getManhattanDistance(provider.getBlockPos());
-        this.level = (int) (distance % SCALING_DISTANCE) + 1;
+        this.level = (int) (distance / SCALING_DISTANCE) + 1;
     }
 
     /**
@@ -272,8 +271,12 @@ public class CommonEntityValue implements ICommonEntityComponents {
 
     @Override
     public void serverTick() {
-
+        if (!this.healthIncreased) {
+            provider.getWorld().getServer().sendMessage(Text.literal("Entity Spawned, Level : " + level + ", Rank : " + this.rank.getName() + ", Elements : " + this.attackElement.name()));
+            getDefensiveMap().forEach(((statEnums, integer) -> provider.getServer().sendMessage(Text.literal(statEnums.getName() + " : " + integer))));
+        }
         tryHealthIncrease();
+
     }
 
     @Override
