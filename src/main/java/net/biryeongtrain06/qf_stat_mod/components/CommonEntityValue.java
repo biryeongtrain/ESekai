@@ -15,9 +15,6 @@ import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtInt;
-import net.minecraft.nbt.NbtIntArray;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
@@ -25,6 +22,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.Elements.*;
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.EntityRank.getRankById;
@@ -57,7 +56,7 @@ public class CommonEntityValue implements ICommonEntityComponents {
         }
         else this.rank = EntityRank.COMMON;
         setLevel();
-        provider.getServer().sendMessage(Text.literal("Entity Spawned, Level : " + level + ", Rank : " + this.rank.getName()));
+        provider.getServer().sendMessage(Text.literal("Entity Spawned, Level : " + level + ", Rank : " + this.rank.getName() + "Elements : " + this.attackElement.name()));
         getDefensiveMap().forEach(((statEnums, integer) -> provider.getServer().sendMessage(Text.literal(statEnums.getName() + " : " + integer))));
     }
 
@@ -240,13 +239,14 @@ public class CommonEntityValue implements ICommonEntityComponents {
      */
     @Override
     public void initElement() {
-
+        HashMap<Elements, Integer> percent;
+        int roll = (int) (Math.random() * 100);
         boolean gameRule = provider.getWorld().getGameRules().getBoolean(QfStatSystemGameRules.ENTITY_ELEMENT_SELECTION_TYPE);
         if (gameRule) {
             long time = provider.getWorld().getTimeOfDay();
             long date = time % 24000;
             int day = (int) (date % 7);
-            HashMap<Elements, Integer> percent = switch (day) {
+             percent = switch (day) {
                 case 1 -> setPeakElement(PHYSICAL);
                 case 2 -> setPeakElement(FIRE);
                 case 3 -> setPeakElement(WATER);
@@ -255,6 +255,13 @@ public class CommonEntityValue implements ICommonEntityComponents {
                 case 6 -> setPeakElement(DARK);
                 default -> getPercent();
             };
+        } else percent = getPercent();
+        for (Map.Entry<Elements, Integer> elem : percent.entrySet()) {
+            if (roll <= elem.getValue()) {
+                this.attackElement = elem.getKey();
+                return;
+            }
+            roll -= elem.getValue();
         }
     }
 
