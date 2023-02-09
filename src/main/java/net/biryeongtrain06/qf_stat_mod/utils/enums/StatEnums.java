@@ -70,7 +70,7 @@ public enum StatEnums {
                 val.add(value);
             }
         }
-        return (StatEnums[]) val.toArray();
+        return val.toArray(StatEnums[]::new);
 
     }
 }

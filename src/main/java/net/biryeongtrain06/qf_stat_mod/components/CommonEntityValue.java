@@ -56,7 +56,7 @@ public class CommonEntityValue implements ICommonEntityComponents {
         }
         else this.rank = EntityRank.COMMON;
         setLevel();
-        provider.getServer().sendMessage(Text.literal("Entity Spawned, Level : " + level + ", Rank : " + this.rank.getName() + "Elements : " + this.attackElement.name()));
+        provider.getWorld().getServer().sendMessage(Text.literal("Entity Spawned, Level : " + level + ", Rank : " + this.rank.getName() + "Elements : " + this.attackElement.name()));
         getDefensiveMap().forEach(((statEnums, integer) -> provider.getServer().sendMessage(Text.literal(statEnums.getName() + " : " + integer))));
     }
 
