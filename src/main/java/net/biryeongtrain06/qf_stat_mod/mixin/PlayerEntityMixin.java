@@ -1,8 +1,6 @@
 package net.biryeongtrain06.qf_stat_mod.mixin;
 
-import net.biryeongtrain06.qf_stat_mod.callback.EntityHitPlayerCallback;
 import net.biryeongtrain06.qf_stat_mod.callback.PlayerKilledOtherCallback;
-import net.biryeongtrain06.qf_stat_mod.utils.QfCustomDamage;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,13 +22,13 @@ public class PlayerEntityMixin {
     }
     @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
     public void applyDamageHook(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        PlayerEntity player = (PlayerEntity) (Object) this;
+       /* PlayerEntity player = (PlayerEntity) (Object) this;
         if (!source.equals(DamageSource.OUT_OF_WORLD)) {
             if (!(source instanceof QfCustomDamage)) {
                 EntityHitPlayerCallback.EVENT.invoker().onHit(player, (LivingEntity) source.getSource(), source, amount);
                 cir.cancel();
             }
-        }
+        } */
     }
 
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getMaxHealth()F", opcode = Opcodes.GETFIELD))

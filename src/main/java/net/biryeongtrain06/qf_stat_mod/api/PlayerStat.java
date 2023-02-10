@@ -6,8 +6,8 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import net.biryeongtrain06.qf_stat_mod.playerclass.IPlayerClass;
 import net.biryeongtrain06.qf_stat_mod.playerclass.NonePlayerClass;
 import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
-import net.biryeongtrain06.qf_stat_mod.utils.QfCustomDamage;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -262,7 +262,7 @@ public class PlayerStat {
         this.selectPoint = value;
     }
 
-    public void damageHealth(QfCustomDamage s,ServerPlayerEntity player, float amount) {
+    public void damageHealth(DamageSource s, ServerPlayerEntity player, float amount) {
         this.currentHealth = MathHelper.clamp(this.currentHealth - amount, 0f, (float) getMaxHealth());
         float calculatedDamage = (amount / getMaxHealth()) * player.getMaxHealth();
         player.hurtTime = 0;

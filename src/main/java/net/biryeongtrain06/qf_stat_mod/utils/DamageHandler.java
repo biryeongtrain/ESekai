@@ -4,7 +4,6 @@ import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.Elements;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.MathHelper;
@@ -12,13 +11,13 @@ import net.minecraft.util.math.MathHelper;
 public class DamageHandler {
 
     public void PlayerDamageCalculate(PlayerEntity player, DamageSource source, float amount) {
-        if (!player.isInvulnerableTo(source) && source instanceof EntityDamageSource) {
+        if (!player.isInvulnerableTo(source) && source instanceof DamageSource) {
             ServerPlayerEntity sPlayer = (ServerPlayerEntity) player;
             PlayerStat stat = DataStorage.loadPlayerStat(sPlayer);
-            QfCustomDamage qfDamageSource = new QfCustomDamage(source, source.getSource(), Elements.PHYSICAL, amount);
+            //QfCustomDamage qfDamageSource = new QfCustomDamage(source, source.getSource(), Elements.PHYSICAL, amount);
             if (stat.getDodge() < (Math.random() * 100)) {
-                amount *= getDamageResistance(qfDamageSource.getElement(), amount, stat);
-                stat.damageHealth(qfDamageSource,sPlayer, amount);
+               // amount *= getDamageResistance(qfDamageSource.getElement(), amount, stat);
+                //stat.damageHealth(qfDamageSource,sPlayer, amount);
                 DataStorage.savePlayerStat(sPlayer, stat);
             }
         }
