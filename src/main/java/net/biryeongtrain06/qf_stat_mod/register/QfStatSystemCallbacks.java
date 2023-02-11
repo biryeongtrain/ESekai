@@ -7,7 +7,7 @@ import net.biryeongtrain06.qf_stat_mod.callback.EntityHitPlayerCallback;
 import net.biryeongtrain06.qf_stat_mod.callback.MobSpawningCallback;
 import net.biryeongtrain06.qf_stat_mod.callback.PlayerJoinCallback;
 import net.biryeongtrain06.qf_stat_mod.callback.PlayerKilledOtherCallback;
-import net.biryeongtrain06.qf_stat_mod.duck.IServerPlayerEntityDuck;
+import net.biryeongtrain06.qf_stat_mod.interfaces.IServerPlayerEntityDuck;
 import net.biryeongtrain06.qf_stat_mod.entity.OnEntitySpawnSetting;
 import net.biryeongtrain06.qf_stat_mod.gui.PlayerStatBar;
 import net.biryeongtrain06.qf_stat_mod.utils.DamageHandler;

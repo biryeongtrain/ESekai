@@ -2,7 +2,7 @@ package net.biryeongtrain06.qf_stat_mod.mixin;
 
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
-import net.biryeongtrain06.qf_stat_mod.duck.IServerPlayerEntityDuck;
+import net.biryeongtrain06.qf_stat_mod.interfaces.IServerPlayerEntityDuck;
 import net.biryeongtrain06.qf_stat_mod.utils.PlayerHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.minecraft.nbt.NbtCompound;
