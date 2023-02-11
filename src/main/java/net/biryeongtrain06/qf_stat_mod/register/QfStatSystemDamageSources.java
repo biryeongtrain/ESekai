@@ -8,7 +8,9 @@ import net.minecraft.registry.RegistryKeys;
 public class QfStatSystemDamageSources {
 
 
-    public static RegistryKey<DamageType> qfDamageSource = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, TextHelper.getId("qf_damage"));
+    public static RegistryKey<DamageType> qfDamageSource;
 
-
+    public static void init() {
+        qfDamageSource = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, TextHelper.getId("qf_damage"));
+    }
 }

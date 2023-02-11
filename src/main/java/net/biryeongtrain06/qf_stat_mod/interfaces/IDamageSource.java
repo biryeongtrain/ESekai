@@ -6,5 +6,7 @@ import net.minecraft.entity.damage.DamageType;
 import net.minecraft.registry.RegistryKey;
 
 public interface IDamageSource {
+
     DamageSource register(RegistryKey<DamageType> registryKey);
+    DamageSource getQfDamageSource();
 }

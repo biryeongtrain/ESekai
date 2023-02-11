@@ -8,6 +8,7 @@ import net.biryeongtrain06.qf_stat_mod.components.ICommonEntityComponents;
 import net.biryeongtrain06.qf_stat_mod.data.MobLevelDataLoader;
 import net.biryeongtrain06.qf_stat_mod.data.MobXpDataLoader;
 import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemCallbacks;
+import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemDamageSources;
 import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemGameRules;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums;
 import net.fabricmc.api.ModInitializer;
@@ -33,6 +34,7 @@ public class MainStatSystem implements ModInitializer {
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new MobXpDataLoader());
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new MobLevelDataLoader());
         QfStatSystemGameRules.setupGameRule();
+        QfStatSystemDamageSources.init();
     }
 
     public static HashMap<StatEnums, Integer> getEntityDefensiveMap(ComponentProvider provider) {

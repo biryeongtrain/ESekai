@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(DamageTypes.class)
 public interface DamageTypesMixin {
 
-    @Inject(method = "bootstrap", at = @At("TAIL"))
+    @Inject(method = "bootstrap", at = @At("RETURN"))
     private static void registerDamageType(Registerable<DamageType> damageTypeRegisterable, CallbackInfo ci) {
         damageTypeRegisterable.register(QfStatSystemDamageSources.qfDamageSource, new DamageType("qfCustomDamage", 0.1F, DamageEffects.HURT));
     }
