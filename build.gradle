@@ -69,6 +69,22 @@ tasks.withType(JavaCompile).configureEach {
     }
 }
 
+def dataOutPut   = 'src/main/generated'
+
+loom {
+    runs {
+        datagen {
+            server()
+
+            name "Data Generator"
+            vmArg "-Dfabric-api.datagen"
+            vmArg "-Dfabric-api.datagen.output-dir=${file(dataOutPut)}"
+
+            runDir "build/datagen"
+        }
+    }
+}
+
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     if (JavaVersion.current() < javaVersion) {

@@ -2,5 +2,5 @@
   "death_message_type": "qf_damage_source",
   "exhaustion": 0.1,
   "message_id": "qf_damage_source",
-  "scaling": "always"
+  "scaling": "never"
 }
