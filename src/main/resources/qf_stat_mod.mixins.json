@@ -10,7 +10,8 @@
     "PlayerEntityMixin",
     "LivingEntityMixin",
     "DamageSourcesMixin",
-    "DamageTypesMixin"
+    "DamageTypesMixin",
+    "VanillaDamageTypeTagProviderMixin"
   ],
   "server": [
   ],
