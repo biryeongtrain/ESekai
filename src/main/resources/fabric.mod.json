@@ -28,8 +28,8 @@
     "qf_stat_mod.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.14.8",
+    "fabricloader": ">=0.14.14",
     "fabric": "*",
-    "minecraft": "23w06a"
+    "minecraft": "1.19.4-alpha.23.6.a"
   }
 }

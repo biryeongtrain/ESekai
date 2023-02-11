@@ -1,21 +1,20 @@
 package net.biryeongtrain06.qf_stat_mod.mixin;
 
 import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemDamageSources;
-import net.biryeongtrain06.qf_stat_mod.register.QfTestDamageSource;
-import net.minecraft.class_8107;
-import net.minecraft.class_8110;
-import net.minecraft.class_8111;
+import net.minecraft.entity.damage.DamageEffects;
+import net.minecraft.entity.damage.DamageType;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.registry.Registerable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(class_8111.class)
-public class DamageTypesMixin {
+@Mixin(DamageTypes.class)
+public interface DamageTypesMixin {
 
-    @Inject(method = "method_48839", at = @At("TAIL"))
-    private static void registerDamageType(Registerable<class_8110> registerable, CallbackInfo ci) {
-        registerable.register(QfStatSystemDamageSources.qfDamageSource, new class_8110("qfCustomDamage", 0.1F, class_8107.HURT));
+    @Inject(method = "bootstrap", at = @At("TAIL"))
+    private static void registerDamageType(Registerable<DamageType> damageTypeRegisterable, CallbackInfo ci) {
+        damageTypeRegisterable.register(QfStatSystemDamageSources.qfDamageSource, new DamageType("qfCustomDamage", 0.1F, DamageEffects.HURT));
     }
 }

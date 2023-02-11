@@ -42,5 +42,9 @@ public class QfStatSystemCommands {
                 literal("openGUI")
                         .executes(TestCommands::openGUI)
         );
+        dispatcher.register(
+                literal("damageTest")
+                        .executes(TestCommands::damageTest)
+        );
     }
 }

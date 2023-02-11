@@ -1,7 +1,10 @@
 package net.biryeongtrain06.qf_stat_mod.command;
 
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import net.biryeongtrain06.qf_stat_mod.gui.PlayerMainGui;
+import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemDamageSources;
+import net.biryeongtrain06.qf_stat_mod.register.QfTestDamageSource;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.EntityRank;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -39,6 +42,16 @@ public class TestCommands {
             PlayerMainGui playerMainGui = new PlayerMainGui(player);
             playerMainGui.open();
         } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return 1;
+    }
+    public static int damageTest(CommandContext<ServerCommandSource> objectCommandContext) {
+        try {
+            ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();
+            QfTestDamageSource test = (QfTestDamageSource) player.getDamageSources();
+            player.damage(test.getQfDamageSource(), 10);
+        } catch(Exception e){
             e.printStackTrace();
         }
         return 1;

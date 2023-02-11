@@ -8,7 +8,10 @@
     "PlayerManagerMixin",
     "StyleAccessor",
     "PlayerEntityMixin",
-    "LivingEntityMixin"
+    "LivingEntityMixin",
+    "DamageSourcesMixin",
+    "DamageTypesMixin",
+    "WorldMixin"
   ],
   "server": [
   ],

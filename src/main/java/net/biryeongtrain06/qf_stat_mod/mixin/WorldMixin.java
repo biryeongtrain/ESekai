@@ -1,7 +1,7 @@
 package net.biryeongtrain06.qf_stat_mod.mixin;
 
 import net.biryeongtrain06.qf_stat_mod.register.QfTestDamageSource;
-import net.minecraft.class_8109;
+import net.minecraft.entity.damage.DamageSources;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -22,10 +22,10 @@ import java.util.function.Supplier;
 public class WorldMixin {
 
     @Mutable
-    @Shadow @Final private class_8109 field_42476;
+    @Shadow @Final private DamageSources damageSources;
 
-    @Inject(method = "<init>", at = @At(value = "FIELD", target = "Lnet/minecraft/world/World;field_42476:Lnet/minecraft/class_8109;", opcode = Opcodes.PUTFIELD))
+    @Inject(method = "<init>", at = @At(value = "FIELD", target = "Lnet/minecraft/world/World;damageSources:Lnet/minecraft/entity/damage/DamageSources;", opcode = Opcodes.PUTFIELD))
     private void changeDamageSource(MutableWorldProperties properties, RegistryKey registryRef, DynamicRegistryManager dynamicRegistryManager, RegistryEntry registryEntry, Supplier supplier, boolean bl, boolean bl2, long l, int i, CallbackInfo ci) {
-        this.field_42476 = new QfTestDamageSource(dynamicRegistryManager);
+        this.damageSources = new QfTestDamageSource(dynamicRegistryManager);
     }
 }
