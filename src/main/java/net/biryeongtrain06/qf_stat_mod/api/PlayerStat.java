@@ -266,8 +266,6 @@ public class PlayerStat {
         this.currentHealth = MathHelper.clamp(this.currentHealth - amount, 0f, (float) getMaxHealth());
         float calculatedDamage = (amount / getMaxHealth()) * player.getMaxHealth();
         player.hurtTime = 0;
-        player.sendMessage(Text.literal(String.valueOf(amount)));
-        player.sendMessage(Text.literal(String.valueOf(calculatedDamage)));
         player.damage(s, calculatedDamage);
     }
     public void syncPlayerHealth(ServerPlayerEntity player) {
