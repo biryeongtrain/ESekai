@@ -57,4 +57,14 @@ public class TestCommands {
         }
         return 1;
     }
+    public static int selfDamage(CommandContext<ServerCommandSource> objectCommandContext) {
+        try {
+            ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();
+            IDamageSource iDamageSource = (IDamageSource) player.getDamageSources();
+            player.damage(iDamageSource.getQfDamageSourceWithPlayerAttack(player), 30);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 1;
+    }
 }

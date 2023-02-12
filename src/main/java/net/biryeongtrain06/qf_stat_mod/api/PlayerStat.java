@@ -271,6 +271,9 @@ public class PlayerStat {
         player.damage(s, calculatedDamage);
     }
     public void syncPlayerHealth(ServerPlayerEntity player) {
+        if (player.isDead()) {
+            return;
+        }
         player.setHealth(MathHelper.clamp((float) Math.floor(getCurrentHealth() / getMaxHealth() * 20), 0f, player.getMaxHealth()));
     }
 
