@@ -37,7 +37,7 @@ public class QfDamageSource extends DamageSource {
 
     @Override
     public Text getDeathMessage(LivingEntity killed) {
-        String string = MOD_ID + "death." + this.getType().msgId() + ".player";
+        String string = MOD_ID + ".death." + this.getType().msgId() + ".player";
         Text text = this.attacker == null ? this.source.getDisplayName() : this.attacker.getDisplayName();
         Entity killer = this.attacker;
         ItemStack killerHeldItem;
@@ -47,6 +47,8 @@ public class QfDamageSource extends DamageSource {
         } else {
             killerHeldItem = ItemStack.EMPTY;
         }
-        return !killerHeldItem.isEmpty() ? Text.translatable(string + ".item", new Object[]{killed.getDisplayName(), text, killerHeldItem.toHoverableText(), this.element.getTranslatableName()}) : Text.translatable(string , new Object[]{killed.getDisplayName(), text, this.element.getTranslatableName()});
+        return !killerHeldItem.isEmpty() ?
+                Text.translatable(string + ".item", new Object[]{killed.getDisplayName(), text, killerHeldItem.toHoverableText(),Text.literal(this.element.getIcon()), this.element.getTranslatableName()}) :
+                Text.translatable(string , new Object[]{killed.getDisplayName(), text, Text.literal(this.element.getIcon()) ,this.element.getTranslatableName()});
     }
 }

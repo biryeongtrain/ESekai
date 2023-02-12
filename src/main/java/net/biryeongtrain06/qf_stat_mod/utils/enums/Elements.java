@@ -2,29 +2,35 @@ package net.biryeongtrain06.qf_stat_mod.utils.enums;
 
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
 import java.util.HashMap;
 
+import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.MOD_ID;
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums.*;
 
 public enum Elements {
-    PHYSICAL("element_physical", ARMOR, 20),
-    FIRE("element_fire", FIRE_RESISTANCE, 20),
-    WATER("element_water", WATER_RESISTANCE, 20),
-    EARTH("element_earth", EARTH_RESISTANCE, 20),
-    LIGHT("element_light", LIGHT_RESISTANCE, 10),
-    DARK("element_dark", DARK_RESISTANCE, 10);
+    PHYSICAL("element_physical", ARMOR, 20, Formatting.GOLD, "\u2726"),
+    FIRE("element_fire", FIRE_RESISTANCE, 20, Formatting.RED, "\u2600"),
+    WATER("element_water", WATER_RESISTANCE, 20, Formatting.AQUA, "\u2749"),
+    EARTH("element_earth", EARTH_RESISTANCE, 20, Formatting.GREEN, "\u273F"),
+    LIGHT("element_light", LIGHT_RESISTANCE, 10, Formatting.LIGHT_PURPLE, "\u269C"),
+    DARK("element_dark", DARK_RESISTANCE, 10, Formatting.DARK_PURPLE, "\u2726");
 
     final Text translatableName;
     final Identifier i;
     final StatEnums defensiveStat;
     final int spawnPercent;
-    Elements(String i, StatEnums defensiveStat, int spawnPercent) {
+    Formatting format;
+    String icon;
+    Elements(String i, StatEnums defensiveStat, int spawnPercent, Formatting format, String icon) {
         this.i = TextHelper.getId(i);
-        this.translatableName = Text.translatable(i);
+        this.translatableName = Text.translatable(MOD_ID+"."+i);
         this.defensiveStat = defensiveStat;
         this.spawnPercent = spawnPercent;
+        this.format = format;
+        this.icon = icon;
     }
 
     public static HashMap<Elements, Integer> getPercent() {
@@ -59,5 +65,13 @@ public enum Elements {
         if (e == LIGHT || e == DARK) h.replace(e, 55);
         else h.replace(e, 60);
         return h;
+    }
+
+    public Formatting getFormat() {
+        return format;
+    }
+
+    public String getIcon() {
+        return icon;
     }
 }

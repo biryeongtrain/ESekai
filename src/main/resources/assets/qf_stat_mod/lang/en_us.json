@@ -33,6 +33,6 @@
   "qf_stat_mod.wisdom" : "Wisdom",
   "qf_stat_mod.select_point" : "Selection Point",
   "qf_stat_mod.sidebar.title" : "Stat",
-  "qf_stat_mod.death.qf_damage.player" : "%1$s is death by %2$s and Element is %3$s",
-  "qf_stat_mod.death.qf_damage.player.item" : "%1$s is death by %2$s using %3$s and Element is %4$s"
+  "qf_stat_mod.death.qf_damage.player" : "%1$s \uD83D\uDDE1 %3$s %4$s %2$s",
+  "qf_stat_mod.death.qf_damage.player.item" : "%1$s \uD83D\uDDE1 %4$s %5$s %2$s + %3$s"
 }
