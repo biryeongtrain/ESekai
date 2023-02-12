@@ -35,6 +35,7 @@ public interface ICommonEntityComponents extends Component, ServerTickingCompone
     void setRankRandomly();
     void setModifierRandomly();
     void tryHealthIncrease();
+    void tryDamageIncrease();
     void setLevel();
     void initElement();
     HashMap<StatEnums, Integer> getDefensiveMap();

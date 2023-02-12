@@ -41,8 +41,8 @@ public class QfDamageSource extends DamageSource {
             killerHeldItem = ItemStack.EMPTY;
         }
         return !killerHeldItem.isEmpty() ?
-                Text.translatable(string + ".item", new Object[]{killed.getDisplayName(), killer.getDisplayName(), TextHelper.getDeathMessageItemHoverableText(killerHeldItem), this.element.toHoverTextWithIcon()}) :
-                Text.translatable(string , new Object[]{killed.getDisplayName(), killer.getDisplayName(), this.element.toHoverTextWithIcon()});
+                Text.translatable(string + ".item", new Object[]{killed.getDisplayName(), text, TextHelper.getDeathMessageItemHoverableText(killerHeldItem), this.element.toHoverTextWithIcon()}) :
+                Text.translatable(string , new Object[]{killed.getDisplayName(), text, this.element.toHoverTextWithIcon()});
 
     }
 }

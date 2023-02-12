@@ -10,7 +10,7 @@ public class ChangePlayerClass {
     public static int setCurrentHP(CommandContext<ServerCommandSource> objectCommandContext) {
         try {
             ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();
-            PlayerHelper.ChangePlayerClass(player, new WarriorPlayerClass());
+            PlayerHelper.changePlayerClass(player, new WarriorPlayerClass());
         } catch(Exception e) {
             e.printStackTrace();
         }

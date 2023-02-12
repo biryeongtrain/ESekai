@@ -47,7 +47,7 @@ public class PlayerHelper {
         return player.orElse(null);
     }
 
-    public static void ChangePlayerClass(ServerPlayerEntity player, IPlayerClass playerClass) {
+    public static void changePlayerClass(ServerPlayerEntity player, IPlayerClass playerClass) {
         PlayerStat playerStat = DataStorage.loadPlayerStat(player);
         IPlayerClass originalPlayerClass = getPlayerClass(playerStat.getPlayerClassId());
         playerStat = originalPlayerClass.onLostClass(player);

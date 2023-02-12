@@ -23,7 +23,6 @@ import net.minecraft.util.math.MathHelper;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.Elements.*;
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.EntityRank.getRankById;
@@ -36,12 +35,13 @@ public class CommonEntityValue implements ICommonEntityComponents {
     private int level = 1;
     private Elements attackElement = PHYSICAL;
     private int additionalDefenseRate = 0;
-    private int damage = 0;
+    private float damage = 0;
     private HashMap<StatEnums, Integer> defensiveMap = new HashMap<>();
     private EntityRank rank =  EntityRank.UN_DECIDED;
     private final MobEntity provider;
     private int numMaxAbilities = EntityRank.UN_DECIDED.getAbilities();
     private boolean healthIncreased = false;
+    private boolean damageIncreased = false;
 
     public boolean canApplyModifier(MobEntity provider) {
         return this.rank.equals(EntityRank.UN_DECIDED) && !provider.hasCustomName() && provider instanceof HostileEntity;
@@ -181,11 +181,23 @@ public class CommonEntityValue implements ICommonEntityComponents {
         }
         EntityAttributeInstance entityAttributeInstance = provider.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
         int randomValue = (int) Math.round(((Math.random() * 0.5) + 0.5));
-        int value = (int) (provider.getMaxHealth() * (this.level + randomValue + this.rank.getStatMultiplier()));
-        if (!entityAttributeInstance.hasModifier(getModifier(rank, value))) entityAttributeInstance.addPersistentModifier(getModifier(rank, value));
+        int value = (int) MathHelper.clamp(provider.getMaxHealth() * (this.level + randomValue + this.rank.getStatMultiplier()) - provider.getMaxHealth(), provider.getMaxHealth(), provider.getMaxHealth() * this.level * 10);
+        if (!entityAttributeInstance.hasModifier(getHealthModifier(rank, value))) entityAttributeInstance.addPersistentModifier(getHealthModifier(rank, value));
         provider.setHealth((float) provider.getAttributeValue(EntityAttributes.GENERIC_MAX_HEALTH));
         this.healthIncreased = true;
         provider.getWorld().getServer().sendMessage(Text.literal(("health : " + provider.getAttributeValue(EntityAttributes.GENERIC_MAX_HEALTH))));
+    }
+
+    @Override
+    public void tryDamageIncrease() {
+        if (damageIncreased) {
+            return;
+        }
+        EntityAttributeInstance entityAttributeInstance = provider.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+        float originalDamage = (float) provider.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+        if (!entityAttributeInstance.hasModifier(getDamageModifier(this.rank, 0))) entityAttributeInstance.addPersistentModifier(getDamageModifier(this.rank, Math.round(originalDamage * this.rank.getStatMultiplier())));
+        this.damageIncreased = true;
+        provider.getWorld().getServer().sendMessage(Text.literal(("Damage : " + provider.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE))));
     }
 
     /**
@@ -193,8 +205,12 @@ public class CommonEntityValue implements ICommonEntityComponents {
      * @param value
      * @return rank 에 따른 이름과 value에 따른 수치를 가진 Attribute를 반환합니다.
      */
-    public EntityAttributeModifier getModifier(EntityRank rank, int value) {
+    public EntityAttributeModifier getHealthModifier(EntityRank rank, int value) {
         return new EntityAttributeModifier(rank.name() + "_HEALTH_BOOST", value, EntityAttributeModifier.Operation.ADDITION);
+    }
+
+    public EntityAttributeModifier getDamageModifier(EntityRank rank, int value) {
+        return new EntityAttributeModifier(rank.getName() + "_DAMAGE_BOOST", value, EntityAttributeModifier.Operation.ADDITION);
     }
 
     /**
@@ -277,7 +293,7 @@ public class CommonEntityValue implements ICommonEntityComponents {
 
         }
         tryHealthIncrease();
-
+        tryDamageIncrease();
     }
 
     @Override

@@ -19,6 +19,7 @@ public class DisplaySystemMessage {
             }
             iPlayer.setDisplaySystemMessage(true);
             player.sendMessage(Text.translatable(TextHelper.createTranslation("system_message.enabled")));
+
         } catch(Exception e) {
             e.printStackTrace();
         }
