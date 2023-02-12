@@ -1,6 +1,7 @@
 package net.biryeongtrain06.qf_stat_mod.interfaces;
 
 
+import net.biryeongtrain06.qf_stat_mod.utils.QfDamageSource;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.Elements;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -12,6 +13,6 @@ import org.jetbrains.annotations.Nullable;
 
 public interface IDamageSource {
 
-    DamageSource getQfDamageSourceWithEntityAttack(LivingEntity source, LivingEntity attacker, Elements element);
-    DamageSource getQfDamageSourceWithPlayerAttack(LivingEntity source, PlayerEntity attacker, Elements element);
+    QfDamageSource getQfDamageSourceWithEntityAttack(DamageSource originalDamageSource, Elements element, float originalDamageAmount);
+    QfDamageSource getQfDamageSourceWithPlayerAttack(DamageSource originalDamageSource, Elements element, float originalDamageAmount);
 }

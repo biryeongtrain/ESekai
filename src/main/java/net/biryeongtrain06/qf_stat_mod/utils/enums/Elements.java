@@ -1,7 +1,11 @@
 package net.biryeongtrain06.qf_stat_mod.utils.enums;
 
+import com.google.gson.JsonObject;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
+import net.minecraft.text.HoverEvent;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.text.Texts;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
@@ -73,5 +77,11 @@ public enum Elements {
 
     public String getIcon() {
         return icon;
+    }
+
+    public Text toHoverTextWithIcon() {
+        MutableText text = (Text.empty().append(this.icon).formatted(this.format));
+        text.formatted(this.format).styled(style -> style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.empty().append(this.getTranslatableName()).formatted(this.format))));
+        return text;
     }
 }
