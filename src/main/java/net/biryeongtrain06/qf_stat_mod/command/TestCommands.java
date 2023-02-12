@@ -1,11 +1,9 @@
 package net.biryeongtrain06.qf_stat_mod.command;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import net.biryeongtrain06.qf_stat_mod.gui.PlayerMainGui;
 import net.biryeongtrain06.qf_stat_mod.interfaces.IDamageSource;
-import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemDamageSources;
-import net.biryeongtrain06.qf_stat_mod.register.QfTestDamageSource;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.Elements;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.EntityRank;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -51,7 +49,7 @@ public class TestCommands {
         try {
             ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();
             IDamageSource iDamageSource = (IDamageSource) player.getDamageSources();
-            player.damage(iDamageSource.getQfDamageSource(), 10);
+            player.damage(iDamageSource.getQfDamageSourceWithPlayerAttack(player, player, Elements.PHYSICAL), 10);
         } catch(Exception e){
             e.printStackTrace();
         }
@@ -61,7 +59,7 @@ public class TestCommands {
         try {
             ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();
             IDamageSource iDamageSource = (IDamageSource) player.getDamageSources();
-            player.damage(iDamageSource.getQfDamageSourceWithPlayerAttack(player), 30);
+            player.damage(iDamageSource.getQfDamageSourceWithPlayerAttack(player, player, Elements.PHYSICAL), 30);
         } catch (Exception e) {
             e.printStackTrace();
         }

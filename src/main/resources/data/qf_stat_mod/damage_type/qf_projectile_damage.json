@@ -1,0 +1,6 @@
+{
+  "death_message_type": "qf_projectile_damage",
+  "exhaustion": 0.1,
+  "message_id": "qf_projectile_damage",
+  "scaling": "never"
+}

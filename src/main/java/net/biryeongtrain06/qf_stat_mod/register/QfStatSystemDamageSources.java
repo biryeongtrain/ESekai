@@ -9,8 +9,10 @@ public class QfStatSystemDamageSources {
 
 
     public static RegistryKey<DamageType> qfDamageSource;
+    public static RegistryKey<DamageType> qfProjectileDamageSource;
 
     public static void init() {
         qfDamageSource = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, TextHelper.getId("qf_damage"));
+        qfProjectileDamageSource = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, TextHelper.getId("qf_projectile_damage"));
     }
 }
