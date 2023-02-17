@@ -6,9 +6,9 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 
-public interface EntityHitPlayerCallback {
-    Event<EntityHitPlayerCallback> EVENT = EventFactory.createArrayBacked(EntityHitPlayerCallback.class, (listener) -> (player, entity, source, amount) -> {
-        for (EntityHitPlayerCallback handler : listener) {
+public interface PlayerHitByEntityCallback {
+    Event<PlayerHitByEntityCallback> EVENT = EventFactory.createArrayBacked(PlayerHitByEntityCallback.class, (listener) -> (player, entity, source, amount) -> {
+        for (PlayerHitByEntityCallback handler : listener) {
             handler.onHit(player, entity, source, amount);
         }
     });

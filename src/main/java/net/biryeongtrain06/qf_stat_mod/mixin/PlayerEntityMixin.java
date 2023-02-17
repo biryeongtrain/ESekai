@@ -1,17 +1,15 @@
 package net.biryeongtrain06.qf_stat_mod.mixin;
 
-import net.biryeongtrain06.qf_stat_mod.callback.EntityHitPlayerCallback;
+import net.biryeongtrain06.qf_stat_mod.callback.PlayerHitByEntityCallback;
 import net.biryeongtrain06.qf_stat_mod.callback.PlayerKilledOtherCallback;
 import net.biryeongtrain06.qf_stat_mod.utils.QfDamageSource;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.DamageSources;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.world.ServerWorld;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -31,7 +29,7 @@ public abstract class PlayerEntityMixin {
        PlayerEntity player = (PlayerEntity) (Object) this;
         if (!source.isIn(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             if (!(source instanceof QfDamageSource)) {
-                EntityHitPlayerCallback.EVENT.invoker().onHit(player, (LivingEntity) source.getSource(), source, amount);
+                PlayerHitByEntityCallback.EVENT.invoker().onHit(player, (LivingEntity) source.getSource(), source, amount);
                 cir.cancel();
             }
         }

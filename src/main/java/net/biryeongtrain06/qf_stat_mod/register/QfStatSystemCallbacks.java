@@ -80,7 +80,7 @@ public class QfStatSystemCallbacks {
         CommandRegistrationCallback.EVENT.register(QfStatSystemCommands::initCommand);
         PlayerJoinCallback.EVENT.register(QfStatSystemCallbacks::playerJoinCallback);
         PlayerKilledOtherCallback.EVENT.register(QfStatSystemCallbacks::playerKilledCallback);
-        EntityHitPlayerCallback.EVENT.register(QfStatSystemCallbacks::entityHitPlayerCallback);
+        PlayerHitByEntityCallback.EVENT.register(QfStatSystemCallbacks::entityHitPlayerCallback);
         MobSpawningCallback.EVENT.register(QfStatSystemCallbacks::onMobSpawned);
         EntityDamagedCallback.EVENT.register(QfStatSystemCallbacks::onEntityDamaged);
     }
