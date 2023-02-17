@@ -1,14 +1,11 @@
 package net.biryeongtrain06.qf_stat_mod.mixin;
 
 import com.google.common.collect.Multimap;
-import net.biryeongtrain06.qf_stat_mod.interfaces.IItemStack;
-import net.biryeongtrain06.qf_stat_mod.utils.enums.Elements;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,10 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(ItemStack.class)
-public abstract class ItemStackMixin implements IItemStack {
-
-    private final String ELEMENT_KEY = "element";
-    private Elements element = Elements.PHYSICAL;
+public abstract class ItemStackMixin {
 
     @Shadow
     public abstract Item getItem();
@@ -30,18 +24,4 @@ public abstract class ItemStackMixin implements IItemStack {
         multimap.putAll(getItem().getAttributeModifiers(slot));
     }
 
-    @Inject(method = "writeNbt", at = @At("RETURN"))
-    private void qf$addCustomStatus(NbtCompound nbt, CallbackInfoReturnable<NbtCompound> cir) {
-        nbt.putString(ELEMENT_KEY, element.getId().toString());
-    }
-
-    @Override
-    public Elements getElement() {
-        return this.element;
-    }
-
-    @Override
-    public void setElement(Elements element) {
-        this.element = element;
-    }
 }
