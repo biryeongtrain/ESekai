@@ -43,7 +43,9 @@ public abstract class LivingEntityMixin implements ComponentProvider {
         if (entity instanceof PlayerEntity) {
             return;
         }
+        if (source.getAttacker().isPlayer()) {
 
+        }
     }
     @Inject(method = "onSpawnPacket", at = @At("TAIL"))
     public void onLoadInit(EntitySpawnS2CPacket packet, CallbackInfo ci) {

@@ -30,6 +30,6 @@
   "depends": {
     "fabricloader": ">=0.14.14",
     "fabric": "*",
-    "minecraft": "1.19.4-alpha.23.6.a"
+    "minecraft": "1.19.4-alpha.23.7.a"
   }
 }

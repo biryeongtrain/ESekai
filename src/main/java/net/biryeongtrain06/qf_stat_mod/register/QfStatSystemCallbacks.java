@@ -1,19 +1,20 @@
 package net.biryeongtrain06.qf_stat_mod.register;
 
 import eu.pb4.playerdata.api.PlayerDataApi;
+import net.biryeongtrain06.qf_stat_mod.MainStatSystem;
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
-import net.biryeongtrain06.qf_stat_mod.callback.EntityHitPlayerCallback;
-import net.biryeongtrain06.qf_stat_mod.callback.MobSpawningCallback;
-import net.biryeongtrain06.qf_stat_mod.callback.PlayerJoinCallback;
-import net.biryeongtrain06.qf_stat_mod.callback.PlayerKilledOtherCallback;
+import net.biryeongtrain06.qf_stat_mod.callback.*;
 import net.biryeongtrain06.qf_stat_mod.interfaces.IServerPlayerEntityDuck;
 import net.biryeongtrain06.qf_stat_mod.entity.OnEntitySpawnSetting;
 import net.biryeongtrain06.qf_stat_mod.gui.PlayerStatBar;
 import net.biryeongtrain06.qf_stat_mod.utils.DamageHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.Elements;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
@@ -23,6 +24,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.HashMap;
 
 import static net.biryeongtrain06.qf_stat_mod.api.DataStorage.PLAYER_STAT_DATA_STORAGE;
 
@@ -66,8 +70,9 @@ public class QfStatSystemCallbacks {
         OnEntitySpawnSetting.setUpNewMobOnSpawn(entity, world);
     }
 
-    private static ActionResult onEntityDamaged(LivingEntity attacker, LivingEntity victim, DamageSource source, float amount) {
-
+    private static ActionResult onEntityDamaged(@Nullable Entity attacker, Entity victim, DamageSource source, float amount) {
+        HashMap<StatEnums, Integer> defensiveMap = MainStatSystem.getEntityDefensiveMap(victim.asComponentProvider());
+        Elements attackersElement =
         return ActionResult.PASS;
     }
 
@@ -77,5 +82,6 @@ public class QfStatSystemCallbacks {
         PlayerKilledOtherCallback.EVENT.register(QfStatSystemCallbacks::playerKilledCallback);
         EntityHitPlayerCallback.EVENT.register(QfStatSystemCallbacks::entityHitPlayerCallback);
         MobSpawningCallback.EVENT.register(QfStatSystemCallbacks::onMobSpawned);
+        EntityDamagedCallback.EVENT.register(QfStatSystemCallbacks::onEntityDamaged);
     }
 }

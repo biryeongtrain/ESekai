@@ -27,10 +27,6 @@ public abstract class DamageSourcesMixin implements IDamageSource {
     public Registry<DamageType> registry;
 
 
-    @Inject(method = "<init>", at = @At("TAIL"))
-    private void damageSourceAdder(DynamicRegistryManager dynamicRegistryManager, CallbackInfo ci) {
-    }
-
     @Override
     public QfDamageSource getQfDamageSourceWithEntityAttack(DamageSource originalDamageSource, Elements element, float originalDamageAmount) {
         return new QfDamageSource(this.registry.entryOf(QfStatSystemDamageSources.qfDamageSource), originalDamageSource, element, originalDamageAmount);
