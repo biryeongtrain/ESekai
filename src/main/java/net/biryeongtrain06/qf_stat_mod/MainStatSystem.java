@@ -5,8 +5,8 @@ import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistryV3;
 import net.biryeongtrain06.qf_stat_mod.components.ICommonEntityComponents;
-import net.biryeongtrain06.qf_stat_mod.data.MobLevelDataLoader;
-import net.biryeongtrain06.qf_stat_mod.data.MobXpDataLoader;
+import net.biryeongtrain06.qf_stat_mod.utils.data.MobLevelDataLoader;
+import net.biryeongtrain06.qf_stat_mod.utils.data.MobXpDataLoader;
 import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemCallbacks;
 import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemDamageSources;
 import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemGameRules;
@@ -24,7 +24,7 @@ import java.util.HashMap;
 public class MainStatSystem implements ModInitializer {
 
     public static final String MOD_ID ="qf_stat_mod";
-    final public static Logger debugLogger = LogManager.getLogger("Qf Stat Debug");
+    final public static Logger debugLogger = LogManager.getLogger("ESekai Debug");
 
     public static final ComponentKey<ICommonEntityComponents> ENTITY_MODIFIERS = ComponentRegistryV3.INSTANCE.getOrCreate(new Identifier(MOD_ID, "entity_modifiers"), ICommonEntityComponents.class);
 

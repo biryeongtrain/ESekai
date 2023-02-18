@@ -2,7 +2,7 @@ package net.biryeongtrain06.qf_stat_mod.mixin;
 
 import net.biryeongtrain06.qf_stat_mod.callback.PlayerHitByEntityCallback;
 import net.biryeongtrain06.qf_stat_mod.callback.PlayerKilledOtherCallback;
-import net.biryeongtrain06.qf_stat_mod.utils.QfDamageSource;
+import net.biryeongtrain06.qf_stat_mod.damage.QfDamageSource;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;

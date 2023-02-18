@@ -1,4 +1,4 @@
-package net.biryeongtrain06.qf_stat_mod.playerclass;
+package net.biryeongtrain06.qf_stat_mod.player.playerclass;
 
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;

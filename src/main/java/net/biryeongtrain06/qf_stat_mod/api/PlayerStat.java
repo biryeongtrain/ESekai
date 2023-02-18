@@ -3,8 +3,8 @@ package net.biryeongtrain06.qf_stat_mod.api;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
-import net.biryeongtrain06.qf_stat_mod.playerclass.IPlayerClass;
-import net.biryeongtrain06.qf_stat_mod.playerclass.NonePlayerClass;
+import net.biryeongtrain06.qf_stat_mod.player.playerclass.IPlayerClass;
+import net.biryeongtrain06.qf_stat_mod.player.playerclass.NonePlayerClass;
 import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.minecraft.entity.damage.DamageSource;

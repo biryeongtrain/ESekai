@@ -1,4 +1,4 @@
-package net.biryeongtrain06.qf_stat_mod.data;
+package net.biryeongtrain06.qf_stat_mod.utils.data;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -19,27 +19,35 @@ import java.util.Map;
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.MOD_ID;
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.debugLogger;
 
-public class MobLevelDataLoader extends JsonDataLoader implements IdentifiableResourceReloadListener {
+public class MobXpDataLoader extends JsonDataLoader implements IdentifiableResourceReloadListener {
 
-
-    public MobLevelDataLoader() {
-        super(new Gson(), MOD_ID + "_mob_level");
+    public MobXpDataLoader() {
+        super(new Gson(), MOD_ID + "_mob_xp");
     }
-
     @Override
     public Identifier getFabricId() {
-        return new Identifier(MOD_ID, "mob_level");
+        return new Identifier(MOD_ID, "mob_xp");
     }
 
     @Override
     protected void apply(Map<Identifier, JsonElement> prepared, ResourceManager manager, Profiler profiler) {
-        manager.findResources("mob", id -> id.getPath().endsWith("level.json")).forEach((id, resourceRef) -> {
+        manager.findResources("mob", id -> id.getPath().endsWith("xp.json")).forEach((id, resourceRef) -> {
             try {
                 InputStream stream = resourceRef.getInputStream();
                 JsonObject data = JsonParser.parseReader(new InputStreamReader(stream)).getAsJsonObject();
-                ExpHandler.initLevelModifier(data);
-                debugLogger.info("Successfully loaded level modifier data.");
-            } catch (Exception e) {
+                ExpHandler.setXpModifier(data);
+                debugLogger.info("Successfully loaded mob XP data.");
+            } catch (IOException e) {
+                debugLogger.error("Error occurred while loading resource {}. {}", id.toString(), e.toString());
+            }
+        });
+        manager.findResources("mob", id -> id.getPath().endsWith("rarity.json")).forEach((id, resourceRef) -> {
+            try {
+                InputStream stream = resourceRef.getInputStream();
+                JsonObject data = JsonParser.parseReader(new InputStreamReader(stream)).getAsJsonObject();
+                ExpHandler.setRaritySpawnChance(data);
+                debugLogger.info("Successfully loaded mob XP data.");
+            } catch (IOException e) {
                 debugLogger.error("Error occurred while loading resource {}. {}", id.toString(), e.toString());
             }
         });

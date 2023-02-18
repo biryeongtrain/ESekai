@@ -8,8 +8,8 @@ import net.biryeongtrain06.qf_stat_mod.callback.*;
 import net.biryeongtrain06.qf_stat_mod.interfaces.IServerPlayerEntityDuck;
 import net.biryeongtrain06.qf_stat_mod.entity.OnEntitySpawnSetting;
 import net.biryeongtrain06.qf_stat_mod.gui.PlayerStatBar;
-import net.biryeongtrain06.qf_stat_mod.utils.DamageHandler;
-import net.biryeongtrain06.qf_stat_mod.utils.ElementHandler;
+import net.biryeongtrain06.qf_stat_mod.damage.DamageHandler;
+import net.biryeongtrain06.qf_stat_mod.item.ElementHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.Elements;
@@ -26,7 +26,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
-import org.apache.logging.log4j.core.jmx.Server;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;

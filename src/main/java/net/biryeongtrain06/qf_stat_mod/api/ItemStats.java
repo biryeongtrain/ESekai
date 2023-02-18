@@ -1,7 +1,7 @@
 package net.biryeongtrain06.qf_stat_mod.api;
 
-import net.biryeongtrain06.qf_stat_mod.utils.ElementHandler;
-import net.biryeongtrain06.qf_stat_mod.utils.ItemStatHandler;
+import net.biryeongtrain06.qf_stat_mod.item.ElementHandler;
+import net.biryeongtrain06.qf_stat_mod.item.ItemStatHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.Elements;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;

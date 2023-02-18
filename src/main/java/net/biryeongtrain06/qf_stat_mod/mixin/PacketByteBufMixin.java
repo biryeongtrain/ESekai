@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 
-import static net.biryeongtrain06.qf_stat_mod.utils.ElementHandler.ITEM_ELEMENT_KEY;
+import static net.biryeongtrain06.qf_stat_mod.item.ElementHandler.ITEM_ELEMENT_KEY;
 import static net.minecraft.item.ItemStack.DISPLAY_KEY;
 import static net.minecraft.item.ItemStack.LORE_KEY;
 import static net.minecraft.nbt.NbtElement.LIST_TYPE;

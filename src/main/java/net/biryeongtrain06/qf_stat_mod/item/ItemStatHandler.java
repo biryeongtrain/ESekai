@@ -1,4 +1,4 @@
-package net.biryeongtrain06.qf_stat_mod.utils;
+package net.biryeongtrain06.qf_stat_mod.item;
 
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
