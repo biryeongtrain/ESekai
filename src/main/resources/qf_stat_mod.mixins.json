@@ -10,7 +10,9 @@
     "PlayerEntityMixin",
     "LivingEntityMixin",
     "DamageSourcesMixin",
-    "DamageTypesMixin"
+    "DamageTypesMixin",
+    "PacketByteBufMixin",
+    "ItemStackMixin"
   ],
   "server": [
   ],

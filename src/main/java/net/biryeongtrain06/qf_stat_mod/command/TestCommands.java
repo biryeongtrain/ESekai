@@ -1,11 +1,13 @@
 package net.biryeongtrain06.qf_stat_mod.command;
 
 import com.mojang.brigadier.context.CommandContext;
+import net.biryeongtrain06.qf_stat_mod.api.ItemStats;
 import net.biryeongtrain06.qf_stat_mod.gui.PlayerMainGui;
 import net.biryeongtrain06.qf_stat_mod.interfaces.IDamageSource;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.Elements;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.EntityRank;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -64,6 +66,31 @@ public class TestCommands {
             IDamageSource iDamageSource = (IDamageSource) player.getDamageSources();
             player.damage(iDamageSource.getQfDamageSourceWithPlayerAttack(damageSource, Elements.PHYSICAL, 40), 30);
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 1;
+    }
+
+    public static int getElement(CommandContext<ServerCommandSource> objectCommandContext) {
+        try {
+            ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();
+            Elements e = ItemStats.getPlayerItemElement(player);
+            player.sendMessage(Text.literal(e.getIcon()).append(e.getTranslatableName()).formatted(e.getFormat()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 1;
+    }
+
+    public static int setElement(CommandContext<ServerCommandSource> objectCommandContext) {
+        try {
+            ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();
+            Elements e = Elements.FIRE;
+            boolean b = ItemStats.setPlayerItemElement(e, player);
+            if (!b) {
+                return 0;
+            }
+        }catch (Exception e) {
             e.printStackTrace();
         }
         return 1;

@@ -24,5 +24,5 @@ public abstract class ItemStackMixin {
         multimap.putAll(getItem().getAttributeModifiers(slot));
     }
 
-    @Inject(method = "onCraft")
+
 }

@@ -9,6 +9,7 @@ import net.biryeongtrain06.qf_stat_mod.interfaces.IServerPlayerEntityDuck;
 import net.biryeongtrain06.qf_stat_mod.entity.OnEntitySpawnSetting;
 import net.biryeongtrain06.qf_stat_mod.gui.PlayerStatBar;
 import net.biryeongtrain06.qf_stat_mod.utils.DamageHandler;
+import net.biryeongtrain06.qf_stat_mod.utils.ElementHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.Elements;
@@ -24,6 +25,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
+import org.apache.logging.log4j.core.jmx.Server;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -72,7 +74,12 @@ public class QfStatSystemCallbacks {
 
     private static ActionResult onEntityDamaged(@Nullable Entity attacker, Entity victim, DamageSource source, float amount) {
         HashMap<StatEnums, Integer> defensiveMap = MainStatSystem.getEntityDefensiveMap(victim.asComponentProvider());
-        Elements attackersElement =
+        if (!(attacker instanceof ServerPlayerEntity)) {
+            return ActionResult.PASS;
+        }
+        ServerPlayerEntity player = (ServerPlayerEntity) attacker;
+        ElementHandler handler = new ElementHandler(player);
+
         return ActionResult.PASS;
     }
 

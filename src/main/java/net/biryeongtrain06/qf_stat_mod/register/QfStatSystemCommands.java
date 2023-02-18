@@ -50,5 +50,13 @@ public class QfStatSystemCommands {
                 literal("damagePlayerTest")
                         .executes(TestCommands::selfDamage)
         );
+        dispatcher.register(
+                literal("getElement")
+                        .executes(TestCommands::getElement)
+        );
+        dispatcher.register(
+                literal("setElement")
+                        .executes(TestCommands::setElement)
+        );
     }
 }

@@ -8,8 +8,11 @@ import net.minecraft.text.Text;
 import net.minecraft.text.Texts;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import org.spongepowered.asm.mixin.Mutable;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Optional;
 
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.MOD_ID;
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums.*;
@@ -82,6 +85,18 @@ public enum Elements {
     public Text toHoverTextWithIcon() {
         MutableText text = (Text.empty().append(this.icon).formatted(this.format));
         text.formatted(this.format).styled(style -> style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.empty().append(this.getTranslatableName()).formatted(this.format))));
+        return text;
+    }
+
+    public static Elements getElementWithId(Identifier id) {
+        Optional<Elements> element = Arrays.stream(values()).parallel()
+                .filter(e -> e.getId().equals(id)).findFirst();
+        return element.orElse(PHYSICAL);
+    }
+
+    public Text getLoreText() {
+        MutableText text = Text.empty().append(Text.translatable(TextHelper.createTranslation("element_lore")));
+        text.append(" : ").append(this.icon + " ").append(this.translatableName).formatted(this.format);
         return text;
     }
 }
