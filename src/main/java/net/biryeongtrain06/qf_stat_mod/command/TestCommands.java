@@ -95,4 +95,29 @@ public class TestCommands {
         }
         return 1;
     }
+
+    public static int setItemDamage(CommandContext<ServerCommandSource> objectCommandContext) {
+        try {
+            ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();
+            ItemStack stack = player.getMainHandStack();
+            if (!ItemStats.setItemDamage(stack, 100f)) {
+                return 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 1;
+    }
+
+    public static int getItemDamage(CommandContext<ServerCommandSource> objectCommandContext) {
+        try {
+            ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();
+            ItemStack stack = player.getMainHandStack();
+            float damage = (float) ItemStats.getItemDamage(stack);
+            player.sendMessage(Text.literal(String.valueOf(damage)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 1;
+    }
 }
