@@ -18,6 +18,7 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -57,9 +58,9 @@ public class QfStatSystemCallbacks {
     }
 
     private static void entityHitPlayerCallback(PlayerEntity player, LivingEntity entity, DamageSource source, float amount) {
-        DamageHandler dmgHandler = new DamageHandler();
         ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
-        dmgHandler.PlayerDamageCalculate(player, source, amount);
+        DamageHandler dmgHandler = new DamageHandler(serverPlayerEntity);
+        dmgHandler.PlayerDamageCalculate(source, amount);
     }
 
     private static void onMobSpawned(LivingEntity entity, World world) {
@@ -73,12 +74,22 @@ public class QfStatSystemCallbacks {
     }
 
     private static ActionResult onEntityDamaged(@Nullable Entity attacker, Entity victim, DamageSource source, float amount) {
+        if (!(victim instanceof HostileEntity) && !(victim instanceof LivingEntity)) {
+            return ActionResult.PASS;
+        }
         HashMap<StatEnums, Integer> defensiveMap = MainStatSystem.getEntityDefensiveMap(victim.asComponentProvider());
         if (!(attacker instanceof ServerPlayerEntity)) {
             return ActionResult.PASS;
         }
         ServerPlayerEntity player = (ServerPlayerEntity) attacker;
-        ElementHandler handler = new ElementHandler(player);
+        LivingEntity livingEntity = (LivingEntity) victim;
+        ElementHandler elementHandler = new ElementHandler(player);
+        Elements e = elementHandler.getElement();
+        int resistance = defensiveMap.get(e.getDefensiveStat());
+        amount = Elements.calculateDamageReduce(e, resistance, amount);
+        DamageHandler damageHandler = new DamageHandler(victim);
+        damageHandler.DamageEntity(source, e, amount);
+        attacker.sendMessage(Text.literal(String.valueOf(livingEntity.getHealth())));
 
         return ActionResult.PASS;
     }

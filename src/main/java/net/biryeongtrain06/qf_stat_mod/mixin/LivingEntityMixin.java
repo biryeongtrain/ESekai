@@ -3,10 +3,12 @@ package net.biryeongtrain06.qf_stat_mod.mixin;
 import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
+import net.biryeongtrain06.qf_stat_mod.callback.EntityDamagedCallback;
 import net.biryeongtrain06.qf_stat_mod.callback.MobSpawningCallback;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -40,11 +42,15 @@ public abstract class LivingEntityMixin implements ComponentProvider {
     @Inject(method = "damage", at = @At("HEAD"))
     private void qf$hook(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         LivingEntity entity = (LivingEntity) (Object) this;
+        if (!(source.getType().equals(DamageTypes.PLAYER_ATTACK))) {
+            return;
+        }
         if (entity instanceof PlayerEntity) {
             return;
         }
         if (source.getAttacker().isPlayer()) {
-
+            EntityDamagedCallback.EVENT.invoker().onHit(source.getAttacker(), entity, source, amount);
+            cir.cancel();
         }
     }
     @Inject(method = "onSpawnPacket", at = @At("TAIL"))

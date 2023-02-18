@@ -10,7 +10,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
-public class ElementHandler {
+public class  ElementHandler {
     public final static String ITEM_ELEMENT_KEY = "element";
     private final ItemStack ITEM_STACK;
     private final ServerPlayerEntity player;

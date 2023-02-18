@@ -14,4 +14,6 @@ public class ItemStats {
         ElementHandler handler = new ElementHandler(player.getMainHandStack(), player);
         return handler.setElement(element);
     }
+
+    public static
 }

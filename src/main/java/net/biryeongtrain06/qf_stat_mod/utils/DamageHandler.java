@@ -4,25 +4,46 @@ import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
 import net.biryeongtrain06.qf_stat_mod.interfaces.IDamageSource;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.Elements;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.MathHelper;
+import org.apache.logging.log4j.core.jmx.Server;
+import org.jetbrains.annotations.Nullable;
 
 public class DamageHandler {
 
-    public void PlayerDamageCalculate(PlayerEntity player, DamageSource source, float amount) {
+    private final Entity entity;
+
+    public DamageHandler(Entity entity) {
+        this.entity = entity;
+    }
+
+    /**
+     * Use only Entity is Player.
+     * @param source Original DamageSource
+     * @param amount Damage amount
+     */
+    public void PlayerDamageCalculate(DamageSource source, float amount) {
+        if (!(entity instanceof ServerPlayerEntity)) { return; }
+        ServerPlayerEntity player = (ServerPlayerEntity) entity;
         if (!player.isInvulnerableTo(source) && source instanceof DamageSource) {
-            ServerPlayerEntity sPlayer = (ServerPlayerEntity) player;
             IDamageSource qfDamageSources = (IDamageSource) player.getDamageSources();
-            PlayerStat stat = DataStorage.loadPlayerStat(sPlayer);
+            PlayerStat stat = DataStorage.loadPlayerStat(player);
             QfDamageSource qfDamageSource = qfDamageSources.getQfDamageSourceWithEntityAttack(source, Elements.PHYSICAL, amount);
             if (stat.getDodge() < (Math.random() * 100)) {
                amount *= getDamageResistance(qfDamageSource.getElement(), amount, stat);
-               stat.damageHealth(qfDamageSource,sPlayer, amount);
-               DataStorage.savePlayerStat(sPlayer, stat);
+               stat.damageHealth(qfDamageSource,player, amount);
+               DataStorage.savePlayerStat(player, stat);
             }
         }
+    }
+
+    public void DamageEntity(DamageSource damageSource, Elements e, float amount) {
+        IDamageSource iDamageSource = (IDamageSource) entity.getDamageSources();
+        QfDamageSource qfDamageSource = iDamageSource.getQfDamageSourceWithPlayerAttack(damageSource, e, amount);
+        entity.damage(qfDamageSource, amount);
     }
 
     // TODO Fix this
