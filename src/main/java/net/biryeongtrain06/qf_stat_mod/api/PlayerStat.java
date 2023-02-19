@@ -380,17 +380,17 @@ public class PlayerStat {
     }
 
     public void setStatsByMap(ServerPlayerEntity player, EnumMap<StatEnums, Number> map) {
-        this.setMaxHealth(player, (int) map.get(HEALTH));
-        this.setMaxMana((Integer) map.get(MANA));
-        this.setDodge((Integer) map.get(DODGE));
-        this.setArmor((Integer) map.get(ARMOR));
-        this.setFire_resistance((Float) map.get(FIRE_RESISTANCE));
-        this.setWater_resistance((Float) map.get(WATER_RESISTANCE));
-        this.setEarth_resistance((Float) map.get(EARTH_RESISTANCE));
-        this.setLight_resistance((Float) map.get(LIGHT_RESISTANCE));
-        this.setDark_resistance((Float) map.get(DARK_RESISTANCE));
-        this.setProjectileDamageFlat((Float) map.get(PROJECTILE_DAMAGE_FLAT));
-        this.setProjectileDamageMulti((Float) map.get(PROJECTILE_DAMAGE_MULTI));
-        this.setProjectileDamagePercent((Float) map.get(PROJECTILE_DAMAGE_PERCENT));
+        this.setMaxHealth(player, map.get(HEALTH).intValue());
+        this.setMaxMana(map.get(MANA).intValue());
+        this.setDodge(map.get(DODGE).intValue());
+        this.setArmor(map.get(ARMOR).intValue());
+        this.setFire_resistance(map.get(FIRE_RESISTANCE).floatValue());
+        this.setWater_resistance(map.get(WATER_RESISTANCE).floatValue());
+        this.setEarth_resistance(map.get(EARTH_RESISTANCE).floatValue());
+        this.setLight_resistance(map.get(LIGHT_RESISTANCE).floatValue());
+        this.setDark_resistance(map.get(DARK_RESISTANCE).floatValue());
+        this.setProjectileDamageFlat( map.get(PROJECTILE_DAMAGE_FLAT).floatValue());
+        this.setProjectileDamageMulti(map.get(PROJECTILE_DAMAGE_MULTI).floatValue());
+        this.setProjectileDamagePercent(map.get(PROJECTILE_DAMAGE_PERCENT).floatValue());
     }
 }
