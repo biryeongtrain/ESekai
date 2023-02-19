@@ -13,7 +13,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums.*;
 
@@ -360,9 +360,8 @@ public class PlayerStat {
         return wisdom;
     }
 
-    public HashMap<StatEnums, Number> getMap() {
-        HashMap<StatEnums, Number> map = new HashMap<>();
-
+    public EnumMap<StatEnums, Number> getMap() {
+        EnumMap<StatEnums, Number> map = new EnumMap<>(StatEnums.class);
         map.put(HEALTH, this.maxHealth);
         map.put(MANA, this.maxMana);
         map.put(ARMOR, this.armor);
@@ -380,7 +379,7 @@ public class PlayerStat {
         return map;
     }
 
-    public void setStatsByMap(ServerPlayerEntity player, HashMap<StatEnums, Number> map) {
+    public void setStatsByMap(ServerPlayerEntity player, EnumMap<StatEnums, Number> map) {
         this.setMaxHealth(player, (int) map.get(HEALTH));
         this.setMaxMana((Integer) map.get(MANA));
         this.setDodge((Integer) map.get(DODGE));

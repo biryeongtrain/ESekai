@@ -10,7 +10,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.debugLogger;
 import static net.biryeongtrain06.qf_stat_mod.item.ItemStatHandler.STAT_KEY;
@@ -34,15 +34,56 @@ public class PlayerStatHandler {
         debugLogger.info("Player {}'s class changed : {} -> {}", player.getDisplayName(), debugPlayerClass, playerClass.getClassText());
     }
 
-    public void syncItemStat(ItemStack stack1, ItemStack stack2) {
-
+    public void syncItemStat(ItemStack oldStack, ItemStack newStack) {
+        removeItemStatToPlayer(oldStack);
+        addItemStatsToPlayer(newStack);
     }
 
     private void removeItemStatToPlayer(ItemStack stack) {
-        NbtCompound stats = stack.getOrCreateSubNbt(STAT_KEY);
-        if(stats.isEmpty()) {
+        if (!checkIfItemHasStack(stack)) {
             return;
         }
-        HashMap<StatEnums, Number> map = playerStat.getMap();
+
+        NbtCompound stats = stack.getOrCreateSubNbt(STAT_KEY);
+        EnumMap<StatEnums, Number> map = playerStat.getMap();
+
+        map = getStatValue(stats, map, true);
+
+        playerStat.setStatsByMap(player, map);
+        DataStorage.savePlayerStat(player, playerStat);
+    }
+
+    private void addItemStatsToPlayer(ItemStack stack) {
+        if (!checkIfItemHasStack(stack)) return;
+
+        NbtCompound stats = stack.getSubNbt(STAT_KEY);
+        EnumMap<StatEnums, Number> map = playerStat.getMap();
+
+        map = getStatValue(stats, map, false);
+
+        playerStat.setStatsByMap(player, map);
+        DataStorage.savePlayerStat(player, playerStat);
+    }
+
+    private boolean checkIfItemHasStack(ItemStack stack) {
+        if (stack.isEmpty()) return false;
+        return !stack.getOrCreateSubNbt(STAT_KEY).isEmpty();
+    }
+
+    private EnumMap<StatEnums, Number> getStatValue(NbtCompound stats, EnumMap<StatEnums, Number> map, boolean isRemoving) {
+        int i = isRemoving ? -1 : 1;
+        stats.getKeys().stream().parallel().forEach(key -> {
+            StatEnums s = StatEnums.getStatByName(key);
+            int type = stats.getType(key);
+            Number n = 0;
+            if (type == 5) {
+                n = stats.getFloat(key);
+            } else if (type == 3) {
+                n = stats.getInt(key);
+            }
+            if (s == null) return;
+            map.put(s, map.get(s).floatValue() + (n.floatValue()) * i);
+        });
+        return map;
     }
 }

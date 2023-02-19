@@ -5,6 +5,7 @@ import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
 import net.biryeongtrain06.qf_stat_mod.callback.EntityDamagedCallback;
 import net.biryeongtrain06.qf_stat_mod.callback.MobSpawningCallback;
 import net.biryeongtrain06.qf_stat_mod.damage.QfDamageSource;
+import net.biryeongtrain06.qf_stat_mod.player.PlayerStatHandler;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
@@ -62,8 +63,9 @@ public class LivingEntityMixin {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
         boolean isChanged = cir.getReturnValue();
         if (!isChanged) return;
-        if (livingEntity instanceof PlayerEntity) {
-
+        if (livingEntity instanceof ServerPlayerEntity) {
+            PlayerStatHandler handler = new PlayerStatHandler((ServerPlayerEntity) livingEntity);
+            handler.syncItemStat(stack, stack2);
         }
         if (ENTITY_MODIFIERS.maybeGet(livingEntity).isEmpty()) {
             return;

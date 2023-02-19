@@ -8,6 +8,7 @@ import net.minecraft.util.Formatting;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.SubStatTag.*;
@@ -82,6 +83,11 @@ public enum StatEnums {
     public static Stream<StatEnums> getPlayerStats() {
 
         return Arrays.stream(values()).filter(e -> e.getTag() == OFFENSIVE || e.getTag() == DEFENSIVE || e.getTag() == PERK);
+    }
+
+    public static StatEnums getStatByName(String s) {
+        Optional<StatEnums> optionalStatEnums = Arrays.stream(values()).filter(stat -> stat.getName().equals(s)).findFirst();
+        return optionalStatEnums.orElse(null);
     }
 }
 
