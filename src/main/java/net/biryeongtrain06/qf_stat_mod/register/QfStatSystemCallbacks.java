@@ -88,7 +88,7 @@ public class QfStatSystemCallbacks {
         amount = Elements.calculateDamageReduce(e, resistance, amount);
         DamageHandler damageHandler = new DamageHandler(victim);
         damageHandler.DamageEntity(source, e, amount);
-        attacker.sendMessage(Text.literal(String.valueOf(livingEntity.getHealth())));
+        player.sendMessage(Text.literal(String.valueOf(livingEntity.getHealth())));
 
         return ActionResult.PASS;
     }

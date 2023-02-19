@@ -4,11 +4,11 @@
   "package": "net.biryeongtrain06.qf_stat_mod.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "LivingEntityMixin",
     "ServerPlayerEntityMixin",
     "PlayerManagerMixin",
     "StyleAccessor",
     "PlayerEntityMixin",
-    "LivingEntityMixin",
     "DamageSourcesMixin",
     "DamageTypesMixin",
     "PacketByteBufMixin",
