@@ -181,7 +181,7 @@ public class CommonEntityValue implements ICommonEntityComponents {
         }
         EntityAttributeInstance entityAttributeInstance = provider.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
         int randomValue = (int) Math.round(((Math.random() * 0.5) + 0.5));
-        int value = (int) MathHelper.clamp(provider.getMaxHealth() * (this.level + randomValue + this.rank.getStatMultiplier()) - provider.getMaxHealth(), provider.getMaxHealth(), provider.getMaxHealth() * this.level * 10);
+        int value = (int) MathHelper.clamp(provider.getMaxHealth() * (this.level - 1 + randomValue + this.rank.getStatMultiplier()), provider.getMaxHealth(), provider.getMaxHealth() * this.level * 10);
         if (!entityAttributeInstance.hasModifier(getHealthModifier(rank, value))) entityAttributeInstance.addPersistentModifier(getHealthModifier(rank, value));
         provider.setHealth((float) provider.getAttributeValue(EntityAttributes.GENERIC_MAX_HEALTH));
         this.healthIncreased = true;

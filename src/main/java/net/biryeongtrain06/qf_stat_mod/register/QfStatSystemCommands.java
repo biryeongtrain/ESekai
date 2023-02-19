@@ -66,5 +66,13 @@ public class QfStatSystemCommands {
                 literal("setItemDamage")
                         .executes(TestCommands::setItemDamage)
         );
+        dispatcher.register(
+                literal("getItemStat")
+                        .executes(TestCommands::getItemStat)
+        );
+        dispatcher.register(
+                literal("setItemStat")
+                        .executes(TestCommands::setItemStat)
+        );
     }
 }

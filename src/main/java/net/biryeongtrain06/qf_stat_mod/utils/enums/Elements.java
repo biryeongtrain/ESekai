@@ -105,6 +105,9 @@ public enum Elements {
     }
 
     public static float calculateDamageReduce(Elements e, int resistance, float amount) {
+        if (resistance == 0) {
+            return amount;
+        }
         if (e.isElement) {
             return (1 - resistance) * amount;
         }

@@ -5,12 +5,14 @@ import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
 import net.biryeongtrain06.qf_stat_mod.callback.EntityDamagedCallback;
 import net.biryeongtrain06.qf_stat_mod.callback.MobSpawningCallback;
+import net.biryeongtrain06.qf_stat_mod.damage.QfDamageSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
@@ -37,10 +39,13 @@ public class LivingEntityMixin {
     @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
     public void damageHook(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         LivingEntity entity = (LivingEntity) (Object) this;
-        if (!(source.getType().equals(DamageTypes.PLAYER_ATTACK))) {
+        if (source.getType().equals(DamageTypes.PLAYER_ATTACK)) {
             return;
         }
         if (entity instanceof PlayerEntity) {
+            return;
+        }
+        if (source.getAttacker() == null || source instanceof QfDamageSource) {
             return;
         }
         if (source.getAttacker().isPlayer()) {

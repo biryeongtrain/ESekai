@@ -6,6 +6,7 @@ import net.biryeongtrain06.qf_stat_mod.gui.PlayerMainGui;
 import net.biryeongtrain06.qf_stat_mod.interfaces.IDamageSource;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.Elements;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.EntityRank;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.ServerCommandSource;
@@ -115,6 +116,30 @@ public class TestCommands {
             ItemStack stack = player.getMainHandStack();
             float damage = (float) ItemStats.getItemDamage(stack);
             player.sendMessage(Text.literal(String.valueOf(damage)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 1;
+    }
+
+    public static int getItemStat(CommandContext<ServerCommandSource> objectCommandContext) {
+        try {
+            ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();
+            ItemStack stack = player.getMainHandStack();
+            float value = ItemStats.getItemStat(stack, StatEnums.HEALTH);
+            player.sendMessage(Text.literal(String.valueOf(value)));
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return 1;
+    }
+
+    public static int setItemStat(CommandContext<ServerCommandSource> objectCommandContext) {
+        try {
+            ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();
+            ItemStack stack = player.getMainHandStack();
+            if(!ItemStats.setItemStat(stack, StatEnums.HEALTH, 10.5f)) return 0;
+            player.sendMessage(Text.literal("Health is changed"));
         } catch (Exception e) {
             e.printStackTrace();
         }

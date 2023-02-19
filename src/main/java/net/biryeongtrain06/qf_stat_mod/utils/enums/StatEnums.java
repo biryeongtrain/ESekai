@@ -64,9 +64,9 @@ public enum StatEnums {
 
 
     public static StatEnums[] getDefensiveStats(boolean isPlayer) {
-        List<StatEnums> val = new ArrayList<>();
+            List<StatEnums> val = new ArrayList<>();
         for (StatEnums value : values()) {
-            if (value.getTag() == DEFENSIVE && value.isPlayerStat == isPlayer) {
+            if (value.getTag() == DEFENSIVE && value.isPlayerStat == !isPlayer) {
                 val.add(value);
             }
         }

@@ -30,6 +30,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 
+import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.ENTITY_MODIFIERS;
 import static net.biryeongtrain06.qf_stat_mod.api.DataStorage.PLAYER_STAT_DATA_STORAGE;
 
 
@@ -49,6 +50,7 @@ public class QfStatSystemCallbacks {
         IServerPlayerEntityDuck iPlayer =(IServerPlayerEntityDuck) killPlayer;
         PlayerStat stat = PlayerDataApi.getCustomDataFor(killPlayer, PLAYER_STAT_DATA_STORAGE);
         int xp = ExpHandler.findXpModifier(victim);
+
         stat.addXP(killPlayer, (float) xp);
         if (iPlayer.isDisplaySystemMessage()) {
             killPlayer.sendMessage(Text.translatable(TextHelper.createTranslation("system_message.killed"), victim.getDisplayName(), xp).formatted(Formatting.GREEN));
@@ -80,15 +82,18 @@ public class QfStatSystemCallbacks {
         if (!(attacker instanceof ServerPlayerEntity)) {
             return ActionResult.PASS;
         }
+        int dodge = ENTITY_MODIFIERS.get(victim).getDodge();
+        if ((Math.random() * 100) < dodge) {
+            return ActionResult.PASS;
+        }
         ServerPlayerEntity player = (ServerPlayerEntity) attacker;
-        LivingEntity livingEntity = (LivingEntity) victim;
         ElementHandler elementHandler = new ElementHandler(player);
         Elements e = elementHandler.getElement();
         int resistance = defensiveMap.get(e.getDefensiveStat());
         amount = Elements.calculateDamageReduce(e, resistance, amount);
+
         DamageHandler damageHandler = new DamageHandler(victim);
         damageHandler.DamageEntity(source, e, amount);
-        player.sendMessage(Text.literal(String.valueOf(livingEntity.getHealth())));
 
         return ActionResult.PASS;
     }

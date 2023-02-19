@@ -30,8 +30,7 @@ public class  ElementHandler {
         if (player.getMainHandStack().isEmpty()) {
             return Elements.PHYSICAL;
         }
-        ItemStack stack = player.getMainHandStack();
-        NbtCompound nbtCompound = stack.getNbt();
+        NbtCompound nbtCompound = ITEM_STACK.getNbt();
         if (nbtCompound == null || !nbtCompound.contains(ITEM_ELEMENT_KEY)) return Elements.PHYSICAL;
         Identifier elementId = new Identifier(nbtCompound.getString(ITEM_ELEMENT_KEY));
         Elements e = Elements.getElementWithId(elementId);
