@@ -1,18 +1,21 @@
 package net.biryeongtrain06.qf_stat_mod.api;
 
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import net.biryeongtrain06.qf_stat_mod.player.playerclass.IPlayerClass;
 import net.biryeongtrain06.qf_stat_mod.player.playerclass.NonePlayerClass;
 import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
+
+import java.util.HashMap;
+
+import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums.*;
 
 @SuppressWarnings("unused")
 public class PlayerStat {
@@ -119,10 +122,8 @@ public class PlayerStat {
     }
 
 
-    public void setMaxHealth(ServerPlayerEntity player, int amount) throws CommandSyntaxException {
-        if (amount <= 0 ) {
-            throw new CommandSyntaxException(new SimpleCommandExceptionType(Text.literal("Value can not be under 0.")), Text.literal("Value Can not be under 0"));
-        }
+    public void setMaxHealth(ServerPlayerEntity player, int amount) {
+        amount = MathHelper.clamp(amount, 1, Integer.MAX_VALUE);
         this.maxHealth = amount;
         syncPlayerHealth(player);
     }
@@ -182,7 +183,7 @@ public class PlayerStat {
         return fire_resistance;
     }
 
-    public void setFire_resistance(int fire_resistance) {
+    public void setFire_resistance(float fire_resistance) {
         this.fire_resistance = fire_resistance;
     }
 
@@ -190,7 +191,7 @@ public class PlayerStat {
         return water_resistance;
     }
 
-    public void setWater_resistance(int water_resistance) {
+    public void setWater_resistance(float water_resistance) {
         this.water_resistance = water_resistance;
     }
 
@@ -198,7 +199,7 @@ public class PlayerStat {
         return earth_resistance;
     }
 
-    public void setEarth_resistance(int earth_resistance) {
+    public void setEarth_resistance(float earth_resistance) {
         this.earth_resistance = earth_resistance;
     }
 
@@ -206,7 +207,7 @@ public class PlayerStat {
         return light_resistance;
     }
 
-    public void setLight_resistance(int light_resistance) {
+    public void setLight_resistance(float light_resistance) {
         this.light_resistance = light_resistance;
     }
 
@@ -214,7 +215,7 @@ public class PlayerStat {
         return dark_resistance;
     }
 
-    public void setDark_resistance(int dark_resistance) {
+    public void setDark_resistance(float dark_resistance) {
         this.dark_resistance = dark_resistance;
     }
 
@@ -260,6 +261,30 @@ public class PlayerStat {
 
     public void setSelectPoint(int value) {
         this.selectPoint = value;
+    }
+
+    public float getProjectileDamageFlat() {
+        return projectileDamageFlat;
+    }
+
+    public void setProjectileDamageFlat(float projectileDamageFlat) {
+        this.projectileDamageFlat = projectileDamageFlat;
+    }
+
+    public float getProjectileDamagePercent() {
+        return projectileDamagePercent;
+    }
+
+    public void setProjectileDamagePercent(float projectileDamagePercent) {
+        this.projectileDamagePercent = projectileDamagePercent;
+    }
+
+    public float getProjectileDamageMulti() {
+        return projectileDamageMulti;
+    }
+
+    public void setProjectileDamageMulti(float projectileDamageMulti) {
+        this.projectileDamageMulti = projectileDamageMulti;
     }
 
     public void damageHealth(DamageSource s, ServerPlayerEntity player, float amount) {
@@ -333,5 +358,40 @@ public class PlayerStat {
 
     public int getWisdom() {
         return wisdom;
+    }
+
+    public HashMap<StatEnums, Number> getMap() {
+        HashMap<StatEnums, Number> map = new HashMap<>();
+
+        map.put(HEALTH, this.maxHealth);
+        map.put(MANA, this.maxMana);
+        map.put(ARMOR, this.armor);
+        map.put(DODGE, this.dodge);
+        map.put(FIRE_RESISTANCE, this.fire_resistance);
+        map.put(WATER_RESISTANCE, this.water_resistance);
+        map.put(EARTH_RESISTANCE, this.earth_resistance);
+        map.put(LIGHT_RESISTANCE, this.light_resistance);
+        map.put(DARK_RESISTANCE, this.dark_resistance);
+        map.put(PROJECTILE_DAMAGE_FLAT, this.projectileDamageFlat);
+        map.put(PROJECTILE_DAMAGE_PERCENT, this.projectileDamagePercent);
+        map.put(PROJECTILE_DAMAGE_MULTI, this.projectileDamageMulti);
+
+
+        return map;
+    }
+
+    public void setStatsByMap(ServerPlayerEntity player, HashMap<StatEnums, Number> map) {
+        this.setMaxHealth(player, (int) map.get(HEALTH));
+        this.setMaxMana((Integer) map.get(MANA));
+        this.setDodge((Integer) map.get(DODGE));
+        this.setArmor((Integer) map.get(ARMOR));
+        this.setFire_resistance((Float) map.get(FIRE_RESISTANCE));
+        this.setWater_resistance((Float) map.get(WATER_RESISTANCE));
+        this.setEarth_resistance((Float) map.get(EARTH_RESISTANCE));
+        this.setLight_resistance((Float) map.get(LIGHT_RESISTANCE));
+        this.setDark_resistance((Float) map.get(DARK_RESISTANCE));
+        this.setProjectileDamageFlat((Float) map.get(PROJECTILE_DAMAGE_FLAT));
+        this.setProjectileDamageMulti((Float) map.get(PROJECTILE_DAMAGE_MULTI));
+        this.setProjectileDamagePercent((Float) map.get(PROJECTILE_DAMAGE_PERCENT));
     }
 }

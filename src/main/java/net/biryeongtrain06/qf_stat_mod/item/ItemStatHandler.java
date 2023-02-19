@@ -14,7 +14,7 @@ import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.MOD_ID;
 public class ItemStatHandler {
     private final ItemStack ITEM_STACK;
     private final UUID DAMAGE_KEY = UUID.fromString("407855f1-f109-4147-87cd-154ee8308eef");
-    private final String STAT_KEY = "stats";
+    public static final String STAT_KEY = "stats";
 
     public ItemStatHandler(ItemStack ITEM_STACK) {
         this.ITEM_STACK = ITEM_STACK;

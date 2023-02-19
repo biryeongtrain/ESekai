@@ -5,17 +5,9 @@ import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
 import net.biryeongtrain06.qf_stat_mod.player.playerclass.IPlayerClass;
 import net.biryeongtrain06.qf_stat_mod.player.playerclass.NonePlayerClass;
 import net.biryeongtrain06.qf_stat_mod.player.playerclass.WarriorPlayerClass;
-import net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.SkullItem;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtString;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -26,11 +18,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.debugLogger;
-
 public class PlayerHelper {
 
-    private static List<IPlayerClass> playerClassList = new ArrayList<>();
+    private static final List<IPlayerClass> playerClassList = new ArrayList<>();
     public static ServerPlayerEntity getNearestPlayer (ServerWorld world, LivingEntity entity) {
         return getNearestPlayer(world, entity.getPos());
     }
@@ -47,16 +37,6 @@ public class PlayerHelper {
         return player.orElse(null);
     }
 
-    public static void changePlayerClass(ServerPlayerEntity player, IPlayerClass playerClass) {
-        PlayerStat playerStat = DataStorage.loadPlayerStat(player);
-        IPlayerClass originalPlayerClass = getPlayerClass(playerStat.getPlayerClassId());
-        playerStat = originalPlayerClass.onLostClass(player);
-        Text debugPlayerClass = originalPlayerClass.getClassText();
-        playerStat.setPlayer_class(playerClass);
-        playerClass.onGetClass(player, playerStat);
-        debugLogger.info("Player {}'s class changed : {} -> {}", player.getDisplayName(), debugPlayerClass, playerClass.getClassText());
-    }
-
     public static Formatting getPlayerHealthFormat(ServerPlayerEntity player) {
         PlayerStat playerStat = DataStorage.loadPlayerStat(player);
         int healthPercent = (int) (playerStat.getCurrentHealth() / playerStat.getMaxHealth() * 100);
@@ -65,43 +45,8 @@ public class PlayerHelper {
         if (healthPercent >= 20) return Formatting.RED;
         return Formatting.DARK_RED;
     }
-    public static ItemStack getHead(ServerPlayerEntity player) {
-        ItemStack stack = new ItemStack(Items.PLAYER_HEAD);
-        stack.setCustomName(player.getDisplayName());
-        NbtCompound ownerTag = stack.getOrCreateSubNbt(SkullItem.SKULL_OWNER_KEY);
-        ownerTag.putUuid("Id", player.getUuid());
-        setHeadLore(stack, player);
-        return stack;
-    }
 
-    private static void setHeadLore(ItemStack stack, ServerPlayerEntity player) {
-        PlayerStat playerStat = DataStorage.loadPlayerStat(player);
-        NbtList lore = new NbtList();
-        NbtCompound itemNBT = stack.getOrCreateSubNbt(ItemStack.DISPLAY_KEY);
-        lore.add(NbtString.of(Text.Serializer.toJson(Text.empty()
-                .append(StatEnums.HEALTH.getTranslatableName())
-                .append(Text.literal(" : " + playerStat.getMaxHealth())))
-                .formatted(StatEnums.HEALTH.getFormat())));
-        lore.add(NbtString.of(Text.Serializer.toJson(Text.empty()
-                    .append(StatEnums.MANA.getTranslatableName())
-                    .append(Text.literal(" : " + playerStat.getMaxMana()))
-                    .formatted(StatEnums.MANA.getFormat()))));
-        lore.add(NbtString.of(Text.Serializer.toJson(Text.empty()
-                .append(StatEnums.ARMOR.getTranslatableName())
-                .append(Text.literal(" : " + playerStat.getArmor()))
-                .formatted(StatEnums.ARMOR.getFormat()))));
-        lore.add(NbtString.of(Text.Serializer.toJson(Text.empty()
-                .append(StatEnums.DODGE.getTranslatableName())
-                .append(Text.literal(" : " + playerStat.getDodge()))
-                .formatted(StatEnums.DODGE.getFormat()))));
-        lore.add(NbtString.of(Text.Serializer.toJson(Text.empty()
-                .append(StatEnums.SELECT_POINT.getTranslatableName())
-                .append(Text.literal(" : " + playerStat.getSelectPoint()))
-                .formatted(StatEnums.SELECT_POINT.getFormat()))));
-        itemNBT.put(ItemStack.LORE_KEY, lore);
-
-    }
-    public static void register(IPlayerClass playerClass) {
+    private static void register(IPlayerClass playerClass) {
         playerClassList.add(playerClass);
     }
 

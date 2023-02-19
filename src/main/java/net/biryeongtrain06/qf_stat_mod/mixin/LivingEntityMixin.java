@@ -1,26 +1,24 @@
 package net.biryeongtrain06.qf_stat_mod.mixin;
 
-import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
 import net.biryeongtrain06.qf_stat_mod.callback.EntityDamagedCallback;
 import net.biryeongtrain06.qf_stat_mod.callback.MobSpawningCallback;
 import net.biryeongtrain06.qf_stat_mod.damage.QfDamageSource;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
-import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.ENTITY_MODIFIERS;
 
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
@@ -57,5 +55,18 @@ public class LivingEntityMixin {
     public void onLoadInit(EntitySpawnS2CPacket packet, CallbackInfo ci) {
         LivingEntity entity = (LivingEntity) (Object) this;
         MobSpawningCallback.EVENT.invoker().onSpawn(entity, entity.getWorld());
+    }
+
+    @Inject(method = "areItemsDifferent", at = @At("RETURN"))
+    public void getItemsChanged(ItemStack stack, ItemStack stack2, CallbackInfoReturnable<Boolean> cir) {
+        LivingEntity livingEntity = (LivingEntity) (Object) this;
+        boolean isChanged = cir.getReturnValue();
+        if (!isChanged) return;
+        if (livingEntity instanceof PlayerEntity) {
+
+        }
+        if (ENTITY_MODIFIERS.maybeGet(livingEntity).isEmpty()) {
+            return;
+        }
     }
 }

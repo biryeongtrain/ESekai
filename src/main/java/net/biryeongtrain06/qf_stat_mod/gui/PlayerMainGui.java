@@ -6,7 +6,7 @@ import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
-import net.biryeongtrain06.qf_stat_mod.utils.PlayerHelper;
+import net.biryeongtrain06.qf_stat_mod.player.PlayerHeadInfo;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums;
 import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandlerType;
@@ -15,24 +15,21 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-import java.util.UUID;
-
 public class PlayerMainGui extends SimpleGui {
 
-    private final UUID playerHeadIndex;
     final int STRENGTH_SLOT_INDEX = 3;
     final int DEXTERITY_SLOT_INDEX = 5;
     final int WISDOM_SLOT_INDEX = 7;
     private PlayerStat playerStat;
     public PlayerMainGui(ServerPlayerEntity player) {
         super(ScreenHandlerType.GENERIC_9X1, player, false);
-        this.playerHeadIndex = player.getUuid();
         this.updateSlot();
     }
 
     private void updateSlot() {
+        PlayerHeadInfo headInfo = new PlayerHeadInfo(player);
         this.playerStat = DataStorage.loadPlayerStat(player);
-        this.setSlot(0, PlayerHelper.getHead(player));
+        this.setSlot(0, headInfo.getHead());
         this.setSlot(STRENGTH_SLOT_INDEX, new GuiElementBuilder()
                 .setItem(Items.RED_STAINED_GLASS_PANE)
                 .setName(Text.empty().append(StatEnums.STRENGTH.translatableName).formatted(StatEnums.STRENGTH.getFormat()))

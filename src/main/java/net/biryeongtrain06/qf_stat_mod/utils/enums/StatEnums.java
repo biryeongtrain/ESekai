@@ -6,7 +6,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.SubStatTag.*;
 
@@ -21,21 +23,24 @@ public enum StatEnums {
     EARTH_RESISTANCE("earth_resistance", Formatting.GREEN, DEFENSIVE, true),
     LIGHT_RESISTANCE("light_resistance", Formatting.LIGHT_PURPLE, DEFENSIVE, true),
     DARK_RESISTANCE("dark_resistance", Formatting.DARK_PURPLE, DEFENSIVE, true),
+    PROJECTILE_DAMAGE_PERCENT("projectile_damage_percent", Formatting.WHITE, OFFENSIVE, true),
+    PROJECTILE_DAMAGE_FLAT("projectile_damage_flat", Formatting.WHITE, OFFENSIVE, true),
+    PROJECTILE_DAMAGE_MULTI("projectile_damage_multi", Formatting.WHITE, OFFENSIVE, true),
     STRENGTH("strength", Formatting.RED, PERK, false),
     DEXTERITY("dexterity", Formatting.GREEN, PERK, false),
     WISDOM("wisdom", Formatting.LIGHT_PURPLE, PERK, false),
-    SELECT_POINT("select_point", Formatting.WHITE, PERK, false);
+    SELECT_POINT("select_point", Formatting.WHITE, SYSTEM, false);
     public final String name;
     public final Text translatableName;
     public final Formatting format;
     public final SubStatTag tag;
-    public final Boolean isPlayerStat;
-    StatEnums(String name, Formatting format, SubStatTag tag, boolean isPlayerStat) {
+    public final Boolean entityCanUseThisStat;
+    StatEnums(String name, Formatting format, SubStatTag tag, boolean entityCanUseThisStat) {
         this.name = name;
         this.translatableName = Text.translatable(TextHelper.createTranslation(name));
         this.format = format;
         this.tag = tag;
-        this.isPlayerStat = isPlayerStat;
+        this.entityCanUseThisStat = entityCanUseThisStat;
     }
 
     public String getName() {
@@ -51,7 +56,7 @@ public enum StatEnums {
     }
 
     public boolean isPlayerStat() {
-        return this.isPlayerStat;
+        return this.entityCanUseThisStat;
     }
 
     public SubStatTag getTag() {
@@ -59,19 +64,24 @@ public enum StatEnums {
     }
 
     public boolean isPlayerStat(StatEnums val) {
-        return val.isPlayerStat;
+        return val.entityCanUseThisStat;
     }
 
 
     public static StatEnums[] getDefensiveStats(boolean isPlayer) {
             List<StatEnums> val = new ArrayList<>();
         for (StatEnums value : values()) {
-            if (value.getTag() == DEFENSIVE && value.isPlayerStat == !isPlayer) {
+            if (value.getTag() == DEFENSIVE && value.entityCanUseThisStat == !isPlayer) {
                 val.add(value);
             }
         }
         return val.toArray(StatEnums[]::new);
 
+    }
+
+    public static Stream<StatEnums> getPlayerStats() {
+
+        return Arrays.stream(values()).filter(e -> e.getTag() == OFFENSIVE || e.getTag() == DEFENSIVE || e.getTag() == PERK);
     }
 }
 
