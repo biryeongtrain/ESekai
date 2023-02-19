@@ -19,6 +19,7 @@ public class ItemStats {
         return handler.setElement(element);
     }
 
+    // TODO 에러뜸 고쳐야함 (보니까 맵에 사이즈가 2갠데 사이즈 1개인줄알고 캐스팅해서 그러는거같음)
     public static double getItemDamage(ItemStack stack) {
         ItemStatHandler handler = new ItemStatHandler(stack);
         return handler.getItemDamage();
