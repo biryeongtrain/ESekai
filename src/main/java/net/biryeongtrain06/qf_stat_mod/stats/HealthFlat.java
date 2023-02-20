@@ -2,6 +2,7 @@ package net.biryeongtrain06.qf_stat_mod.stats;
 
 import it.unimi.dsi.fastutil.objects.Object2FloatMap;
 import it.unimi.dsi.fastutil.objects.Object2FloatMaps;
+import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
 import net.biryeongtrain06.qf_stat_mod.stats.interfaces.IStats;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.minecraft.util.Identifier;
@@ -9,7 +10,7 @@ import net.minecraft.util.Identifier;
 import java.util.Optional;
 
 public class HealthFlat implements IStats {
-    Object2FloatMap<Identifier> map = Object2FloatMaps.EMPTY_MAP;
+    Object2FloatOpenHashMap<Identifier> map = new Object2FloatOpenHashMap<>();
 
     @Override
     public void addStatInstance(Identifier id, float value) {

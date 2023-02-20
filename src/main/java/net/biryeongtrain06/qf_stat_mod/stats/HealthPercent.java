@@ -1,13 +1,14 @@
 package net.biryeongtrain06.qf_stat_mod.stats;
 
 import it.unimi.dsi.fastutil.objects.Object2FloatMap;
+import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
 import net.biryeongtrain06.qf_stat_mod.stats.interfaces.IStats;
 import net.minecraft.util.Identifier;
 
 import java.util.Optional;
 
 public class HealthPercent implements IStats {
-    Object2FloatMap<Identifier> map;
+    Object2FloatOpenHashMap<Identifier> map = new Object2FloatOpenHashMap<>();
 
     @Override
     public void addStatInstance(Identifier id, float value) {
