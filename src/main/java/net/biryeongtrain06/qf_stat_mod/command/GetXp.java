@@ -12,7 +12,7 @@ public class GetXp {
         try {
             ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();
             PlayerStat playerStat = DataStorage.loadPlayerStat(player);
-            player.sendMessage(Text.literal("XP : " + playerStat.getXP()));
+            player.sendMessage(Text.literal("XP : " + playerStat.getXp()));
         } catch(Exception e) {
             e.printStackTrace();
         }

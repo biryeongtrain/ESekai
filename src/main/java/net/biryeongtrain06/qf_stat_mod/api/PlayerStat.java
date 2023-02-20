@@ -23,7 +23,6 @@ import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums.*;
 public class PlayerStat {
     ServerPlayerEntity player;
     @Getter
-    @Setter
     private int level;
     @Getter
     private float xp;
@@ -234,13 +233,6 @@ public class PlayerStat {
         this.selectPoint += value;
     }
 
-    public float getProjectileDamageFlat() {
-        return projectileDamageFlat;
-    }
-
-    public void setProjectileDamageFlat(float projectileDamageFlat) {
-        this.projectileDamageFlat = projectileDamageFlat;
-    }
 
     public void damageHealth(DamageSource s, float amount) {
         this.currentHealth = MathHelper.clamp(this.currentHealth - amount, 0f, (float) getMaxHealth());
