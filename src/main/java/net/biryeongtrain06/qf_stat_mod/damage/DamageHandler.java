@@ -31,7 +31,7 @@ public class DamageHandler {
             QfDamageSource qfDamageSource = qfDamageSources.getQfDamageSourceWithEntityAttack(source, Elements.PHYSICAL, amount);
             if (stat.getDodge() < (Math.random() * 100)) {
                amount *= getDamageResistance(qfDamageSource.getElement(), amount, stat);
-               stat.damageHealth(qfDamageSource,player, amount);
+               stat.damageHealth(qfDamageSource, amount);
                DataStorage.savePlayerStat(player, stat);
             }
         }

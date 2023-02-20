@@ -49,7 +49,7 @@ public class PlayerStatHandler {
 
         map = getStatValue(stats, map, true);
 
-        playerStat.setStatsByMap(player, map);
+        playerStat.setStatsByMap(map);
         DataStorage.savePlayerStat(player, playerStat);
     }
 
@@ -61,7 +61,7 @@ public class PlayerStatHandler {
 
         map = getStatValue(stats, map, false);
 
-        playerStat.setStatsByMap(player, map);
+        playerStat.setStatsByMap(map);
         DataStorage.savePlayerStat(player, playerStat);
     }
 

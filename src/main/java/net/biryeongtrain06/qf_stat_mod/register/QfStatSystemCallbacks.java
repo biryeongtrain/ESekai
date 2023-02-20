@@ -49,7 +49,7 @@ public class QfStatSystemCallbacks {
         PlayerStat stat = DataStorage.loadPlayerStat(killPlayer);
         int xp = ExpHandler.findXpModifier(victim);
 
-        stat.addXP(killPlayer, (float) xp);
+        stat.addXP((float) xp);
         if (iPlayer.isDisplaySystemMessage()) {
             killPlayer.sendMessage(Text.translatable(TextHelper.createTranslation("system_message.killed"), victim.getDisplayName(), xp).formatted(Formatting.GREEN));
         }

@@ -30,7 +30,7 @@ public class LivingEntityMixin {
         if (entity instanceof PlayerEntity) {
             ServerPlayerEntity player = (ServerPlayerEntity) entity;
             PlayerStat stat = DataStorage.loadPlayerStat(player);
-            stat.addCurrentHealth(player, amount);
+            stat.addCurrentHealth(amount);
             DataStorage.savePlayerStat(player, stat);
         }
     }

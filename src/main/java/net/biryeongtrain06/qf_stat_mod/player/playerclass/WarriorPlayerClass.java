@@ -27,7 +27,7 @@ public class WarriorPlayerClass extends BasicPlayerClass {
 
     @Override
     public void onGetClass(ServerPlayerEntity player, PlayerStat playerStat) {
-        playerStat.addMaxHealth(player,10);
+        playerStat.addHealthBaseValue(10);
         playerStat.setArmor(playerStat.getArmor() + 10);
         DataStorage.savePlayerStat(player, playerStat);
         sendClassGainMessage(player);
@@ -36,7 +36,7 @@ public class WarriorPlayerClass extends BasicPlayerClass {
     @Override
     public PlayerStat onLostClass(ServerPlayerEntity player) {
         PlayerStat playerStat = DataStorage.loadPlayerStat(player);
-        playerStat.addMaxHealth(player,-10);
+        playerStat.addHealthBaseValue(-10);
         playerStat.setArmor(playerStat.getArmor() - 10);
         sendClassLostMessage(player);
         return playerStat;

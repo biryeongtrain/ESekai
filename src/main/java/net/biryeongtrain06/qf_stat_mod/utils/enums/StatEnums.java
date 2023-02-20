@@ -15,7 +15,9 @@ import static net.biryeongtrain06.qf_stat_mod.utils.enums.SubStatTag.*;
 
 public enum StatEnums {
 
-    HEALTH("health", Formatting.RED, RESOURCE, true),
+    HEALTH_FLAT("health_flat", Formatting.RED, RESOURCE, true),
+    HEALTH_INCREASE_PERCENT("health_percent", Formatting.RED, RESOURCE, true),
+    HEALTH_INCREASE_MULTI("health_multi", Formatting.RED, RESOURCE, true),
     MANA("mana", Formatting.BLUE, RESOURCE, true),
     ARMOR("armor", Formatting.GRAY, DEFENSIVE, true),
     DODGE("dodge", Formatting.GREEN, DEFENSIVE, true),

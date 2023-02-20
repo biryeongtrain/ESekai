@@ -34,9 +34,9 @@ public class PlayerHeadInfo {
         NbtList lore = new NbtList();
         NbtCompound itemNBT = stack.getOrCreateSubNbt(ItemStack.DISPLAY_KEY);
         lore.add(NbtString.of(Text.Serializer.toJson(Text.empty()
-                .append(StatEnums.HEALTH.getTranslatableName())
+                .append(StatEnums.HEALTH_FLAT.getTranslatableName())
                 .append(Text.literal(" : " + playerStat.getMaxHealth())))
-                .formatted(StatEnums.HEALTH.getFormat())));
+                .formatted(StatEnums.HEALTH_FLAT.getFormat())));
         lore.add(NbtString.of(Text.Serializer.toJson(Text.empty()
                     .append(StatEnums.MANA.getTranslatableName())
                     .append(Text.literal(" : " + playerStat.getMaxMana()))
