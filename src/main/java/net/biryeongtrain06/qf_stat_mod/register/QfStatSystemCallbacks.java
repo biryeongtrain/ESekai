@@ -36,7 +36,7 @@ public class QfStatSystemCallbacks {
     private static void playerJoinCallback(ServerPlayerEntity player) {
         IServerPlayerEntityDuck iPlayer = (IServerPlayerEntityDuck) player;
         if (!iPlayer.isPlayedBefore() || DataStorage.loadPlayerStat(player) == null) {
-            var PlayerStat = new PlayerStat();
+            var PlayerStat = new PlayerStat(player);
             DataStorage.savePlayerStat(player, PlayerStat);
             iPlayer.setPlayedBefore(true);
         }
@@ -49,7 +49,7 @@ public class QfStatSystemCallbacks {
         PlayerStat stat = DataStorage.loadPlayerStat(killPlayer);
         int xp = ExpHandler.findXpModifier(victim);
 
-        stat.addXP((float) xp);
+        stat.addXP(killPlayer, (float) xp);
         if (iPlayer.isDisplaySystemMessage()) {
             killPlayer.sendMessage(Text.translatable(TextHelper.createTranslation("system_message.killed"), victim.getDisplayName(), xp).formatted(Formatting.GREEN));
         }

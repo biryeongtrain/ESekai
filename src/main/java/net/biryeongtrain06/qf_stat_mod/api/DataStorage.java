@@ -13,11 +13,9 @@ public class DataStorage {
         if (playerStat == null) {
             return null;
         }
-        playerStat.player = player;
         return playerStat;
     }
     public static void savePlayerStat(ServerPlayerEntity player, PlayerStat playerStat) {
-        playerStat.player = null;
         PlayerDataApi.setCustomDataFor(player, PLAYER_STAT_DATA_STORAGE, playerStat);
     }
 

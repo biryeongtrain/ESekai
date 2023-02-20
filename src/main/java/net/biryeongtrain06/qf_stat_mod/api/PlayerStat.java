@@ -20,8 +20,7 @@ import java.util.EnumMap;
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums.*;
 
 @SuppressWarnings("unused")
-public class PlayerStat {
-    ServerPlayerEntity player;
+public class PlayerStat{
     @Getter
     private int level;
     @Getter
@@ -84,12 +83,12 @@ public class PlayerStat {
     private String playerClassId;
 
 
-    public PlayerStat() {
+    public PlayerStat(ServerPlayerEntity player) {
         var noneClass = new NonePlayerClass();
         this.playerClassId = noneClass.getClassId().toString();
         this.level = 1;
         this.xp = 1;
-        calculateMaxHealth();
+        this.maxHealth = 100;
         this.currentHealth = getMaxHealth();
         this.regenHealthPerSecond = 1f;
         this.maxMana = 100;
@@ -108,7 +107,6 @@ public class PlayerStat {
         this.needXpToLevelUp = ExpHandler.getBaseLevelUpXpValue();
         this.selectPoint = 5;
     }
-
     public void setPlayer_class(IPlayerClass player_class) {
         this.playerClassId = player_class.getClassId().toString();
 
@@ -121,12 +119,12 @@ public class PlayerStat {
         this.playerClassId = playerClassId.toString();
     }
 
-    public void addXP(float i) {
+    public void addXP(ServerPlayerEntity player, float i) {
         this.xp += i;
 
         if (xp >= needXpToLevelUp) {
             this.xp-= needXpToLevelUp;
-            addLevel(1);
+            addLevel(player, 1);
             this.needXpToLevelUp = (float) (ExpHandler.getBaseLevelUpXpValue() * Math.pow(1 + ExpHandler.getLevelScaleModifier(), getLevel()));
         }
     }
@@ -141,7 +139,7 @@ public class PlayerStat {
     }
 
 
-    public void addLevel(int i) {
+    public void addLevel(ServerPlayerEntity player, int i) {
         this.level += i;
         player.sendMessage(Text.translatable(TextHelper.createTranslation("system_message.levelUp")).formatted(Formatting.GREEN));
         addSelectPoint(ExpHandler.getAmountSelectionPointWhenLevelUp());
@@ -154,26 +152,32 @@ public class PlayerStat {
     }
 
 
-    public void setMaxHealth(int amount) {
+    public void setMaxHealth(ServerPlayerEntity player, int amount) {
         amount = MathHelper.clamp(amount, 1, Integer.MAX_VALUE);
         this.maxHealth = amount;
-        syncWithVanillaHealth();
+        if (this.maxHealth < this.currentHealth) {
+            this.currentHealth = maxHealth;
+        }
+        syncWithVanillaHealth(player);
     }
 
-    public void addMaxHealth(int amount) {
+    public void addMaxHealth(ServerPlayerEntity player, int amount) {
         this.maxHealth = MathHelper.clamp(this.maxHealth + amount, 1, Integer.MAX_VALUE);
-        syncWithVanillaHealth();
+        if (this.maxHealth < this.currentHealth) {
+            this.currentHealth = maxHealth;
+        }
+        syncWithVanillaHealth(player);
     }
 
-    public void setCurrentHealth(float amount) {
+    public void setCurrentHealth(ServerPlayerEntity player, float amount) {
         this.currentHealth = MathHelper.clamp(amount, 0f, (float) getMaxHealth());
-        syncWithVanillaHealth();
+        syncWithVanillaHealth(player);
     }
 
-    public void addCurrentHealth(float amount) {
+    public void addCurrentHealth(ServerPlayerEntity player, float amount) {
         this.currentHealth += amount;
         this.currentHealth = MathHelper.clamp(this.currentHealth, 0f, (float) getMaxHealth());
-        syncWithVanillaHealth();
+        syncWithVanillaHealth(player);
     }
 
     public void setDodge(int value) {
@@ -234,13 +238,13 @@ public class PlayerStat {
     }
 
 
-    public void damageHealth(DamageSource s, float amount) {
+    public void damageHealth(DamageSource s, ServerPlayerEntity player, float amount) {
         this.currentHealth = MathHelper.clamp(this.currentHealth - amount, 0f, (float) getMaxHealth());
         float calculatedDamage = (amount / getMaxHealth()) * player.getMaxHealth();
         player.hurtTime = 0;
         player.damage(s, calculatedDamage);
     }
-    public void syncWithVanillaHealth() {
+    public void syncWithVanillaHealth(ServerPlayerEntity player) {
         if (player.isDead()) {
             return;
         }
@@ -259,7 +263,7 @@ public class PlayerStat {
         return false;
     }
 
-    public void addStrength(int value) {
+    public void addStrength(ServerPlayerEntity player, int value) {
         int changedValue = 0;
         if (this.strength != 0) {
             changedValue -= strength * 2;
@@ -268,7 +272,7 @@ public class PlayerStat {
         if (strength != 0) {
             changedValue += strength * 2;
         }
-        addHealthBaseValue(changedValue);
+        addHealthBaseValue(player, changedValue);
     }
 
     public void addDexterity(int value) {
@@ -299,38 +303,40 @@ public class PlayerStat {
         return this.maxHealth == this.currentHealth;
     }
 
-    public void calculateMaxHealth() {
+    public void calculateMaxHealth(ServerPlayerEntity player) {
         boolean isFullHealth = isFullHealth();
         int originalHealth = this.maxHealth;
-        setMaxHealth(Math.round(this.healthBaseValue * this.healthPercent * this.healthMulti));
+        setMaxHealth(player, Math.round(this.healthBaseValue * this.healthPercent * this.healthMulti));
         int overDamagedRevisionValue = maxHealth - originalHealth;
         if (isFullHealth && overDamagedRevisionValue > 0) {
-            addCurrentHealth(overDamagedRevisionValue);
+            addCurrentHealth(player, overDamagedRevisionValue);
         }
     }
 
-    public void setHealthBaseValue(int healthBaseValue) {
+    public void setHealthBaseValue(ServerPlayerEntity player, int healthBaseValue) {
         this.healthBaseValue = MathHelper.clamp(healthBaseValue, 1, 1000000);
-        calculateMaxHealth();
+        calculateMaxHealth(player);
     }
 
-    public void addHealthBaseValue(int value) {
-        setHealthBaseValue(this.healthBaseValue + value);
+    public void addHealthBaseValue(ServerPlayerEntity player, int value) {
+        setHealthBaseValue(player, this.healthBaseValue + value);
     }
 
-    public void setHealthPercent(float healthPercent) {
+    public void setHealthPercent(ServerPlayerEntity player, float healthPercent) {
         this.healthPercent = MathHelper.clamp(healthPercent, 0.01f, 5000f);
-        calculateMaxHealth();
+        calculateMaxHealth(player);
     }
 
-    public void setHealthMulti(float healthMulti) {
+    public void setHealthMulti(ServerPlayerEntity player, float healthMulti) {
         this.healthMulti = MathHelper.clamp(healthMulti, 0.01f, 5000f);
-        calculateMaxHealth();
+        calculateMaxHealth(player);
     }
 
     public EnumMap<StatEnums, Number> getMap() {
         EnumMap<StatEnums, Number> map = new EnumMap<>(StatEnums.class);
         map.put(HEALTH_FLAT, this.healthBaseValue);
+        map.put(HEALTH_INCREASE_PERCENT, this.healthPercent);
+        map.put(HEALTH_INCREASE_MULTI, this.healthMulti);
         map.put(MANA, this.maxMana);
         map.put(ARMOR, this.armor);
         map.put(DODGE, this.dodge);
@@ -347,10 +353,10 @@ public class PlayerStat {
         return map;
     }
 
-    public void setStatsByMap(EnumMap<StatEnums, Number> map) {
-        this.healthBaseValue = Math.max(1, map.get(HEALTH_FLAT).intValue());
-        this.healthPercent = map.get(HEALTH_INCREASE_PERCENT).floatValue();
-        this.healthMulti = map.get(HEALTH_INCREASE_MULTI).floatValue();
+    public void setStatsByMap(ServerPlayerEntity player, EnumMap<StatEnums, Number> map) {
+        this.setHealthBaseValue(player, Math.max(1, map.get(HEALTH_FLAT).intValue()));
+        this.setHealthPercent(player, map.get(HEALTH_INCREASE_PERCENT).floatValue());
+        this.setHealthMulti(player, map.get(HEALTH_INCREASE_MULTI).floatValue());
         this.setMaxMana(map.get(MANA).intValue());
         this.setDodge(map.get(DODGE).intValue());
         this.setArmor(map.get(ARMOR).intValue());

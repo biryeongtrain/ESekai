@@ -128,6 +128,8 @@ public class TestCommands {
             ItemStack stack = player.getMainHandStack();
             float value = ItemStats.getItemStat(stack, StatEnums.HEALTH_FLAT);
             player.sendMessage(Text.literal(String.valueOf(value)));
+            value = ItemStats.getItemStat(stack, StatEnums.HEALTH_INCREASE_PERCENT);
+            player.sendMessage(Text.literal(String.valueOf(value)));
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -138,7 +140,8 @@ public class TestCommands {
         try {
             ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();
             ItemStack stack = player.getMainHandStack();
-            if(!ItemStats.setItemStat(stack, StatEnums.HEALTH_FLAT, 10.5f)) return 0;
+            if(!ItemStats.setItemStat(stack, StatEnums.HEALTH_FLAT, 10)) return 0;
+            if(!ItemStats.setItemStat(stack, StatEnums.HEALTH_INCREASE_PERCENT, 2)) return 0;
             player.sendMessage(Text.literal("Health is changed"));
         } catch (Exception e) {
             e.printStackTrace();

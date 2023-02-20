@@ -50,7 +50,7 @@ public class PlayerMainGui extends SimpleGui {
     public boolean onClick(int index, ClickType clickType, SlotActionType action, GuiElementInterface element) {
         if (playerStat.tryRemoveSelectPoint()) {
             if (index == STRENGTH_SLOT_INDEX) {
-                playerStat.addStrength(1);
+                playerStat.addStrength(player,1);
             } else if (index == DEXTERITY_SLOT_INDEX) {
                 playerStat.addDexterity(1);
             } else if (index == WISDOM_SLOT_INDEX) {
