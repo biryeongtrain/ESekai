@@ -309,7 +309,7 @@ public class PlayerStat{
         setMaxHealth(player, Math.round(this.healthBaseValue * this.healthPercent * this.healthMulti));
         int overDamagedRevisionValue = maxHealth - originalHealth;
         if (isFullHealth && overDamagedRevisionValue > 0) {
-            addCurrentHealth(player, overDamagedRevisionValue);
+            setCurrentHealth(player, originalHealth);
         }
     }
 
