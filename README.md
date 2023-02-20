@@ -1,3 +1,16 @@
-# ESekai : Server-Side RPG Framework
-간단한 Stat Mod입니다.
-코딩도 존나 못하고 깔끔하지도 않으니 제꺼 보고 코드 이렇게 해야하겠다 하지말고 다른 능력자꺼 보시는거 추천함
+ESeaki : Server-Side RPG Framework
+=============
+지옥(군대) 에서 개발하는 Server-Side RPG Framework 입니다.
+
+Features
+-------------
+ - RPG 스탯
+ - 여러 원소 데미지 
+ - 아이템 스탯 API
+ - 플레이어 스텟 API
+ - 엔티티 스탯 API 
+
+지원
+
+
+
