@@ -1,6 +1,8 @@
 package net.biryeongtrain06.qf_stat_mod.api;
 
 
+import lombok.Getter;
+import lombok.Setter;
 import net.biryeongtrain06.qf_stat_mod.player.playerclass.IPlayerClass;
 import net.biryeongtrain06.qf_stat_mod.player.playerclass.NonePlayerClass;
 import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
@@ -19,29 +21,59 @@ import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums.*;
 
 @SuppressWarnings("unused")
 public class PlayerStat {
+    ServerPlayerEntity player;
+    @Getter
+    @Setter
     private int level;
+    @Getter
     private float xp;
+    @Getter
     private int maxHealth;
+    @Getter
     private float currentHealth;
-    private float regenPerSecond;
+    @Getter
+    @Setter
+    private float regenHealthPerSecond;
+    @Getter
     private int maxMana;
+    @Getter
     private float currentMana;
     private boolean isManaUser;
+    @Getter
+    @Setter
     private int armor;
+    @Getter
     private int dodge;
+    @Getter
     private float fire_resistance;
+    @Getter
     private float water_resistance;
+    @Getter
     private float earth_resistance;
+    @Getter
     private float light_resistance;
+    @Getter
     private float dark_resistance;
+    @Getter
+    @Setter
     private float projectileDamageFlat;
+    @Getter
+    @Setter
     private float projectileDamagePercent;
+    @Getter
+    @Setter
     private float projectileDamageMulti;
     private float needXpToLevelUp;
+    @Getter
+    @Setter
     private int selectPoint;
+    @Getter
     private int strength = 0;
+    @Getter
     private int dexterity = 0;
+    @Getter
     private int intelligence = 0;
+    @Getter
     private int wisdom = 0;
 
     private String playerClassId;
@@ -54,7 +86,7 @@ public class PlayerStat {
         this.xp = 1;
         this.maxHealth = 100;
         this.currentHealth = getMaxHealth();
-        this.regenPerSecond = 1f;
+        this.regenHealthPerSecond = 1f;
         this.maxMana = 100;
         this.currentMana = getMaxMana();
         this.isManaUser = true;
@@ -95,30 +127,25 @@ public class PlayerStat {
     }
 
     public float getNeedXpToLevelUp() {
-        this.needXpToLevelUp = (float) (ExpHandler.getBaseLevelUpXpValue() * Math.pow(1 + ExpHandler.getLevelScaleModifier(), getLevel()));
+        dumpNeedXpToLevelUp();
         return this.needXpToLevelUp;
     }
 
-    public void setXP(int i) {
-        this.xp = i;
+    public void dumpNeedXpToLevelUp() {
+        this.needXpToLevelUp = (float) (ExpHandler.getBaseLevelUpXpValue() * Math.pow(1 + ExpHandler.getLevelScaleModifier(), getLevel()));
     }
 
-    public float getXP() {
-        return this.xp;
-    }
-
-    public int getLevel() {
-        return this.level;
-    }
 
     public void addLevel(ServerPlayerEntity player, int i) {
         this.level += i;
         player.sendMessage(Text.translatable(TextHelper.createTranslation("system_message.levelUp")).formatted(Formatting.GREEN));
         addSelectPoint(ExpHandler.getAmountSelectionPointWhenLevelUp());
+        dumpNeedXpToLevelUp();
     }
 
     public void setLevel(int i) {
         this.level = i;
+        dumpNeedXpToLevelUp();
     }
 
 
@@ -138,37 +165,10 @@ public class PlayerStat {
         syncPlayerHealth(player);
     }
 
-    public int getMaxHealth() {
-        return this.maxHealth;
-    }
-
     public void addCurrentHealth(ServerPlayerEntity player, float amount) {
         this.currentHealth += amount;
         this.currentHealth = MathHelper.clamp(this.currentHealth, 0f, (float) getMaxHealth());
         syncPlayerHealth(player);
-    }
-    public float getCurrentHealth() {
-        return this.currentHealth;
-    }
-
-    public float getRegenPerSecond() {
-        return regenPerSecond;
-    }
-
-    public void setRegenPerSecond(float regenPerSecond) {
-        this.regenPerSecond = regenPerSecond;
-    }
-
-    public int getArmor() {
-        return armor;
-    }
-
-    public void setArmor(int armor) {
-        this.armor = armor;
-    }
-
-    public int getDodge() {
-        return dodge;
     }
 
     public void setDodge(int value) {
@@ -179,48 +179,24 @@ public class PlayerStat {
         this.dodge += MathHelper.clamp(value, 0, 90);
     }
 
-    public float getFire_resistance() {
-        return fire_resistance;
-    }
-
     public void setFire_resistance(float fire_resistance) {
-        this.fire_resistance = fire_resistance;
-    }
-
-    public float getWater_resistance() {
-        return water_resistance;
+        this.fire_resistance = Math.min(fire_resistance, 75f);
     }
 
     public void setWater_resistance(float water_resistance) {
-        this.water_resistance = water_resistance;
-    }
-
-    public float getEarth_resistance() {
-        return earth_resistance;
+        this.water_resistance = Math.min(water_resistance, 75f);
     }
 
     public void setEarth_resistance(float earth_resistance) {
-        this.earth_resistance = earth_resistance;
-    }
-
-    public float getLight_resistance() {
-        return light_resistance;
+        this.earth_resistance = Math.min(earth_resistance, 75f);
     }
 
     public void setLight_resistance(float light_resistance) {
-        this.light_resistance = light_resistance;
-    }
-
-    public float getDark_resistance() {
-        return dark_resistance;
+        this.light_resistance = Math.min(light_resistance, 75f);
     }
 
     public void setDark_resistance(float dark_resistance) {
-        this.dark_resistance = dark_resistance;
-    }
-
-    public float getCurrentMana() {
-        return this.currentMana;
+        this.dark_resistance = Math.min(dark_resistance, 75f);
     }
 
     public void addCurrentMana(float val) {
@@ -234,10 +210,7 @@ public class PlayerStat {
         if (!isManaUser) {
             return;
         }
-        this.currentMana = MathHelper.clamp(val, 0F, getCurrentMana());
-    }
-    public int getMaxMana() {
-        return maxMana;
+        this.currentMana = MathHelper.clamp(val, 0F, getMaxMana());
     }
 
     public void addMaxMana(int val) {
@@ -255,36 +228,12 @@ public class PlayerStat {
         this.selectPoint += value;
     }
 
-    public int getSelectPoint() {
-        return this.selectPoint;
-    }
-
-    public void setSelectPoint(int value) {
-        this.selectPoint = value;
-    }
-
     public float getProjectileDamageFlat() {
         return projectileDamageFlat;
     }
 
     public void setProjectileDamageFlat(float projectileDamageFlat) {
         this.projectileDamageFlat = projectileDamageFlat;
-    }
-
-    public float getProjectileDamagePercent() {
-        return projectileDamagePercent;
-    }
-
-    public void setProjectileDamagePercent(float projectileDamagePercent) {
-        this.projectileDamagePercent = projectileDamagePercent;
-    }
-
-    public float getProjectileDamageMulti() {
-        return projectileDamageMulti;
-    }
-
-    public void setProjectileDamageMulti(float projectileDamageMulti) {
-        this.projectileDamageMulti = projectileDamageMulti;
     }
 
     public void damageHealth(DamageSource s, ServerPlayerEntity player, float amount) {
@@ -346,18 +295,6 @@ public class PlayerStat {
             changedValue += this.wisdom * 7;
         }
         addMaxMana(changedValue);
-    }
-
-    public int getStrength() {
-        return strength;
-    }
-
-    public int getDexterity() {
-        return dexterity;
-    }
-
-    public int getWisdom() {
-        return wisdom;
     }
 
     public EnumMap<StatEnums, Number> getMap() {

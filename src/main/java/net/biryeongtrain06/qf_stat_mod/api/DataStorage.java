@@ -6,16 +6,18 @@ import eu.pb4.playerdata.api.storage.PlayerDataStorage;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public class DataStorage {
-    public static final PlayerDataStorage<PlayerStat> PLAYER_STAT_DATA_STORAGE = new JsonDataStorage<>("player_stat", PlayerStat.class);
+    private static final PlayerDataStorage<PlayerStat> PLAYER_STAT_DATA_STORAGE = new JsonDataStorage<>("player_stat", PlayerStat.class);
 
     public static PlayerStat loadPlayerStat(ServerPlayerEntity player) {
         PlayerStat playerStat = PlayerDataApi.getCustomDataFor(player, PLAYER_STAT_DATA_STORAGE);
         if (playerStat == null) {
             return null;
         }
+        playerStat.player = player;
         return playerStat;
     }
     public static void savePlayerStat(ServerPlayerEntity player, PlayerStat playerStat) {
+        playerStat.player = null;
         PlayerDataApi.setCustomDataFor(player, PLAYER_STAT_DATA_STORAGE, playerStat);
     }
 

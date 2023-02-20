@@ -1,14 +1,13 @@
 package net.biryeongtrain06.qf_stat_mod.register;
 
-import eu.pb4.playerdata.api.PlayerDataApi;
 import net.biryeongtrain06.qf_stat_mod.MainStatSystem;
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
 import net.biryeongtrain06.qf_stat_mod.callback.*;
-import net.biryeongtrain06.qf_stat_mod.interfaces.IServerPlayerEntityDuck;
+import net.biryeongtrain06.qf_stat_mod.damage.DamageHandler;
 import net.biryeongtrain06.qf_stat_mod.entity.OnEntitySpawnSetting;
 import net.biryeongtrain06.qf_stat_mod.gui.PlayerStatBar;
-import net.biryeongtrain06.qf_stat_mod.damage.DamageHandler;
+import net.biryeongtrain06.qf_stat_mod.interfaces.IServerPlayerEntityDuck;
 import net.biryeongtrain06.qf_stat_mod.item.ElementHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
@@ -31,7 +30,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.ENTITY_MODIFIERS;
-import static net.biryeongtrain06.qf_stat_mod.api.DataStorage.PLAYER_STAT_DATA_STORAGE;
 
 
 public class QfStatSystemCallbacks {
@@ -48,14 +46,14 @@ public class QfStatSystemCallbacks {
     private static void playerKilledCallback(PlayerEntity killer, LivingEntity victim) {
         ServerPlayerEntity killPlayer = (ServerPlayerEntity) killer;
         IServerPlayerEntityDuck iPlayer =(IServerPlayerEntityDuck) killPlayer;
-        PlayerStat stat = PlayerDataApi.getCustomDataFor(killPlayer, PLAYER_STAT_DATA_STORAGE);
+        PlayerStat stat = DataStorage.loadPlayerStat(killPlayer);
         int xp = ExpHandler.findXpModifier(victim);
 
         stat.addXP(killPlayer, (float) xp);
         if (iPlayer.isDisplaySystemMessage()) {
             killPlayer.sendMessage(Text.translatable(TextHelper.createTranslation("system_message.killed"), victim.getDisplayName(), xp).formatted(Formatting.GREEN));
         }
-        PlayerDataApi.setCustomDataFor(killPlayer, PLAYER_STAT_DATA_STORAGE, stat);
+        DataStorage.savePlayerStat(killPlayer, stat);
     }
 
     private static void entityHitPlayerCallback(PlayerEntity player, LivingEntity entity, DamageSource source, float amount) {
