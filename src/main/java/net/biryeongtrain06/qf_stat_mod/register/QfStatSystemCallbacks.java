@@ -1,7 +1,9 @@
 package net.biryeongtrain06.qf_stat_mod.register;
 
+import eu.pb4.playerdata.api.PlayerDataApi;
 import net.biryeongtrain06.qf_stat_mod.MainStatSystem;
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
+import net.biryeongtrain06.qf_stat_mod.api.NewPlayerStat;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
 import net.biryeongtrain06.qf_stat_mod.callback.*;
 import net.biryeongtrain06.qf_stat_mod.damage.DamageHandler;
@@ -30,6 +32,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.ENTITY_MODIFIERS;
+import static net.biryeongtrain06.qf_stat_mod.api.DataStorage.TEST;
 
 
 public class QfStatSystemCallbacks {
@@ -39,6 +42,8 @@ public class QfStatSystemCallbacks {
             var PlayerStat = new PlayerStat(player);
             DataStorage.savePlayerStat(player, PlayerStat);
             iPlayer.setPlayedBefore(true);
+            var newPlayerStat = new NewPlayerStat();
+            PlayerDataApi.setCustomDataFor(player, TEST, newPlayerStat);
         }
         PlayerStatBar.Open(player);
     }
