@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static net.biryeongtrain06.qf_stat_mod.utils.enums.SubStatTag.*;
+import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypeTag.*;
 
 public enum StatEnums {
 
@@ -36,9 +36,9 @@ public enum StatEnums {
     public final String name;
     public final Text translatableName;
     public final Formatting format;
-    public final SubStatTag tag;
+    public final StatTypeTag tag;
     public final Boolean entityCanUseThisStat;
-    StatEnums(String name, Formatting format, SubStatTag tag, boolean entityCanUseThisStat) {
+    StatEnums(String name, Formatting format, StatTypeTag tag, boolean entityCanUseThisStat) {
         this.name = name;
         this.translatableName = Text.translatable(TextHelper.createTranslation(name));
         this.format = format;
@@ -62,7 +62,7 @@ public enum StatEnums {
         return this.entityCanUseThisStat;
     }
 
-    public SubStatTag getTag() {
+    public StatTypeTag getTag() {
         return tag;
     }
 
