@@ -42,7 +42,7 @@ public class QfStatSystemCallbacks {
             var PlayerStat = new PlayerStat(player);
             DataStorage.savePlayerStat(player, PlayerStat);
             iPlayer.setPlayedBefore(true);
-            var newPlayerStat = new NewPlayerStat();
+            var newPlayerStat = new NewPlayerStat(player);
             PlayerDataApi.setCustomDataFor(player, TEST, newPlayerStat);
         }
         PlayerStatBar.Open(player);

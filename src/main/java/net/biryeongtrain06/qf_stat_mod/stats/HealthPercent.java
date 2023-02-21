@@ -22,6 +22,13 @@ public class HealthPercent implements IStats {
     }
 
     @Override
+    public boolean tryModifyInstance(Identifier id, float value) {
+        if (!hasInstance(id)) return false;
+        map.replace(id, value);
+        return true;
+    }
+
+    @Override
     public boolean removeStatInstance(Identifier id) {
         if (!hasInstance(id)) return false;
         map.removeFloat(id);

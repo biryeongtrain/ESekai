@@ -6,12 +6,8 @@ import net.minecraft.util.Identifier;
 
 import java.util.Optional;
 
-public class HealthFlat implements IStats {
+public class HealthMulti implements IStats {
     Object2FloatOpenHashMap<Identifier> map = new Object2FloatOpenHashMap<>();
-
-    public HealthFlat() {
-
-    }
 
     @Override
     public void addStatInstance(Identifier id, float value) {
@@ -21,9 +17,7 @@ public class HealthFlat implements IStats {
     @Override
     public float getTotalValue() {
         Optional<Float> optional = map.values().stream().reduce(Float::sum);
-        if (optional.isEmpty()) return 1f;
-        if (optional.get() <= 0) return 1f;
-        return optional.get();
+        return optional.orElse(0f);
     }
 
     @Override
