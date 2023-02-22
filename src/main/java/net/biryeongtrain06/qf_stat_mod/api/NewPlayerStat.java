@@ -1,5 +1,7 @@
 package net.biryeongtrain06.qf_stat_mod.api;
 
+import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import lombok.Getter;
 import net.biryeongtrain06.qf_stat_mod.stats.NumberStat;
 import net.biryeongtrain06.qf_stat_mod.stats.interfaces.IStats;
@@ -37,6 +39,14 @@ public class NewPlayerStat {
 
         calculateMaxHealth(player);
         return true;
+    }
+
+    public IStats getStatInstance(StatEnums e) {
+        return instance.get(e);
+    }
+
+    public boolean hasInstance(StatEnums e, Identifier id, StatSubTag tag) {
+        return instance.get(e).hasInstance(id, tag);
     }
 
     public void calculateMaxHealth(ServerPlayerEntity player) {

@@ -20,6 +20,11 @@ public class NumberStat implements IStats {
         map.put(MULTIPLIER, new Object2FloatOpenHashMap<>());
     }
 
+    @Override
+    public Object2ObjectOpenHashMap<StatSubTag, Object2FloatOpenHashMap<Identifier>> getInstance() {
+        return map;
+    }
+
     public void addStatInstance(Identifier id, float value, StatSubTag tag) {
         Object2FloatOpenHashMap<Identifier> instance = map.get(tag);
         instance.put(id, value);
