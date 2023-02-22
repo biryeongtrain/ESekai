@@ -10,7 +10,7 @@ import net.biryeongtrain06.qf_stat_mod.utils.data.MobXpDataLoader;
 import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemCallbacks;
 import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemDamageSources;
 import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemGameRules;
-import net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.resource.ResourceType;
@@ -37,7 +37,7 @@ public class MainStatSystem implements ModInitializer {
         QfStatSystemDamageSources.init();
     }
 
-    public static HashMap<StatEnums, Integer> getEntityDefensiveMap(ComponentProvider provider) {
+    public static HashMap<StatTypes, Integer> getEntityDefensiveMap(ComponentProvider provider) {
         return ENTITY_MODIFIERS.get(provider).getDefensiveMap();
     }
 }

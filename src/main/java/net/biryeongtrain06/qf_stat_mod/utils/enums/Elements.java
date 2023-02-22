@@ -1,22 +1,19 @@
 package net.biryeongtrain06.qf_stat_mod.utils.enums;
 
-import com.google.gson.JsonObject;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.minecraft.text.HoverEvent;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.Texts;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
-import org.spongepowered.asm.mixin.Mutable;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Optional;
 
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.MOD_ID;
-import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums.*;
+import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes.*;
 
 public enum Elements {
     PHYSICAL("element_physical", ARMOR, 20, Formatting.GOLD, "\u2726", false),
@@ -28,13 +25,13 @@ public enum Elements {
 
     final Text translatableName;
     final Identifier i;
-    final StatEnums defensiveStat;
+    final StatTypes defensiveStat;
     final int spawnPercent;
     Formatting format;
     String icon;
     boolean isElement;
 
-    Elements(String i, StatEnums defensiveStat, int spawnPercent, Formatting format, String icon, boolean isElement) {
+    Elements(String i, StatTypes defensiveStat, int spawnPercent, Formatting format, String icon, boolean isElement) {
         this.i = TextHelper.getId(i);
         this.translatableName = Text.translatable(MOD_ID+"."+i);
         this.defensiveStat = defensiveStat;
@@ -60,7 +57,7 @@ public enum Elements {
         return i;
     }
 
-    public StatEnums getDefensiveStat() {
+    public StatTypes getDefensiveStat() {
         return defensiveStat;
     }
 

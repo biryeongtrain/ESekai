@@ -4,7 +4,7 @@ import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
 import net.biryeongtrain06.qf_stat_mod.player.playerclass.IPlayerClass;
 import net.biryeongtrain06.qf_stat_mod.utils.PlayerHelper;
-import net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -45,7 +45,7 @@ public class PlayerStatHandler {
         }
 
         NbtCompound stats = stack.getOrCreateSubNbt(STAT_KEY);
-        EnumMap<StatEnums, Number> map = playerStat.getMap();
+        EnumMap<StatTypes, Number> map = playerStat.getMap();
 
         map = getStatValue(stats, map, true);
 
@@ -57,7 +57,7 @@ public class PlayerStatHandler {
         if (!checkIfItemHasStack(stack)) return;
 
         NbtCompound stats = stack.getSubNbt(STAT_KEY);
-        EnumMap<StatEnums, Number> map = playerStat.getMap();
+        EnumMap<StatTypes, Number> map = playerStat.getMap();
 
         map = getStatValue(stats, map, false);
 
@@ -70,10 +70,10 @@ public class PlayerStatHandler {
         return !stack.getOrCreateSubNbt(STAT_KEY).isEmpty();
     }
 
-    private EnumMap<StatEnums, Number> getStatValue(NbtCompound stats, EnumMap<StatEnums, Number> map, boolean isRemoving) {
+    private EnumMap<StatTypes, Number> getStatValue(NbtCompound stats, EnumMap<StatTypes, Number> map, boolean isRemoving) {
         int i = isRemoving ? -1 : 1;
         stats.getKeys().stream().parallel().forEach(key -> {
-            StatEnums s = StatEnums.getStatByName(key);
+            StatTypes s = StatTypes.getStatByName(key);
             int type = stats.getType(key);
             Number n = 0;
             if (type == 5) {

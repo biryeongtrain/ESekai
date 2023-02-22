@@ -9,27 +9,27 @@ import net.minecraft.util.Identifier;
 import java.util.Optional;
 
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag.*;
-import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag.MULTIPLIER;
 
-public class NumberStat implements IStats {
-    Object2ObjectOpenHashMap<StatSubTag, Object2FloatOpenHashMap<Identifier>> map = new Object2ObjectOpenHashMap<>();
+public class FloatStat implements IStats {
+    private final Object2ObjectOpenHashMap<StatSubTag, Object2FloatOpenHashMap<Identifier>> map = new Object2ObjectOpenHashMap<>();
 
-    public NumberStat() {
+    public FloatStat(float baseFlat, float basePercent, float baseMulti) {
         map.put(FLAT, new Object2FloatOpenHashMap<>());
         map.put(PERCENT, new Object2FloatOpenHashMap<>());
         map.put(MULTIPLIER, new Object2FloatOpenHashMap<>());
+
+        map.get(FLAT).put(getBaseStatId(), baseFlat);
+        map.get(PERCENT).put(getBaseStatId(), basePercent);
+        map.get(MULTIPLIER).put(getBaseStatId(), baseMulti);
     }
 
     @Override
-    public Object2ObjectOpenHashMap<StatSubTag, Object2FloatOpenHashMap<Identifier>> getInstance() {
-        return map;
-    }
-
     public void addStatInstance(Identifier id, float value, StatSubTag tag) {
         Object2FloatOpenHashMap<Identifier> instance = map.get(tag);
         instance.put(id, value);
     }
 
+    @Override
     public float getTotalValue() {
         return getTagValue(FLAT) * getTagValue(PERCENT) * getTagValue(MULTIPLIER);
     }
@@ -42,6 +42,7 @@ public class NumberStat implements IStats {
         return optional.get();
     }
 
+    @Override
     public boolean tryReplaceInstance(Identifier id, float value, StatSubTag tag) {
         if (!hasInstance(id, tag)) return false;
         Object2FloatOpenHashMap<Identifier> instance = map.get(tag);
@@ -49,10 +50,12 @@ public class NumberStat implements IStats {
         return true;
     }
 
+    @Override
     public boolean hasInstance(Identifier id, StatSubTag tag) {
         return map.get(tag).containsKey(id);
     }
 
+    @Override
     public boolean removeStatInstance(Identifier id, StatSubTag tag) {
         if (!hasInstance(id, tag)) return false;
         Object2FloatOpenHashMap<Identifier> instance = map.get(tag);

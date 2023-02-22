@@ -2,7 +2,7 @@ package net.biryeongtrain06.qf_stat_mod.player;
 
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
-import net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.SkullItem;
@@ -34,25 +34,25 @@ public class PlayerHeadInfo {
         NbtList lore = new NbtList();
         NbtCompound itemNBT = stack.getOrCreateSubNbt(ItemStack.DISPLAY_KEY);
         lore.add(NbtString.of(Text.Serializer.toJson(Text.empty()
-                .append(StatEnums.HEALTH_FLAT.getTranslatableName())
+                .append(StatTypes.HEALTH_FLAT.getTranslatableName())
                 .append(Text.literal(" : " + playerStat.getMaxHealth())))
-                .formatted(StatEnums.HEALTH_FLAT.getFormat())));
+                .formatted(StatTypes.HEALTH_FLAT.getFormat())));
         lore.add(NbtString.of(Text.Serializer.toJson(Text.empty()
-                    .append(StatEnums.MANA.getTranslatableName())
+                    .append(StatTypes.MANA.getTranslatableName())
                     .append(Text.literal(" : " + playerStat.getMaxMana()))
-                    .formatted(StatEnums.MANA.getFormat()))));
+                    .formatted(StatTypes.MANA.getFormat()))));
         lore.add(NbtString.of(Text.Serializer.toJson(Text.empty()
-                .append(StatEnums.ARMOR.getTranslatableName())
+                .append(StatTypes.ARMOR.getTranslatableName())
                 .append(Text.literal(" : " + playerStat.getArmor()))
-                .formatted(StatEnums.ARMOR.getFormat()))));
+                .formatted(StatTypes.ARMOR.getFormat()))));
         lore.add(NbtString.of(Text.Serializer.toJson(Text.empty()
-                .append(StatEnums.DODGE.getTranslatableName())
+                .append(StatTypes.DODGE.getTranslatableName())
                 .append(Text.literal(" : " + playerStat.getDodge()))
-                .formatted(StatEnums.DODGE.getFormat()))));
+                .formatted(StatTypes.DODGE.getFormat()))));
         lore.add(NbtString.of(Text.Serializer.toJson(Text.empty()
-                .append(StatEnums.SELECT_POINT.getTranslatableName())
+                .append(StatTypes.SELECT_POINT.getTranslatableName())
                 .append(Text.literal(" : " + playerStat.getSelectPoint()))
-                .formatted(StatEnums.SELECT_POINT.getFormat()))));
+                .formatted(StatTypes.SELECT_POINT.getFormat()))));
         itemNBT.put(ItemStack.LORE_KEY, lore);
 
     }

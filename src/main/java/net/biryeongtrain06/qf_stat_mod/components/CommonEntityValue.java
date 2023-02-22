@@ -6,7 +6,7 @@ import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.PlayerHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.Elements;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.EntityRank;
-import net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -26,7 +26,7 @@ import java.util.Map;
 
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.Elements.*;
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.EntityRank.getRankById;
-import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums.*;
+import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes.*;
 
 /**
  * 엔티티에게만 적용되는 Cardinal Components용 Class 입니다.
@@ -36,7 +36,7 @@ public class CommonEntityValue implements ICommonEntityComponents {
     private Elements attackElement = PHYSICAL;
     private int additionalDefenseRate = 0;
     private float damage = 0;
-    private HashMap<StatEnums, Integer> defensiveMap = new HashMap<>();
+    private HashMap<StatTypes, Integer> defensiveMap = new HashMap<>();
     private EntityRank rank =  EntityRank.UN_DECIDED;
     private final MobEntity provider;
     private int numMaxAbilities = EntityRank.UN_DECIDED.getAbilities();
@@ -281,7 +281,7 @@ public class CommonEntityValue implements ICommonEntityComponents {
     }
 
     @Override
-    public HashMap<StatEnums, Integer> getDefensiveMap() {
+    public HashMap<StatTypes, Integer> getDefensiveMap() {
         return this.defensiveMap;
     }
 
@@ -324,8 +324,8 @@ public class CommonEntityValue implements ICommonEntityComponents {
     }
 
     private void initDefensiveMap() {
-        StatEnums[] defensiveMap = StatEnums.getDefensiveStats(false);
-        for (StatEnums stat : defensiveMap) {
+        StatTypes[] defensiveMap = StatTypes.getDefensiveStats(false);
+        for (StatTypes stat : defensiveMap) {
             this.defensiveMap.put(stat, 0);
         }
     }

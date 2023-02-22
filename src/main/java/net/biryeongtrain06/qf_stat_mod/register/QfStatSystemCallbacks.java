@@ -14,7 +14,7 @@ import net.biryeongtrain06.qf_stat_mod.item.ElementHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.Elements;
-import net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -81,7 +81,7 @@ public class QfStatSystemCallbacks {
         if (!(victim instanceof HostileEntity) && !(victim instanceof LivingEntity)) {
             return ActionResult.PASS;
         }
-        HashMap<StatEnums, Integer> defensiveMap = MainStatSystem.getEntityDefensiveMap(victim.asComponentProvider());
+        HashMap<StatTypes, Integer> defensiveMap = MainStatSystem.getEntityDefensiveMap(victim.asComponentProvider());
         if (!(attacker instanceof ServerPlayerEntity)) {
             return ActionResult.PASS;
         }

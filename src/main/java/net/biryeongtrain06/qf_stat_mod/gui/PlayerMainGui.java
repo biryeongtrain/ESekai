@@ -7,7 +7,7 @@ import eu.pb4.sgui.api.gui.SimpleGui;
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
 import net.biryeongtrain06.qf_stat_mod.player.PlayerHeadInfo;
-import net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
 import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.SlotActionType;
@@ -32,17 +32,17 @@ public class PlayerMainGui extends SimpleGui {
         this.setSlot(0, headInfo.getHead());
         this.setSlot(STRENGTH_SLOT_INDEX, new GuiElementBuilder()
                 .setItem(Items.RED_STAINED_GLASS_PANE)
-                .setName(Text.empty().append(StatEnums.STRENGTH.translatableName).formatted(StatEnums.STRENGTH.getFormat()))
+                .setName(Text.empty().append(StatTypes.STRENGTH.translatableName).formatted(StatTypes.STRENGTH.getFormat()))
                 .addLoreLine(Text.literal("Strength : " + playerStat.getStrength()))
                 .addLoreLine(Text.literal("Click To Increase Strength. ").formatted(Formatting.GREEN)));
         this.setSlot(DEXTERITY_SLOT_INDEX, new GuiElementBuilder()
                 .setItem(Items.GREEN_STAINED_GLASS_PANE)
-                .setName(Text.empty().append(StatEnums.DEXTERITY.translatableName).formatted(StatEnums.DODGE.getFormat()))
+                .setName(Text.empty().append(StatTypes.DEXTERITY.translatableName).formatted(StatTypes.DODGE.getFormat()))
                 .addLoreLine(Text.literal("Dexterity : " + playerStat.getDexterity()))
                 .addLoreLine(Text.literal("Click To Increase Dexterity. ").formatted(Formatting.GREEN)));
         this.setSlot(WISDOM_SLOT_INDEX, new GuiElementBuilder()
                 .setItem(Items.PURPLE_STAINED_GLASS_PANE)
-                .setName(Text.empty().append(StatEnums.WISDOM.translatableName).formatted(StatEnums.WISDOM.getFormat()))
+                .setName(Text.empty().append(StatTypes.WISDOM.translatableName).formatted(StatTypes.WISDOM.getFormat()))
                 .addLoreLine(Text.literal("Wisdom : " + playerStat.getWisdom()))
                 .addLoreLine(Text.literal("Click To Increase Wisdom. ").formatted(Formatting.GREEN)));
     }

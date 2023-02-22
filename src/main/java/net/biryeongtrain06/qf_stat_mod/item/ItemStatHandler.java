@@ -1,6 +1,6 @@
 package net.biryeongtrain06.qf_stat_mod.item;
 
-import net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -34,7 +34,7 @@ public class ItemStatHandler {
         return new EntityAttributeModifier(DAMAGE_KEY, MOD_ID + "_damage", amount, EntityAttributeModifier.Operation.ADDITION);
     }
 
-    public boolean setItemStat(StatEnums e, float value) {
+    public boolean setItemStat(StatTypes e, float value) {
         if (ITEM_STACK.isEmpty()) return false;
         NbtCompound statCompound = ITEM_STACK.getOrCreateSubNbt(STAT_KEY);
         statCompound.putFloat(e.getName(), value);
@@ -42,7 +42,7 @@ public class ItemStatHandler {
         return true;
     }
 
-    public float getItemStat(StatEnums e) {
+    public float getItemStat(StatTypes e) {
         if (ITEM_STACK.isEmpty()) return 0;
         NbtCompound statCompound = ITEM_STACK.getOrCreateSubNbt(STAT_KEY);
 

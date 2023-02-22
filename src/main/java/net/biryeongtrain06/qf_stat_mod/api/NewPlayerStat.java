@@ -1,12 +1,10 @@
 package net.biryeongtrain06.qf_stat_mod.api;
 
-import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import lombok.Getter;
-import net.biryeongtrain06.qf_stat_mod.stats.NumberStat;
+import net.biryeongtrain06.qf_stat_mod.stats.FloatStat;
+import net.biryeongtrain06.qf_stat_mod.stats.PercentStat;
 import net.biryeongtrain06.qf_stat_mod.stats.interfaces.IStats;
-import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
-import net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
@@ -14,38 +12,50 @@ import net.minecraft.util.math.MathHelper;
 
 import java.util.EnumMap;
 
-import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums.*;
+import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes.*;
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag.*;
 
+@SuppressWarnings("unused")
 public class NewPlayerStat {
     @Getter
     private int maxHealth = 100;
     @Getter
     private float currentHealth;
-    private final EnumMap<StatEnums, IStats> instance = new EnumMap<>(StatEnums.class);
+    private int maxMana;
+    private float currentMana;
+    private int selectionPoint = 5;
+    private final EnumMap<StatTypes, IStats> instance = new EnumMap<>(StatTypes.class);
 
     public NewPlayerStat(ServerPlayerEntity player) {
         init(player);
 
     }
-    public boolean tryAddInstance(ServerPlayerEntity player, StatEnums e, StatSubTag tag, Identifier id, Number value) {
+    public boolean tryAddNumberInstance(ServerPlayerEntity player, StatTypes e, StatSubTag tag, Identifier id, float value) {
         IStats stat = instance.get(e);
-        float f = value.floatValue();
 
         if (stat == null) return false;
-        if (!stat.tryReplaceInstance(id, value.floatValue(), tag)) {
-            stat.addStatInstance(id, f, tag);
+        if (!stat.tryReplaceInstance(id, value, tag)) {
+            stat.addStatInstance(id, value, tag);
         }
-
-        calculateMaxHealth(player);
+        if (e == HEALTH) calculateMaxHealth(player);
         return true;
     }
 
-    public IStats getStatInstance(StatEnums e) {
-        return instance.get(e);
+    public boolean tryAddPercentInstance(StatTypes e, Identifier id, float value) {
+        IStats stat = instance.get(e);
+        if (stat == null) return false;
+
+        if(!stat.tryReplaceInstance(id, value, PERCENT)) {
+            stat.addStatInstance(id, value, PERCENT);
+        }
+        return true;
     }
 
-    public boolean hasInstance(StatEnums e, Identifier id, StatSubTag tag) {
+    public float getStatValue(StatTypes e) {
+        return instance.get(e).getTotalValue();
+    }
+
+    public boolean hasInstance(StatTypes e, Identifier id, StatSubTag tag) {
         return instance.get(e).hasInstance(id, tag);
     }
 
@@ -65,9 +75,9 @@ public class NewPlayerStat {
     public boolean isFullHealth() {
         return this.currentHealth == this.maxHealth;
     }
+
     public void setCurrentHealth(ServerPlayerEntity player, float value) {
-        float val = MathHelper.clamp(value, 0, this.maxHealth);
-        this.currentHealth = val;
+        this.currentHealth = MathHelper.clamp(value, 0, this.maxHealth);
         syncWithVanillaHealth(player);
     }
 
@@ -82,29 +92,32 @@ public class NewPlayerStat {
         player.setHealth(MathHelper.clamp((float) Math.floor(getCurrentHealth() / getMaxHealth() * 20), 0f, player.getMaxHealth()));
     }
 
-    public void init(ServerPlayerEntity player) {
-        instance.put(HEALTH, new NumberStat());
-        instance.put(MANA, new NumberStat());
-        instance.put(ARMOR, new NumberStat());
+    public void calculateMaxMana() {
+        boolean bl1 = this.currentMana == this.maxMana;
+        int originalMana = this.maxMana;
 
-        initStatInstance();
+        this.maxMana = Math.round(instance.get(MANA).getTotalValue());
+        if (bl1 && maxMana - originalMana > 0) {
+            this.currentMana = originalMana;
+        }
+    }
+
+    public void init(ServerPlayerEntity player) {
+        instance.put(HEALTH, new FloatStat(100, 1, 1));
+        instance.put(MANA, new FloatStat(100, 1, 1));
+        instance.put(ARMOR, new FloatStat(0, 1, 1));
+        instance.put(DODGE, new PercentStat(0));
+        instance.put(FIRE_RESISTANCE, new PercentStat(0));
+        instance.put(WATER_RESISTANCE, new PercentStat(0));
+        instance.put(EARTH_RESISTANCE, new PercentStat(0));
+        instance.put(LIGHT_RESISTANCE, new PercentStat(0));
+        instance.put(DARK_RESISTANCE, new PercentStat(0));
+        instance.put(BONUS_MELEE_DAMAGE, new FloatStat(0, 1, 1));
+        instance.put(BONUS_PROJECTILE_DAMAGE, new FloatStat(0, 1, 1));
+        instance.put(BONUS_XP, new PercentStat(0));
 
         calculateMaxHealth(player);
         this.currentHealth = getMaxHealth();
     }
 
-    public void initStatInstance() {
-        IStats healthInstance = instance.get(HEALTH);
-        healthInstance.addStatInstance(TextHelper.getId("base_value"), 100, FLAT);
-        healthInstance.addStatInstance(TextHelper.getId("base_value"), 1, PERCENT);
-        healthInstance.addStatInstance(TextHelper.getId("base_value"), 1, MULTIPLIER);
-        IStats manaInstance = instance.get(MANA);
-        manaInstance.addStatInstance(TextHelper.getId("base_value"), 100, FLAT);
-        manaInstance.addStatInstance(TextHelper.getId("base_value"), 1, PERCENT);
-        manaInstance.addStatInstance(TextHelper.getId("base_value"), 1, MULTIPLIER);
-        IStats armorInstance = instance.get(ARMOR);
-        armorInstance.addStatInstance(TextHelper.getId("base_value"), 100, FLAT);
-        armorInstance.addStatInstance(TextHelper.getId("base_value"), 1, PERCENT);
-        armorInstance.addStatInstance(TextHelper.getId("base_value"), 1, MULTIPLIER);
-    }
 }

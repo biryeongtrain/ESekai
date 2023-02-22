@@ -7,7 +7,7 @@ import net.biryeongtrain06.qf_stat_mod.player.playerclass.IPlayerClass;
 import net.biryeongtrain06.qf_stat_mod.player.playerclass.NonePlayerClass;
 import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
-import net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -17,7 +17,7 @@ import net.minecraft.util.math.MathHelper;
 
 import java.util.EnumMap;
 
-import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums.*;
+import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes.*;
 
 @SuppressWarnings("unused")
 public class PlayerStat{
@@ -332,8 +332,8 @@ public class PlayerStat{
         calculateMaxHealth(player);
     }
 
-    public EnumMap<StatEnums, Number> getMap() {
-        EnumMap<StatEnums, Number> map = new EnumMap<>(StatEnums.class);
+    public EnumMap<StatTypes, Number> getMap() {
+        EnumMap<StatTypes, Number> map = new EnumMap<>(StatTypes.class);
         map.put(HEALTH_FLAT, this.healthBaseValue);
         map.put(HEALTH_INCREASE_PERCENT, this.healthPercent);
         map.put(HEALTH_INCREASE_MULTI, this.healthMulti);
@@ -353,7 +353,7 @@ public class PlayerStat{
         return map;
     }
 
-    public void setStatsByMap(ServerPlayerEntity player, EnumMap<StatEnums, Number> map) {
+    public void setStatsByMap(ServerPlayerEntity player, EnumMap<StatTypes, Number> map) {
         this.setHealthBaseValue(player, Math.max(1, map.get(HEALTH_FLAT).intValue()));
         this.setHealthPercent(player, map.get(HEALTH_INCREASE_PERCENT).floatValue());
         this.setHealthMulti(player, map.get(HEALTH_INCREASE_MULTI).floatValue());
