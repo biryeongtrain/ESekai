@@ -24,8 +24,9 @@ public class NewPlayerStat {
     private float currentHealth;
     private int maxMana;
     private float currentMana;
-    private int selectionPoint = 5;
     private final EnumMap<StatTypes, IStats> instance = new EnumMap<>(StatTypes.class);
+    @SuppressWarnings("FieldMayBeFinal")
+    private int selectionPoint = 5;
 
     public NewPlayerStat(ServerPlayerEntity player) {
         init(player);
