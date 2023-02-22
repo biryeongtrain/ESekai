@@ -1,8 +1,7 @@
 package net.biryeongtrain06.qf_stat_mod.api;
 
 import lombok.Getter;
-import net.biryeongtrain06.qf_stat_mod.stats.Health;
-import net.biryeongtrain06.qf_stat_mod.stats.Mana;
+import net.biryeongtrain06.qf_stat_mod.stats.NumberStat;
 import net.biryeongtrain06.qf_stat_mod.stats.interfaces.IStats;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums;
@@ -74,8 +73,9 @@ public class NewPlayerStat {
     }
 
     public void init(ServerPlayerEntity player) {
-        instance.put(HEALTH, new Health());
-        instance.put(MANA, new Mana());
+        instance.put(HEALTH, new NumberStat());
+        instance.put(MANA, new NumberStat());
+        instance.put(ARMOR, new NumberStat());
 
         initStatInstance();
 
@@ -84,9 +84,17 @@ public class NewPlayerStat {
     }
 
     public void initStatInstance() {
-         IStats healthInstance = instance.get(HEALTH);
-         healthInstance.addStatInstance(TextHelper.getId("base_value"), 100, FLAT);
-         healthInstance.addStatInstance(TextHelper.getId("base_value"), 1, PERCENT);
-         healthInstance.addStatInstance(TextHelper.getId("base_value"), 1, MULTIPLIER);
+        IStats healthInstance = instance.get(HEALTH);
+        healthInstance.addStatInstance(TextHelper.getId("base_value"), 100, FLAT);
+        healthInstance.addStatInstance(TextHelper.getId("base_value"), 1, PERCENT);
+        healthInstance.addStatInstance(TextHelper.getId("base_value"), 1, MULTIPLIER);
+        IStats manaInstance = instance.get(MANA);
+        manaInstance.addStatInstance(TextHelper.getId("base_value"), 100, FLAT);
+        manaInstance.addStatInstance(TextHelper.getId("base_value"), 1, PERCENT);
+        manaInstance.addStatInstance(TextHelper.getId("base_value"), 1, MULTIPLIER);
+        IStats armorInstance = instance.get(ARMOR);
+        armorInstance.addStatInstance(TextHelper.getId("base_value"), 100, FLAT);
+        armorInstance.addStatInstance(TextHelper.getId("base_value"), 1, PERCENT);
+        armorInstance.addStatInstance(TextHelper.getId("base_value"), 1, MULTIPLIER);
     }
 }
