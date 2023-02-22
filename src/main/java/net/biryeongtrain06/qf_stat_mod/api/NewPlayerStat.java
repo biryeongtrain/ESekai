@@ -6,6 +6,7 @@ import net.biryeongtrain06.qf_stat_mod.stats.PercentStat;
 import net.biryeongtrain06.qf_stat_mod.stats.interfaces.IStats;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
@@ -32,7 +33,7 @@ public class NewPlayerStat {
     }
     public boolean tryAddNumberInstance(ServerPlayerEntity player, StatTypes e, StatSubTag tag, Identifier id, float value) {
         IStats stat = instance.get(e);
-
+        if (stat instanceof PercentStat && tag != PERCENT) return false;
         if (stat == null) return false;
         if (!stat.tryReplaceInstance(id, value, tag)) {
             stat.addStatInstance(id, value, tag);
@@ -44,6 +45,7 @@ public class NewPlayerStat {
     public boolean tryAddPercentInstance(StatTypes e, Identifier id, float value) {
         IStats stat = instance.get(e);
         if (stat == null) return false;
+        if (!(stat instanceof PercentStat)) return false;
 
         if(!stat.tryReplaceInstance(id, value, PERCENT)) {
             stat.addStatInstance(id, value, PERCENT);
@@ -100,6 +102,13 @@ public class NewPlayerStat {
         if (bl1 && maxMana - originalMana > 0) {
             this.currentMana = originalMana;
         }
+    }
+
+    public void damageHealth(DamageSource s, ServerPlayerEntity player, float amount) {
+        this.currentHealth = MathHelper.clamp(this.currentHealth - amount, 0f, (float) getMaxHealth());
+        float calculatedDamage = (amount / getMaxHealth()) * player.getMaxHealth();
+        player.hurtTime = 0;
+        player.damage(s, calculatedDamage);
     }
 
     public void init(ServerPlayerEntity player) {
