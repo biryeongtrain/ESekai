@@ -1,12 +1,12 @@
 package net.biryeongtrain06.qf_stat_mod.api;
 
 import lombok.Getter;
-import net.biryeongtrain06.qf_stat_mod.stats.HealthFlat;
-import net.biryeongtrain06.qf_stat_mod.stats.HealthMulti;
-import net.biryeongtrain06.qf_stat_mod.stats.HealthPercent;
+import net.biryeongtrain06.qf_stat_mod.stats.Health;
+import net.biryeongtrain06.qf_stat_mod.stats.Mana;
 import net.biryeongtrain06.qf_stat_mod.stats.interfaces.IStats;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
@@ -14,6 +14,7 @@ import net.minecraft.util.math.MathHelper;
 import java.util.EnumMap;
 
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatEnums.*;
+import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag.*;
 
 public class NewPlayerStat {
     @Getter
@@ -24,14 +25,15 @@ public class NewPlayerStat {
 
     public NewPlayerStat(ServerPlayerEntity player) {
         init(player);
+
     }
-    public boolean tryAddInstance(ServerPlayerEntity player, StatEnums e, Identifier id, Number value) {
+    public boolean tryAddInstance(ServerPlayerEntity player, StatEnums e, StatSubTag tag, Identifier id, Number value) {
         IStats stat = instance.get(e);
         float f = value.floatValue();
 
         if (stat == null) return false;
-        if (!stat.tryModifyInstance(id, value.floatValue())) {
-            stat.addStatInstance(id, f);
+        if (!stat.tryReplaceInstance(id, value.floatValue(), tag)) {
+            stat.addStatInstance(id, f, tag);
         }
 
         calculateMaxHealth(player);
@@ -42,7 +44,7 @@ public class NewPlayerStat {
         boolean isFullHealth = isFullHealth();
         int originalHealth = this.maxHealth;
 
-        this.maxHealth = Math.round(getHealthFlatValue() * getHealthPercentValue() * getHealthMultiValue());
+        this.maxHealth = Math.round(instance.get(HEALTH).getTotalValue());
         int overDamagedRevisionValue = maxHealth - originalHealth;
 
         if (isFullHealth && overDamagedRevisionValue > 0) {
@@ -71,24 +73,20 @@ public class NewPlayerStat {
         player.setHealth(MathHelper.clamp((float) Math.floor(getCurrentHealth() / getMaxHealth() * 20), 0f, player.getMaxHealth()));
     }
 
-    public int getHealthFlatValue() {
-        return Math.round(instance.get(HEALTH_FLAT).getTotalValue());
-    }
-    public float getHealthPercentValue() {
-        return instance.get(HEALTH_INCREASE_PERCENT).getTotalValue();
-    }
-
-    public float getHealthMultiValue() {
-        return instance.get(HEALTH_INCREASE_MULTI).getTotalValue();
-    }
     public void init(ServerPlayerEntity player) {
-        instance.put(HEALTH_FLAT, new HealthFlat());
-        instance.put(HEALTH_INCREASE_PERCENT, new HealthPercent());
-        instance.put(HEALTH_INCREASE_MULTI, new HealthMulti());
+        instance.put(HEALTH, new Health());
+        instance.put(MANA, new Mana());
 
-        instance.get(HEALTH_FLAT).addStatInstance(TextHelper.getId("base_value"), 100);
+        initStatInstance();
 
         calculateMaxHealth(player);
         this.currentHealth = getMaxHealth();
+    }
+
+    public void initStatInstance() {
+         IStats healthInstance = instance.get(HEALTH);
+         healthInstance.addStatInstance(TextHelper.getId("base_value"), 100, FLAT);
+         healthInstance.addStatInstance(TextHelper.getId("base_value"), 1, PERCENT);
+         healthInstance.addStatInstance(TextHelper.getId("base_value"), 1, MULTIPLIER);
     }
 }

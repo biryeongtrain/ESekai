@@ -15,6 +15,7 @@ import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypeTag.*;
 
 public enum StatEnums {
 
+    HEALTH("health", Formatting.RED, RESOURCE, true),
     HEALTH_FLAT("health_flat", Formatting.RED, RESOURCE, true),
     HEALTH_INCREASE_PERCENT("health_percent", Formatting.RED, RESOURCE, true),
     HEALTH_INCREASE_MULTI("health_multi", Formatting.RED, RESOURCE, true),

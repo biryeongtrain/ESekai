@@ -1,11 +1,12 @@
 package net.biryeongtrain06.qf_stat_mod.stats.interfaces;
 
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag;
 import net.minecraft.util.Identifier;
 
 public interface IStats {
-    void addStatInstance(Identifier id, float value);
+    void addStatInstance(Identifier id, float value, StatSubTag tag);
     float getTotalValue();
-    boolean tryModifyInstance(Identifier id, float value);
-    boolean removeStatInstance(Identifier id);
-    boolean hasInstance(Identifier id);
+    boolean tryReplaceInstance(Identifier id, float value, StatSubTag tag);
+    boolean removeStatInstance(Identifier id, StatSubTag tag);
+    boolean hasInstance(Identifier id, StatSubTag tag);
 }
