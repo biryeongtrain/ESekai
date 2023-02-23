@@ -4,11 +4,14 @@ import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
 import net.biryeongtrain06.qf_stat_mod.player.playerclass.IPlayerClass;
 import net.biryeongtrain06.qf_stat_mod.utils.PlayerHelper;
+import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 
 import java.util.EnumMap;
 
@@ -18,6 +21,7 @@ import static net.biryeongtrain06.qf_stat_mod.item.ItemStatHandler.STAT_KEY;
 public class PlayerStatHandler {
     final ServerPlayerEntity player;
     PlayerStat playerStat;
+    private final Identifier ITEM_MODIFIER_ID = TextHelper.getId("item_modifier");
     public PlayerStatHandler(ServerPlayerEntity player) {
         this.player = player;
         this.playerStat = DataStorage.loadPlayerStat(player);
@@ -43,14 +47,11 @@ public class PlayerStatHandler {
         if (!checkIfItemHasStack(stack)) {
             return;
         }
-
-        NbtCompound stats = stack.getOrCreateSubNbt(STAT_KEY);
-        EnumMap<StatTypes, Number> map = playerStat.getMap();
-
-        map = getStatValue(stats, map, true);
-
-        playerStat.setStatsByMap(player, map);
-        DataStorage.savePlayerStat(player, playerStat);
+        if (stack.getSubNbt(STAT_KEY) == null) return;
+        NbtCompound stats = stack.getSubNbt(STAT_KEY);
+        stats.getKeys().stream().forEach(key ->
+                stats.getCompound(key).getKeys().stream().forEach(tag ->
+                playerStat.tryRemoveInstance(player, StatTypes.getStatByName(key), StatSubTag.getStatByName(tag), ITEM_MODIFIER_ID)));
     }
 
     private void addItemStatsToPlayer(ItemStack stack) {
