@@ -8,6 +8,9 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.MOD_ID;
+import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag.FLAT;
+import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes.ARMOR;
+import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes.HEALTH;
 
 public class WarriorPlayerClass extends BasicPlayerClass {
     @Override
@@ -27,8 +30,8 @@ public class WarriorPlayerClass extends BasicPlayerClass {
 
     @Override
     public void onGetClass(ServerPlayerEntity player, PlayerStat playerStat) {
-        playerStat.addHealthBaseValue(player,10);
-        playerStat.setArmor(playerStat.getArmor() + 10);
+        playerStat.tryAddOrReplaceNumberInstance(player,HEALTH, FLAT, getModifierId(), 10);
+        playerStat.tryAddOrReplaceNumberInstance(player, ARMOR, FLAT, getModifierId(), 10);
         DataStorage.savePlayerStat(player, playerStat);
         sendClassGainMessage(player);
     }
@@ -36,8 +39,8 @@ public class WarriorPlayerClass extends BasicPlayerClass {
     @Override
     public PlayerStat onLostClass(ServerPlayerEntity player) {
         PlayerStat playerStat = DataStorage.loadPlayerStat(player);
-        playerStat.addHealthBaseValue(player,-10);
-        playerStat.setArmor(playerStat.getArmor() - 10);
+        playerStat.tryRemoveInstance(player, HEALTH, FLAT, getModifierId());
+        playerStat.tryRemoveInstance(player, ARMOR, FLAT, getModifierId());
         sendClassLostMessage(player);
         return playerStat;
     }

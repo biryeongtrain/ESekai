@@ -12,7 +12,6 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Comparator;

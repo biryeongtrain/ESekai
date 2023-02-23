@@ -1,5 +1,6 @@
 package net.biryeongtrain06.qf_stat_mod.item;
 
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -34,20 +35,48 @@ public class ItemStatHandler {
         return new EntityAttributeModifier(DAMAGE_KEY, MOD_ID + "_damage", amount, EntityAttributeModifier.Operation.ADDITION);
     }
 
-    public boolean setItemStat(StatTypes e, float value) {
+    public boolean addItemStat(StatTypes e, StatSubTag tag, float value) {
         if (ITEM_STACK.isEmpty()) return false;
         NbtCompound statCompound = ITEM_STACK.getOrCreateSubNbt(STAT_KEY);
-        statCompound.putFloat(e.getName(), value);
+        NbtCompound nbtCompound;
+        if (statCompound.contains(e.getName())) {
+            nbtCompound = statCompound.getCompound(e.getName());
+            if (nbtCompound.contains(tag.name())) {
+                value += nbtCompound.getFloat(tag.name());
+            }
+        } else {
+            nbtCompound = new NbtCompound();
+        }
+        nbtCompound.putFloat(tag.toString(), value);
+
+        statCompound.put(e.getName(), nbtCompound);
+        ITEM_STACK.getNbt().put(STAT_KEY, statCompound);
+        return true;
+    }
+    public boolean setItemStat(StatTypes e, StatSubTag tag, float value) {
+        if (ITEM_STACK.isEmpty()) return false;
+        NbtCompound statCompound = ITEM_STACK.getOrCreateSubNbt(STAT_KEY);
+        NbtCompound nbtCompound;
+        if (statCompound.contains(e.getName())) {
+            nbtCompound = statCompound.getCompound(e.getName());
+        } else {
+            nbtCompound = new NbtCompound();
+        }
+        nbtCompound.putFloat(tag.toString(), value);
+
+        statCompound.put(e.getName(), nbtCompound);
         ITEM_STACK.getNbt().put(STAT_KEY, statCompound);
         return true;
     }
 
-    public float getItemStat(StatTypes e) {
+    public float getItemStat(StatTypes e, StatSubTag tag) {
         if (ITEM_STACK.isEmpty()) return 0;
         NbtCompound statCompound = ITEM_STACK.getOrCreateSubNbt(STAT_KEY);
 
         if (!statCompound.contains(e.getName())) return 0;
-
-        return statCompound.getFloat(e.getName());
+        if (statCompound.getCompound(e.getName()).contains(tag.name())) {
+            return statCompound.getCompound(e.getName()).getFloat(tag.name());
+        }
+        return 0;
     }
 }

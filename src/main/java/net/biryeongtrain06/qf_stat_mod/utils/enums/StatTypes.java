@@ -16,13 +16,9 @@ import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypeTag.*;
 public enum StatTypes {
 
     HEALTH("health", Formatting.RED, RESOURCE, true),
-    @Deprecated
-    HEALTH_FLAT("health_flat", Formatting.RED, RESOURCE, true),
-    @Deprecated
-    HEALTH_INCREASE_PERCENT("health_percent", Formatting.RED, RESOURCE, true),  // 없애야함
-    @Deprecated
-    HEALTH_INCREASE_MULTI("health_multi", Formatting.RED, RESOURCE, true), // 없애야함
+    REGEN_HEALTH_PER_SECOND("health_regen", Formatting.RED, RESOURCE, false),
     MANA("mana", Formatting.BLUE, RESOURCE, true),
+    REGEN_MANA_PER_SECOND("regen_mana", Formatting.BLUE, RESOURCE, false),
     ARMOR("armor", Formatting.GRAY, DEFENSIVE, true),
     DODGE("dodge", Formatting.GREEN, DEFENSIVE, true),
     FIRE_RESISTANCE("fire_resistance", Formatting.RED, DEFENSIVE, true),
@@ -35,12 +31,6 @@ public enum StatTypes {
     EFFECTIVE_HEAL("effective_heal", Formatting.WHITE, OFFENSIVE, true),
     BONUS_PROJECTILE_DAMAGE("bonus_projectile_damage", Formatting.WHITE, OFFENSIVE, true),
     BONUS_XP("bonus_xp", Formatting.GREEN, RESOURCE, false),
-    @Deprecated
-    PROJECTILE_DAMAGE_PERCENT("projectile_damage_percent", Formatting.WHITE, OFFENSIVE, true),  // 없애야함
-    @Deprecated
-    PROJECTILE_DAMAGE_FLAT("projectile_damage_flat", Formatting.WHITE, OFFENSIVE, true),  // 없애야함
-    @Deprecated
-    PROJECTILE_DAMAGE_MULTI("projectile_damage_multi", Formatting.WHITE, OFFENSIVE, true), // 없애야함
     STRENGTH("strength", Formatting.RED, SUB_STAT, false),
     CONSTITUTION("constitution", Formatting.YELLOW, SUB_STAT, false),
     DEXTERITY("dexterity", Formatting.GREEN, SUB_STAT, false),

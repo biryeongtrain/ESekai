@@ -14,6 +14,9 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
+import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag.FLAT;
+import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag.PERCENT;
+
 public class TestCommands {
     public static int actionbar(CommandContext<ServerCommandSource> objectCommandContext) {
         try {
@@ -126,9 +129,9 @@ public class TestCommands {
         try {
             ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();
             ItemStack stack = player.getMainHandStack();
-            float value = ItemStats.getItemStat(stack, StatTypes.HEALTH_FLAT);
+            float value = ItemStats.getItemStat(stack, StatTypes.HEALTH, FLAT);
             player.sendMessage(Text.literal(String.valueOf(value)));
-            value = ItemStats.getItemStat(stack, StatTypes.HEALTH_INCREASE_PERCENT);
+            value = ItemStats.getItemStat(stack, StatTypes.HEALTH, PERCENT);
             player.sendMessage(Text.literal(String.valueOf(value)));
         } catch(Exception e) {
             e.printStackTrace();
@@ -140,8 +143,8 @@ public class TestCommands {
         try {
             ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();
             ItemStack stack = player.getMainHandStack();
-            if(!ItemStats.setItemStat(stack, StatTypes.HEALTH_FLAT, 10)) return 0;
-            if(!ItemStats.setItemStat(stack, StatTypes.HEALTH_INCREASE_PERCENT, 2)) return 0;
+            if(!ItemStats.setItemStat(stack, StatTypes.HEALTH, FLAT,  10)) return 0;
+            if(!ItemStats.setItemStat(stack, StatTypes.HEALTH, PERCENT, 0.5F)) return 0;
             player.sendMessage(Text.literal("Health is changed"));
         } catch (Exception e) {
             e.printStackTrace();

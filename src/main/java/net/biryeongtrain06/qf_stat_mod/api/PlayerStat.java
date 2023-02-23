@@ -1,12 +1,17 @@
 package net.biryeongtrain06.qf_stat_mod.api;
 
-
 import lombok.Getter;
-import lombok.Setter;
+import net.biryeongtrain06.qf_stat_mod.damage.QfDamageSource;
+import net.biryeongtrain06.qf_stat_mod.interfaces.IDamageSource;
 import net.biryeongtrain06.qf_stat_mod.player.playerclass.IPlayerClass;
-import net.biryeongtrain06.qf_stat_mod.player.playerclass.NonePlayerClass;
+import net.biryeongtrain06.qf_stat_mod.stats.FloatStat;
+import net.biryeongtrain06.qf_stat_mod.stats.PercentStat;
+import net.biryeongtrain06.qf_stat_mod.stats.interfaces.IStats;
 import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.Elements;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypeTag;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -17,107 +22,52 @@ import net.minecraft.util.math.MathHelper;
 
 import java.util.EnumMap;
 
+import static net.biryeongtrain06.qf_stat_mod.utils.PlayerHelper.*;
+import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag.FLAT;
+import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag.PERCENT;
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes.*;
 
 @SuppressWarnings("unused")
-public class PlayerStat{
+public class PlayerStat {
+
+    private Identifier playerClassId;
     @Getter
-    private int level;
-    @Getter
-    private float xp;
-    @Getter
-    private int maxHealth;
-    @Getter
-    private int healthBaseValue = 100;
-    @Getter
-    private float healthPercent = 1;
-    @Getter
-    private float healthMulti = 1;
+    private int maxHealth = 100;
     @Getter
     private float currentHealth;
-    @Getter
-    @Setter
-    private float regenHealthPerSecond;
     @Getter
     private int maxMana;
     @Getter
     private float currentMana;
-    private boolean isManaUser;
     @Getter
-    @Setter
-    private int armor;
+    private int level = 1;
     @Getter
-    private int dodge;
+    private int xp = 0;
+    private float needXpToLevelUp = ExpHandler.getBaseLevelUpXpValue();
+    private final EnumMap<StatTypes, IStats> instance = new EnumMap<>(StatTypes.class);
+    @SuppressWarnings("FieldMayBeFinal")
     @Getter
-    private float fire_resistance;
+    private int usedSelectionPoint = 0;
     @Getter
-    private float water_resistance;
-    @Getter
-    private float earth_resistance;
-    @Getter
-    private float light_resistance;
-    @Getter
-    private float dark_resistance;
-    @Getter
-    @Setter
-    private float projectileDamageFlat;
-    @Getter
-    @Setter
-    private float projectileDamagePercent;
-    @Getter
-    @Setter
-    private float projectileDamageMulti;
-    private float needXpToLevelUp;
-    @Getter
-    @Setter
-    private int selectPoint;
-    @Getter
-    private int strength = 0;
-    @Getter
-    private int dexterity = 0;
-    @Getter
-    private int intelligence = 0;
-    @Getter
-    private int wisdom = 0;
-
-    private String playerClassId;
-
+    private int totalSelectionPoint = 5;
 
     public PlayerStat(ServerPlayerEntity player) {
-        var noneClass = new NonePlayerClass();
-        this.playerClassId = noneClass.getClassId().toString();
-        this.level = 1;
-        this.xp = 1;
-        this.maxHealth = 100;
-        this.currentHealth = getMaxHealth();
-        this.regenHealthPerSecond = 1f;
-        this.maxMana = 100;
-        this.currentMana = getMaxMana();
-        this.isManaUser = true;
-        this.armor = 0;
-        this.dodge = 0;
-        this.fire_resistance = 0;
-        this.water_resistance = 0;
-        this.earth_resistance = 0;
-        this.light_resistance = 0;
-        this.dark_resistance = 0;
-        this.projectileDamageFlat = 0;
-        this.projectileDamagePercent = 0;
-        this.projectileDamageMulti = 0;
-        this.needXpToLevelUp = ExpHandler.getBaseLevelUpXpValue();
-        this.selectPoint = 5;
+        init(player);
+
     }
+
     public void setPlayer_class(IPlayerClass player_class) {
-        this.playerClassId = player_class.getClassId().toString();
+        this.playerClassId = player_class.getClassId();
 
     }
     public Identifier getPlayerClassId() {
-        return new Identifier(playerClassId);
+        return playerClassId;
     }
 
     public void setPlayerClassId(Identifier playerClassId) {
-        this.playerClassId = playerClassId.toString();
+        this.playerClassId = playerClassId;
     }
+
 
     public void addXP(ServerPlayerEntity player, float i) {
         this.xp += i;
@@ -129,6 +79,19 @@ public class PlayerStat{
         }
     }
 
+    public void setLevel(int value) {
+        this.level = value;
+        this.totalSelectionPoint = value * 2 + 5;
+        dumpNeedXpToLevelUp();
+    }
+
+    public void addLevel(ServerPlayerEntity player, int value) {
+        this.level += value;
+        this.totalSelectionPoint += value * 2;
+        player.sendMessage(Text.translatable(TextHelper.createTranslation("system_message.levelUp")).formatted(Formatting.GREEN));
+        dumpNeedXpToLevelUp();
+    }
+
     public float getNeedXpToLevelUp() {
         dumpNeedXpToLevelUp();
         return this.needXpToLevelUp;
@@ -138,111 +101,92 @@ public class PlayerStat{
         this.needXpToLevelUp = (float) (ExpHandler.getBaseLevelUpXpValue() * Math.pow(1 + ExpHandler.getLevelScaleModifier(), getLevel()));
     }
 
-
-    public void addLevel(ServerPlayerEntity player, int i) {
-        this.level += i;
-        player.sendMessage(Text.translatable(TextHelper.createTranslation("system_message.levelUp")).formatted(Formatting.GREEN));
-        addSelectPoint(ExpHandler.getAmountSelectionPointWhenLevelUp());
-        dumpNeedXpToLevelUp();
+    public boolean tryAddOrReplaceNumberInstance(ServerPlayerEntity player, StatTypes e, StatSubTag tag, Identifier id, float value) {
+        IStats stat = instance.get(e);
+        if (stat instanceof PercentStat && tag != PERCENT) return false;
+        if (stat == null) return false;
+        if (!stat.tryReplaceInstance(id, value, tag)) {
+            stat.addStatInstance(id, value, tag);
+        }
+        if (e == HEALTH) calculateMaxHealth(player);
+        if (e == MANA) calculateMaxMana();
+        return true;
     }
 
-    public void setLevel(int i) {
-        this.level = i;
-        dumpNeedXpToLevelUp();
+    public boolean tryAddOrReplacePercentInstance(StatTypes e, Identifier id, float value) {
+        IStats stat = instance.get(e);
+        if (stat == null) return false;
+        if (!(stat instanceof PercentStat)) return false;
+
+        if(!stat.tryReplaceInstance(id, value, PERCENT)) {
+            stat.addStatInstance(id, value, PERCENT);
+        }
+        return true;
+    }
+
+    public float getStatInstanceById(StatTypes e, Identifier id, StatSubTag tag) {
+        IStats stat = instance.get(e);
+        return stat.getInstanceById(id, tag);
+    }
+
+    public float getTotalStatValue(StatTypes e) {
+        return instance.get(e).getTotalValue();
+    }
+
+    public boolean hasInstance(StatTypes e, Identifier id, StatSubTag tag) {
+        return instance.get(e).hasInstance(id, tag);
+    }
+
+    public void tryRemoveInstance(ServerPlayerEntity player, StatTypes type, StatSubTag tag, Identifier id) {
+        if(!hasInstance(type, id, tag)) return;
+        instance.get(type).removeStatInstance(id, tag);
+        if (type == HEALTH) syncWithVanillaHealth(player);
     }
 
 
-    public void setMaxHealth(ServerPlayerEntity player, int amount) {
-        amount = MathHelper.clamp(amount, 1, Integer.MAX_VALUE);
-        this.maxHealth = amount;
-        if (this.maxHealth < this.currentHealth) {
-            this.currentHealth = maxHealth;
+    public void setCurrentMana(float value) {
+        this.currentMana = MathHelper.clamp(value, 0, getMaxMana());
+    }
+
+    public void addCurrentMana(float value) {
+        this.setCurrentMana(value + currentMana);
+    }
+
+    public void calculateMaxMana() {
+        boolean bl1 = this.currentMana == this.maxMana;
+        int originalMana = this.maxMana;
+
+        this.maxMana = Math.round(instance.get(MANA).getTotalValue());
+        if (bl1 && maxMana - originalMana > 0) {
+            this.currentMana = originalMana;
+        }
+    }
+
+    public void calculateMaxHealth(ServerPlayerEntity player) {
+        boolean isFullHealth = isFullHealth();
+        int originalHealth = this.maxHealth;
+
+        this.maxHealth = Math.round(instance.get(HEALTH).getTotalValue());
+        int overDamagedRevisionValue = maxHealth - originalHealth;
+
+        if (isFullHealth && overDamagedRevisionValue > 0) {
+            this.currentHealth = originalHealth;
         }
         syncWithVanillaHealth(player);
     }
 
-    public void addMaxHealth(ServerPlayerEntity player, int amount) {
-        this.maxHealth = MathHelper.clamp(this.maxHealth + amount, 1, Integer.MAX_VALUE);
-        if (this.maxHealth < this.currentHealth) {
-            this.currentHealth = maxHealth;
-        }
+    public boolean isFullHealth() {
+        return this.currentHealth == this.maxHealth;
+    }
+
+    public void setCurrentHealth(ServerPlayerEntity player, float value) {
+        this.currentHealth = MathHelper.clamp(value, 0, this.maxHealth);
         syncWithVanillaHealth(player);
     }
 
-    public void setCurrentHealth(ServerPlayerEntity player, float amount) {
-        this.currentHealth = MathHelper.clamp(amount, 0f, (float) getMaxHealth());
+    public void addCurrentHealth(ServerPlayerEntity player, float value) {
+        setCurrentHealth(player, this.currentHealth + value);
         syncWithVanillaHealth(player);
-    }
-
-    public void addCurrentHealth(ServerPlayerEntity player, float amount) {
-        this.currentHealth += amount;
-        this.currentHealth = MathHelper.clamp(this.currentHealth, 0f, (float) getMaxHealth());
-        syncWithVanillaHealth(player);
-    }
-
-    public void setDodge(int value) {
-        this.dodge = MathHelper.clamp(value, 0, 90);
-    }
-
-    public void addDodge(int value) {
-        this.dodge += MathHelper.clamp(value, 0, 90);
-    }
-
-    public void setFire_resistance(float fire_resistance) {
-        this.fire_resistance = Math.min(fire_resistance, 75f);
-    }
-
-    public void setWater_resistance(float water_resistance) {
-        this.water_resistance = Math.min(water_resistance, 75f);
-    }
-
-    public void setEarth_resistance(float earth_resistance) {
-        this.earth_resistance = Math.min(earth_resistance, 75f);
-    }
-
-    public void setLight_resistance(float light_resistance) {
-        this.light_resistance = Math.min(light_resistance, 75f);
-    }
-
-    public void setDark_resistance(float dark_resistance) {
-        this.dark_resistance = Math.min(dark_resistance, 75f);
-    }
-
-    public void addCurrentMana(float val) {
-        if (!isManaUser) {
-            return;
-        }
-        this.currentMana = MathHelper.clamp(this.currentMana + val, 0F, getMaxMana());
-    }
-
-    public void setCurrentMana(float val) {
-        if (!isManaUser) {
-            return;
-        }
-        this.currentMana = MathHelper.clamp(val, 0F, getMaxMana());
-    }
-
-    public void addMaxMana(int val) {
-        this.maxMana = MathHelper.clamp(this.maxMana + val, 0, Integer.MAX_VALUE);
-    }
-
-    public void setMaxMana(int val) {
-        if (val <= 0) {
-            val = MathHelper.clamp(val, 0, Integer.MAX_VALUE);
-        }
-        this.maxMana = val;
-    }
-
-    public void addSelectPoint(int value) {
-        this.selectPoint += value;
-    }
-
-
-    public void damageHealth(DamageSource s, ServerPlayerEntity player, float amount) {
-        this.currentHealth = MathHelper.clamp(this.currentHealth - amount, 0f, (float) getMaxHealth());
-        float calculatedDamage = (amount / getMaxHealth()) * player.getMaxHealth();
-        player.hurtTime = 0;
-        player.damage(s, calculatedDamage);
     }
     public void syncWithVanillaHealth(ServerPlayerEntity player) {
         if (player.isDead()) {
@@ -251,123 +195,116 @@ public class PlayerStat{
         player.setHealth(MathHelper.clamp((float) Math.floor(getCurrentHealth() / getMaxHealth() * 20), 0f, player.getMaxHealth()));
     }
 
-    public boolean hasSelectPoint() {
-        return this.selectPoint >= 1;
+    public boolean tryAddPerkInstance(ServerPlayerEntity player, StatTypes type, Identifier id, float amount, StatSubTag tag) {
+        if (!hasPerkPoint()) return false;
+        this.usedSelectionPoint -= 1;
+        addPerkInstance(player, type, id, amount, tag);
+        return true;
     }
 
-    public boolean tryRemoveSelectPoint() {
-        if (hasSelectPoint()) {
-            this.setSelectPoint(MathHelper.clamp(this.getSelectPoint() - 1, 0, Integer.MAX_VALUE));
-            return true;
-        }
-        return false;
+    public boolean hasPerkPoint() {
+        return this.usedSelectionPoint >= this.totalSelectionPoint;
     }
 
-    public void addStrength(ServerPlayerEntity player, int value) {
-        int changedValue = 0;
-        if (this.strength != 0) {
-            changedValue -= strength * 2;
-        }
-        this.strength = MathHelper.clamp(strength + value, Integer.MIN_VALUE, Integer.MAX_VALUE);
-        if (strength != 0) {
-            changedValue += strength * 2;
-        }
-        addHealthBaseValue(player, changedValue);
+    private void addPerkInstance(ServerPlayerEntity player, StatTypes type, Identifier id, float amount, StatSubTag tag) {
+        if (type.tag != StatTypeTag.SUB_STAT) return;
+        this.tryAddOrReplaceNumberInstance(player, type, tag, id, amount);
+        calculateSubStat(player, type);
     }
 
-    public void addDexterity(int value) {
-        int changedValue = 0;
-        if (this.dexterity != 0) {
-            changedValue -= this.dexterity;
+    private void calculateSubStat(ServerPlayerEntity player, StatTypes type) {
+        int value = Math.round(this.getTotalStatValue(type));
+        switch (type) {
+            case STRENGTH -> {
+                this.tryAddOrReplaceNumberInstance(player, HEALTH, FLAT, STRENGTH_MODIFIER_ID, 2 * value);
+                this.tryAddOrReplaceNumberInstance(player, BONUS_MELEE_DAMAGE, PERCENT ,STRENGTH_MODIFIER_ID, (float) (0.02 * value));
+            }
+            case DEXTERITY -> {
+                this.tryAddOrReplacePercentInstance(DODGE, DEXTERITY_MODIFIER_ID, (float) (0.05 * value));
+                this.tryAddOrReplaceNumberInstance(player, BONUS_PROJECTILE_DAMAGE, PERCENT ,DEXTERITY_MODIFIER_ID, (float) 0.02 * value);
+            }
+
+            case CONSTITUTION -> {
+                this.tryAddOrReplaceNumberInstance(player, HEALTH, FLAT, CONSTITUTION_MODIFIER_ID, (float) 3 * value);
+                this.tryAddOrReplaceNumberInstance(player, ARMOR, FLAT, CONSTITUTION_MODIFIER_ID, (float) 5 * value);
+                this.tryAddOrReplaceNumberInstance(player, ARMOR, PERCENT, CONSTITUTION_MODIFIER_ID, (float) 0.01 * value);
+            }
+
+            case WISDOM -> {
+                this.tryAddOrReplaceNumberInstance(player, MANA, FLAT, WISDOM_MODIFIER_ID, (float) 5 * value);
+                this.tryAddOrReplaceNumberInstance(player, EFFECTIVE_HEAL, FLAT, WISDOM_MODIFIER_ID, (float) 0.05 * value);
+            }
+
+            case INTELLIGENCE -> {
+                this.tryAddOrReplaceNumberInstance(player, MANA, FLAT, INTELLIGENCE_MODIFIER_ID, (float) 3 * value);
+                this.tryAddOrReplaceNumberInstance(player, BONUS_MAGIC_DAMAGE, PERCENT, INTELLIGENCE_MODIFIER_ID, (float) 0.02 * value);
+            }
+
+            case CHARISMA -> {
+
+            }
         }
-        this.dexterity = MathHelper.clamp(dexterity + value, Integer.MIN_VALUE, Integer.MAX_VALUE);
-        if (this.dexterity != 0) {
-            changedValue += dexterity;
-        }
-        addDodge(changedValue);
+
     }
 
-    public void addWisdom(int value) {
-        int changedValue = 0;
-        if (this.wisdom != 0) {
-            changedValue -= this.wisdom * 7;
-        }
-        this.wisdom = MathHelper.clamp(this.wisdom + value, Integer.MIN_VALUE, Integer.MAX_VALUE);
-        if (this.wisdom != 0) {
-            changedValue += this.wisdom * 7;
-        }
-        addMaxMana(changedValue);
+    public void damageHealth(DamageSource s, Elements element, ServerPlayerEntity player, float amount) {
+        float calculatedDamage = calculateDamageReduce(element, amount);
+        IDamageSource iDamageSource = (IDamageSource) player.getDamageSources();
+        QfDamageSource qfDamageSource = s.getSource().isPlayer() ? iDamageSource.getQfDamageSourceWithPlayerAttack(s, element, amount) :
+                iDamageSource.getQfDamageSourceWithEntityAttack(s, element, amount);
+
+        this.addCurrentHealth(player, -calculatedDamage);
+        float vanillaDamage = (amount / this.maxHealth) * player.getMaxHealth();
+        player.hurtTime = 0;
+
+        player.damage(qfDamageSource, vanillaDamage);
     }
 
-    private boolean isFullHealth() {
-        return this.maxHealth == this.currentHealth;
+    private float calculateDamageReduce(Elements element, float amount) {
+        var defensiveElement = element.getDefensiveStat();
+        var value = instance.get(defensiveElement).getTotalValue();
+        if (value == 0) return 0;
+        if (defensiveElement == ARMOR) return value / (value + (amount * 2));
+        return amount * (1 - value);
     }
 
-    public void calculateMaxHealth(ServerPlayerEntity player) {
-        boolean isFullHealth = isFullHealth();
-        int originalHealth = this.maxHealth;
-        setMaxHealth(player, Math.round(this.healthBaseValue * this.healthPercent * this.healthMulti));
-        int overDamagedRevisionValue = maxHealth - originalHealth;
-        if (isFullHealth && overDamagedRevisionValue > 0) {
-            setCurrentHealth(player, originalHealth);
+    public void tick(ServerPlayerEntity player) {
+
+        if(player.age % 20 == 0) {
+
+            if (currentHealth < maxHealth) {
+                addCurrentHealth(player, getTotalStatValue(REGEN_HEALTH_PER_SECOND));
+            }
+            if (currentMana < maxMana) {
+                addCurrentMana(getTotalStatValue(REGEN_MANA_PER_SECOND));
+            }
         }
     }
+    public void init(ServerPlayerEntity player) {
+        instance.put(HEALTH, new FloatStat(100, 1, 1));
+        instance.put(REGEN_HEALTH_PER_SECOND, new FloatStat(5, 1 ,1));
+        instance.put(MANA, new FloatStat(100, 1, 1));
+        instance.put(REGEN_MANA_PER_SECOND, new FloatStat(5, 1, 1));
+        instance.put(ARMOR, new FloatStat(0, 1, 1));
+        instance.put(DODGE, new PercentStat(0));
+        instance.put(FIRE_RESISTANCE, new PercentStat(0));
+        instance.put(WATER_RESISTANCE, new PercentStat(0));
+        instance.put(EARTH_RESISTANCE, new PercentStat(0));
+        instance.put(LIGHT_RESISTANCE, new PercentStat(0));
+        instance.put(DARK_RESISTANCE, new PercentStat(0));
+        instance.put(BONUS_MELEE_DAMAGE, new FloatStat(0, 1, 1));
+        instance.put(BONUS_PROJECTILE_DAMAGE, new FloatStat(0, 1, 1));
+        instance.put(EFFECTIVE_HEAL, new FloatStat(0, 1, 1));
+        instance.put(BONUS_XP, new PercentStat(0));
+        instance.put(STRENGTH, new FloatStat(0, 1, 1));
+        instance.put(DEXTERITY, new FloatStat(0,1,1));
+        instance.put(CONSTITUTION, new FloatStat(0, 1, 1));
+        instance.put(INTELLIGENCE, new FloatStat(0, 1,1));
+        instance.put(WISDOM, new FloatStat(0,1,1));
+        instance.put(CHARISMA, new FloatStat(0,1,1));
 
-    public void setHealthBaseValue(ServerPlayerEntity player, int healthBaseValue) {
-        this.healthBaseValue = MathHelper.clamp(healthBaseValue, 1, 1000000);
         calculateMaxHealth(player);
+        this.currentHealth = getMaxHealth();
     }
 
-    public void addHealthBaseValue(ServerPlayerEntity player, int value) {
-        setHealthBaseValue(player, this.healthBaseValue + value);
-    }
-
-    public void setHealthPercent(ServerPlayerEntity player, float healthPercent) {
-        this.healthPercent = MathHelper.clamp(healthPercent, 0.01f, 5000f);
-        calculateMaxHealth(player);
-    }
-
-    public void setHealthMulti(ServerPlayerEntity player, float healthMulti) {
-        this.healthMulti = MathHelper.clamp(healthMulti, 0.01f, 5000f);
-        calculateMaxHealth(player);
-    }
-
-    public EnumMap<StatTypes, Number> getMap() {
-        EnumMap<StatTypes, Number> map = new EnumMap<>(StatTypes.class);
-        map.put(HEALTH_FLAT, this.healthBaseValue);
-        map.put(HEALTH_INCREASE_PERCENT, this.healthPercent);
-        map.put(HEALTH_INCREASE_MULTI, this.healthMulti);
-        map.put(MANA, this.maxMana);
-        map.put(ARMOR, this.armor);
-        map.put(DODGE, this.dodge);
-        map.put(FIRE_RESISTANCE, this.fire_resistance);
-        map.put(WATER_RESISTANCE, this.water_resistance);
-        map.put(EARTH_RESISTANCE, this.earth_resistance);
-        map.put(LIGHT_RESISTANCE, this.light_resistance);
-        map.put(DARK_RESISTANCE, this.dark_resistance);
-        map.put(PROJECTILE_DAMAGE_FLAT, this.projectileDamageFlat);
-        map.put(PROJECTILE_DAMAGE_PERCENT, this.projectileDamagePercent);
-        map.put(PROJECTILE_DAMAGE_MULTI, this.projectileDamageMulti);
-
-
-        return map;
-    }
-
-    public void setStatsByMap(ServerPlayerEntity player, EnumMap<StatTypes, Number> map) {
-        this.setHealthBaseValue(player, Math.max(1, map.get(HEALTH_FLAT).intValue()));
-        this.setHealthPercent(player, map.get(HEALTH_INCREASE_PERCENT).floatValue());
-        this.setHealthMulti(player, map.get(HEALTH_INCREASE_MULTI).floatValue());
-        this.setMaxMana(map.get(MANA).intValue());
-        this.setDodge(map.get(DODGE).intValue());
-        this.setArmor(map.get(ARMOR).intValue());
-        this.setFire_resistance(map.get(FIRE_RESISTANCE).floatValue());
-        this.setWater_resistance(map.get(WATER_RESISTANCE).floatValue());
-        this.setEarth_resistance(map.get(EARTH_RESISTANCE).floatValue());
-        this.setLight_resistance(map.get(LIGHT_RESISTANCE).floatValue());
-        this.setDark_resistance(map.get(DARK_RESISTANCE).floatValue());
-        this.setProjectileDamageFlat( map.get(PROJECTILE_DAMAGE_FLAT).floatValue());
-        this.setProjectileDamageMulti(map.get(PROJECTILE_DAMAGE_MULTI).floatValue());
-        this.setProjectileDamagePercent(map.get(PROJECTILE_DAMAGE_PERCENT).floatValue());
-
-    }
 }

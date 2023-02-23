@@ -3,7 +3,6 @@ package net.biryeongtrain06.qf_stat_mod.register;
 import eu.pb4.playerdata.api.PlayerDataApi;
 import net.biryeongtrain06.qf_stat_mod.MainStatSystem;
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
-import net.biryeongtrain06.qf_stat_mod.api.NewPlayerStat;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
 import net.biryeongtrain06.qf_stat_mod.callback.*;
 import net.biryeongtrain06.qf_stat_mod.damage.DamageHandler;
@@ -42,7 +41,7 @@ public class QfStatSystemCallbacks {
             var PlayerStat = new PlayerStat(player);
             DataStorage.savePlayerStat(player, PlayerStat);
             iPlayer.setPlayedBefore(true);
-            var newPlayerStat = new NewPlayerStat(player);
+            var newPlayerStat = new PlayerStat(player);
             PlayerDataApi.setCustomDataFor(player, TEST, newPlayerStat);
         }
         PlayerStatBar.Open(player);
@@ -62,9 +61,12 @@ public class QfStatSystemCallbacks {
     }
 
     private static void entityHitPlayerCallback(PlayerEntity player, LivingEntity entity, DamageSource source, float amount) {
+        if ((player == null || entity == null)) return;
+        if (!(player instanceof ServerPlayerEntity)) return;
         ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
-        DamageHandler dmgHandler = new DamageHandler(serverPlayerEntity);
-        dmgHandler.PlayerDamageCalculate(source, amount);
+        PlayerStat playerStat = DataStorage.loadPlayerStat(serverPlayerEntity);
+        playerStat.damageHealth(source, ENTITY_MODIFIERS.get(entity).getElement(), serverPlayerEntity, amount);
+        DataStorage.savePlayerStat(serverPlayerEntity, playerStat);
     }
 
     private static void onMobSpawned(LivingEntity entity, World world) {

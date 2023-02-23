@@ -7,6 +7,8 @@ import net.minecraft.util.Formatting;
 
 public abstract class BasicPlayerClass implements IPlayerClass {
 
+
+
     public void sendClassGainMessage(ServerPlayerEntity player) {
         player.sendMessage(getClassText().copy().append(Text.translatable(TextHelper.createTranslation("system_message.gain_class"))).formatted(Formatting.GREEN));
     }

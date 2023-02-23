@@ -346,6 +346,11 @@ public class CommonEntityValue implements ICommonEntityComponents {
     }
 
     @Override
+    public Elements getElement() {
+        return this.attackElement;
+    }
+
+    @Override
     public int getDodge() {
         return this.defensiveMap.get(DODGE);
     }

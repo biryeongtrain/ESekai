@@ -27,7 +27,7 @@ public class PlayerStatBar {
                .append(PlayerHelper.getPlayerClass(DataStorage.loadPlayerStat(p).getPlayerClassId()).getClassText())));
 
         sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("Lv : " + DataStorage.loadPlayerStat(p).getLevel())));
-        sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("XP : " + (int)DataStorage.loadPlayerStat(p).getXp())
+        sidebar.addLines(SidebarLine.create(0, (p) -> Text.literal("XP : " + DataStorage.loadPlayerStat(p).getXp())
                 .append(Text.literal( " / " + (int)DataStorage.loadPlayerStat(p).getNeedXpToLevelUp()))));
 
         return sidebar;

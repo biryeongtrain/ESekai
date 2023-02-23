@@ -52,11 +52,9 @@ public abstract class   ServerPlayerEntityMixin implements IServerPlayerEntityDu
     @Inject(at = @At("RETURN"), method = ("tick"))
     public void qfCustomHeal(CallbackInfo ci) {
         ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
-        if (player.getHealth() < player.getMaxHealth() && player.age % 20 == 0) {
-            PlayerStat playerStat = DataStorage.loadPlayerStat(player);
-            playerStat.addCurrentHealth(player, playerStat.getRegenHealthPerSecond());
-            DataStorage.savePlayerStat(player, playerStat);
-        }
+        PlayerStat playerStat = DataStorage.loadPlayerStat(player);
+        playerStat.tick(player);
+        DataStorage.savePlayerStat(player, playerStat);
     }
     @Override
     public boolean isPlayedBefore() {

@@ -3,6 +3,7 @@ package net.biryeongtrain06.qf_stat_mod.api;
 import net.biryeongtrain06.qf_stat_mod.item.ElementHandler;
 import net.biryeongtrain06.qf_stat_mod.item.ItemStatHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.Elements;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -29,13 +30,18 @@ public class ItemStats {
         return handler.setItemDamage(value);
 
     }
-    public static boolean setItemStat(ItemStack stack, StatTypes e, float value) {
+    public static boolean setItemStat(ItemStack stack, StatTypes e, StatSubTag tag, float value) {
         ItemStatHandler handler = new ItemStatHandler(stack);
-        return handler.setItemStat(e, value);
+        return handler.setItemStat(e, tag, value);
     }
 
-    public static float getItemStat(ItemStack stack, StatTypes e) {
+    public static boolean addItemStat(ItemStack stack, StatTypes type, StatSubTag tag, float value) {
         ItemStatHandler handler = new ItemStatHandler(stack);
-        return handler.getItemStat(e);
+        return handler.addItemStat(type, tag, value);
+    }
+
+    public static float getItemStat(ItemStack stack, StatTypes e, StatSubTag tag) {
+        ItemStatHandler handler = new ItemStatHandler(stack);
+        return handler.getItemStat(e, tag);
     }
 }
