@@ -1,10 +1,14 @@
 package net.biryeongtrain06.qf_stat_mod.api;
 
 import lombok.Getter;
+import net.biryeongtrain06.qf_stat_mod.damage.QfDamageSource;
+import net.biryeongtrain06.qf_stat_mod.interfaces.IDamageSource;
+import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemDamageSources;
 import net.biryeongtrain06.qf_stat_mod.stats.FloatStat;
 import net.biryeongtrain06.qf_stat_mod.stats.PercentStat;
 import net.biryeongtrain06.qf_stat_mod.stats.interfaces.IStats;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.Elements;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypeTag;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag;
@@ -169,6 +173,26 @@ public class NewPlayerStat {
         player.damage(s, calculatedDamage);
     }
 
+    public void newDamageHealth(DamageSource s, Elements element, ServerPlayerEntity player, float amount) {
+        float calculatedDamage = calculateDamageReduce(element, amount);
+        IDamageSource iDamageSource = (IDamageSource) player.getDamageSources();
+        QfDamageSource qfDamageSource = s.getSource().isPlayer() ? iDamageSource.getQfDamageSourceWithPlayerAttack(s, element, amount) :
+                iDamageSource.getQfDamageSourceWithEntityAttack(s, element, amount);
+
+        this.addCurrentHealth(player, -calculatedDamage);
+        float vanillaDamage = (amount / this.maxHealth) * player.getMaxHealth();
+        player.hurtTime = 0;
+
+        player.damage(qfDamageSource, vanillaDamage);
+    }
+
+    private float calculateDamageReduce(Elements element, float amount) {
+        var defensiveElement = element.getDefensiveStat();
+        var value = instance.get(defensiveElement).getTotalValue();
+        if (value == 0) return 0;
+        if (defensiveElement == ARMOR) return value / (value + (amount * 2));
+        return amount * (1 - value);
+    }
     public void init(ServerPlayerEntity player) {
         instance.put(HEALTH, new FloatStat(100, 1, 1));
         instance.put(MANA, new FloatStat(100, 1, 1));
