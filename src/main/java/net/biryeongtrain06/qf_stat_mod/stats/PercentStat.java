@@ -56,4 +56,14 @@ public class PercentStat implements IStats {
     public boolean hasInstance(Identifier id, StatSubTag tag) {
         return map.get(tag).containsKey(id);
     }
+
+    @Override
+    public float getInstanceById(Identifier id, StatSubTag tag) {
+        if (tag == PERCENT) return 0;
+        var instanceMap = map.get(tag);
+
+        if (instanceMap.containsKey(id)) return instanceMap.getFloat(id);
+
+        return 0;
+    }
 }

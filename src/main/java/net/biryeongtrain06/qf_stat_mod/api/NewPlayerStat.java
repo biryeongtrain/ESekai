@@ -4,6 +4,8 @@ import lombok.Getter;
 import net.biryeongtrain06.qf_stat_mod.stats.FloatStat;
 import net.biryeongtrain06.qf_stat_mod.stats.PercentStat;
 import net.biryeongtrain06.qf_stat_mod.stats.interfaces.IStats;
+import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypeTag;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag;
 import net.minecraft.entity.damage.DamageSource;
@@ -13,6 +15,7 @@ import net.minecraft.util.math.MathHelper;
 
 import java.util.EnumMap;
 
+import static net.biryeongtrain06.qf_stat_mod.utils.PlayerHelper.*;
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes.*;
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag.*;
 
@@ -32,7 +35,7 @@ public class NewPlayerStat {
         init(player);
 
     }
-    public boolean tryAddNumberInstance(ServerPlayerEntity player, StatTypes e, StatSubTag tag, Identifier id, float value) {
+    public boolean tryAddOrReplaceNumberInstance(ServerPlayerEntity player, StatTypes e, StatSubTag tag, Identifier id, float value) {
         IStats stat = instance.get(e);
         if (stat instanceof PercentStat && tag != PERCENT) return false;
         if (stat == null) return false;
@@ -40,10 +43,11 @@ public class NewPlayerStat {
             stat.addStatInstance(id, value, tag);
         }
         if (e == HEALTH) calculateMaxHealth(player);
+        if (e == MANA) calculateMaxMana();
         return true;
     }
 
-    public boolean tryAddPercentInstance(StatTypes e, Identifier id, float value) {
+    public boolean tryAddOrReplacePercentInstance(StatTypes e, Identifier id, float value) {
         IStats stat = instance.get(e);
         if (stat == null) return false;
         if (!(stat instanceof PercentStat)) return false;
@@ -54,12 +58,27 @@ public class NewPlayerStat {
         return true;
     }
 
-    public float getStatValue(StatTypes e) {
+    public float getStatInstanceById(StatTypes e, Identifier id, StatSubTag tag) {
+        IStats stat = instance.get(e);
+        return stat.getInstanceById(id, tag);
+    }
+
+    public float getTotalStatValue(StatTypes e) {
         return instance.get(e).getTotalValue();
     }
 
     public boolean hasInstance(StatTypes e, Identifier id, StatSubTag tag) {
         return instance.get(e).hasInstance(id, tag);
+    }
+
+    public void calculateMaxMana() {
+        boolean bl1 = this.currentMana == this.maxMana;
+        int originalMana = this.maxMana;
+
+        this.maxMana = Math.round(instance.get(MANA).getTotalValue());
+        if (bl1 && maxMana - originalMana > 0) {
+            this.currentMana = originalMana;
+        }
     }
 
     public void calculateMaxHealth(ServerPlayerEntity player) {
@@ -86,8 +105,8 @@ public class NewPlayerStat {
 
     public void addCurrentHealth(ServerPlayerEntity player, float value) {
         setCurrentHealth(player, this.currentHealth + value);
+        syncWithVanillaHealth(player);
     }
-
     public void syncWithVanillaHealth(ServerPlayerEntity player) {
         if (player.isDead()) {
             return;
@@ -95,16 +114,54 @@ public class NewPlayerStat {
         player.setHealth(MathHelper.clamp((float) Math.floor(getCurrentHealth() / getMaxHealth() * 20), 0f, player.getMaxHealth()));
     }
 
-    public void calculateMaxMana() {
-        boolean bl1 = this.currentMana == this.maxMana;
-        int originalMana = this.maxMana;
+    public void addStrengthInstance(ServerPlayerEntity player, Identifier id, float amount, StatSubTag tag) {
+        this.tryAddOrReplaceNumberInstance(player, STRENGTH, tag, id, amount);
+        int strength = Math.round(this.getTotalStatValue(STRENGTH));
 
-        this.maxMana = Math.round(instance.get(MANA).getTotalValue());
-        if (bl1 && maxMana - originalMana > 0) {
-            this.currentMana = originalMana;
-        }
+        this.tryAddOrReplaceNumberInstance(player, HEALTH, FLAT, TextHelper.getId("strength_attribute"), 2 * strength);
+        this.tryAddOrReplaceNumberInstance(player, BONUS_MELEE_DAMAGE, PERCENT ,TextHelper.getId("strength_attribute"), (float) (0.02 * strength));
     }
 
+    public void addPerkInstance(ServerPlayerEntity player, StatTypes type, Identifier id, float amount, StatSubTag tag) {
+        if (type.tag != StatTypeTag.SUB_STAT) return;
+        this.tryAddOrReplaceNumberInstance(player, type, tag, id, amount);
+        calculateSubStat(player, type);
+    }
+
+    private void calculateSubStat(ServerPlayerEntity player, StatTypes type) {
+        int value = Math.round(this.getTotalStatValue(type));
+        switch (type) {
+            case STRENGTH -> {
+                this.tryAddOrReplaceNumberInstance(player, HEALTH, FLAT, STRENGTH_MODIFIER_ID, 2 * value);
+                this.tryAddOrReplaceNumberInstance(player, BONUS_MELEE_DAMAGE, PERCENT ,STRENGTH_MODIFIER_ID, (float) (0.02 * value));
+            }
+            case DEXTERITY -> {
+                this.tryAddOrReplacePercentInstance(DODGE, DEXTERITY_MODIFIER_ID, (float) (0.05 * value));
+                this.tryAddOrReplaceNumberInstance(player, BONUS_PROJECTILE_DAMAGE, PERCENT ,DEXTERITY_MODIFIER_ID, (float) 0.02 * value);
+            }
+
+            case CONSTITUTION -> {
+                this.tryAddOrReplaceNumberInstance(player, HEALTH, FLAT, CONSTITUTION_MODIFIER_ID, (float) 3 * value);
+                this.tryAddOrReplaceNumberInstance(player, ARMOR, FLAT, CONSTITUTION_MODIFIER_ID, (float) 5 * value);
+                this.tryAddOrReplaceNumberInstance(player, ARMOR, PERCENT, CONSTITUTION_MODIFIER_ID, (float) 0.01 * value);
+            }
+
+            case WISDOM -> {
+                this.tryAddOrReplaceNumberInstance(player, MANA, FLAT, WISDOM_MODIFIER_ID, (float) 5 * value);
+                this.tryAddOrReplaceNumberInstance(player, EFFECTIVE_HEAL, FLAT, WISDOM_MODIFIER_ID, (float) 0.05 * value);
+            }
+
+            case INTELLIGENCE -> {
+                this.tryAddOrReplaceNumberInstance(player, MANA, FLAT, INTELLIGENCE_MODIFIER_ID, (float) 3 * value);
+                this.tryAddOrReplaceNumberInstance(player, BONUS_MAGIC_DAMAGE, PERCENT, INTELLIGENCE_MODIFIER_ID, (float) 0.02 * value);
+            }
+
+            case CHARISMA -> {
+
+            }
+        }
+
+    }
     public void damageHealth(DamageSource s, ServerPlayerEntity player, float amount) {
         this.currentHealth = MathHelper.clamp(this.currentHealth - amount, 0f, (float) getMaxHealth());
         float calculatedDamage = (amount / getMaxHealth()) * player.getMaxHealth();
@@ -124,7 +181,14 @@ public class NewPlayerStat {
         instance.put(DARK_RESISTANCE, new PercentStat(0));
         instance.put(BONUS_MELEE_DAMAGE, new FloatStat(0, 1, 1));
         instance.put(BONUS_PROJECTILE_DAMAGE, new FloatStat(0, 1, 1));
+        instance.put(EFFECTIVE_HEAL, new FloatStat(0, 1, 1));
         instance.put(BONUS_XP, new PercentStat(0));
+        instance.put(STRENGTH, new FloatStat(0, 1, 1));
+        instance.put(DEXTERITY, new FloatStat(0,1,1));
+        instance.put(CONSTITUTION, new FloatStat(0, 1, 1));
+        instance.put(INTELLIGENCE, new FloatStat(0, 1,1));
+        instance.put(WISDOM, new FloatStat(0,1,1));
+        instance.put(CHARISMA, new FloatStat(0,1,1));
 
         calculateMaxHealth(player);
         this.currentHealth = getMaxHealth();

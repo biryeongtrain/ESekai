@@ -31,6 +31,8 @@ public enum StatTypes {
     LIGHT_RESISTANCE("light_resistance", Formatting.LIGHT_PURPLE, DEFENSIVE, true),
     DARK_RESISTANCE("dark_resistance", Formatting.DARK_PURPLE, DEFENSIVE, true),
     BONUS_MELEE_DAMAGE("bonus_melee_damage", Formatting.GRAY, OFFENSIVE, true),
+    BONUS_MAGIC_DAMAGE("bonus_magic_damage", Formatting.AQUA, OFFENSIVE, true),
+    EFFECTIVE_HEAL("effective_heal", Formatting.WHITE, OFFENSIVE, true),
     BONUS_PROJECTILE_DAMAGE("bonus_projectile_damage", Formatting.WHITE, OFFENSIVE, true),
     BONUS_XP("bonus_xp", Formatting.GREEN, RESOURCE, false),
     @Deprecated
@@ -39,9 +41,12 @@ public enum StatTypes {
     PROJECTILE_DAMAGE_FLAT("projectile_damage_flat", Formatting.WHITE, OFFENSIVE, true),  // 없애야함
     @Deprecated
     PROJECTILE_DAMAGE_MULTI("projectile_damage_multi", Formatting.WHITE, OFFENSIVE, true), // 없애야함
-    STRENGTH("strength", Formatting.RED, PERK, false),
-    DEXTERITY("dexterity", Formatting.GREEN, PERK, false),
-    WISDOM("wisdom", Formatting.LIGHT_PURPLE, PERK, false),
+    STRENGTH("strength", Formatting.RED, SUB_STAT, false),
+    CONSTITUTION("constitution", Formatting.YELLOW, SUB_STAT, false),
+    DEXTERITY("dexterity", Formatting.GREEN, SUB_STAT, false),
+    INTELLIGENCE("intelligence", Formatting.AQUA, SUB_STAT, false),
+    WISDOM("wisdom", Formatting.LIGHT_PURPLE, SUB_STAT, false),
+    CHARISMA("charisma", Formatting.GREEN, SUB_STAT, false),
     SELECT_POINT("select_point", Formatting.WHITE, SYSTEM, false);
 
     public final String name;
@@ -96,7 +101,7 @@ public enum StatTypes {
 
     public static Stream<StatTypes> getPlayerStats() {
 
-        return Arrays.stream(values()).filter(e -> e.getTag() == OFFENSIVE || e.getTag() == DEFENSIVE || e.getTag() == PERK);
+        return Arrays.stream(values()).filter(e -> e.getTag() == OFFENSIVE || e.getTag() == DEFENSIVE || e.getTag() == SUB_STAT);
     }
 
     public static StatTypes getStatByName(String s) {

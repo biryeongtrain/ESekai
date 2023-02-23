@@ -12,6 +12,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -20,6 +21,12 @@ import java.util.Optional;
 
 public class PlayerHelper {
 
+    public final static Identifier STRENGTH_MODIFIER_ID = TextHelper.getId("strength_modifier");
+    public final static Identifier DEXTERITY_MODIFIER_ID = TextHelper.getId("dexterity_modifier");
+    public final static Identifier CONSTITUTION_MODIFIER_ID = TextHelper.getId("constitution_modifier");
+    public final static Identifier INTELLIGENCE_MODIFIER_ID = TextHelper.getId("intelligence_modifier");
+    public final static Identifier WISDOM_MODIFIER_ID = TextHelper.getId("wisdom_modifier");
+    public final static Identifier CHARISMA_MODIFIER_ID = TextHelper.getId("charisma_modifier");
     private static final List<IPlayerClass> playerClassList = new ArrayList<>();
     public static ServerPlayerEntity getNearestPlayer (ServerWorld world, LivingEntity entity) {
         return getNearestPlayer(world, entity.getPos());
