@@ -166,14 +166,8 @@ public class NewPlayerStat {
         }
 
     }
-    public void damageHealth(DamageSource s, ServerPlayerEntity player, float amount) {
-        this.currentHealth = MathHelper.clamp(this.currentHealth - amount, 0f, (float) getMaxHealth());
-        float calculatedDamage = (amount / getMaxHealth()) * player.getMaxHealth();
-        player.hurtTime = 0;
-        player.damage(s, calculatedDamage);
-    }
 
-    public void newDamageHealth(DamageSource s, Elements element, ServerPlayerEntity player, float amount) {
+    public void damageHealth(DamageSource s, Elements element, ServerPlayerEntity player, float amount) {
         float calculatedDamage = calculateDamageReduce(element, amount);
         IDamageSource iDamageSource = (IDamageSource) player.getDamageSources();
         QfDamageSource qfDamageSource = s.getSource().isPlayer() ? iDamageSource.getQfDamageSourceWithPlayerAttack(s, element, amount) :
