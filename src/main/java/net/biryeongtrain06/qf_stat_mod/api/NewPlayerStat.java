@@ -3,15 +3,14 @@ package net.biryeongtrain06.qf_stat_mod.api;
 import lombok.Getter;
 import net.biryeongtrain06.qf_stat_mod.damage.QfDamageSource;
 import net.biryeongtrain06.qf_stat_mod.interfaces.IDamageSource;
-import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemDamageSources;
 import net.biryeongtrain06.qf_stat_mod.stats.FloatStat;
 import net.biryeongtrain06.qf_stat_mod.stats.PercentStat;
 import net.biryeongtrain06.qf_stat_mod.stats.interfaces.IStats;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.Elements;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypeTag;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
-import net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
@@ -20,8 +19,9 @@ import net.minecraft.util.math.MathHelper;
 import java.util.EnumMap;
 
 import static net.biryeongtrain06.qf_stat_mod.utils.PlayerHelper.*;
+import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag.FLAT;
+import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag.PERCENT;
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes.*;
-import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag.*;
 
 @SuppressWarnings("unused")
 public class NewPlayerStat {
