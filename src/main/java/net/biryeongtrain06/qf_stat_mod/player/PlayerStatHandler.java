@@ -52,17 +52,17 @@ public class PlayerStatHandler {
         stats.getKeys().stream().forEach(key ->
                 stats.getCompound(key).getKeys().stream().forEach(tag ->
                 playerStat.tryRemoveInstance(player, StatTypes.getStatByName(key), StatSubTag.getStatByName(tag), ITEM_MODIFIER_ID)));
+        DataStorage.savePlayerStat(player, playerStat);
     }
 
     private void addItemStatsToPlayer(ItemStack stack) {
         if (!checkIfItemHasStack(stack)) return;
+        NbtCompound statCompound = stack.getSubNbt(STAT_KEY);
 
-        NbtCompound stats = stack.getSubNbt(STAT_KEY);
-        EnumMap<StatTypes, Number> map = playerStat.getMap();
-
-        map = getStatValue(stats, map, false);
-
-        playerStat.setStatsByMap(player, map);
+        if (statCompound == null) return;
+        statCompound.getKeys().stream().forEach(key ->
+                statCompound.getCompound(key).getKeys().stream().forEach(tag ->
+                        playerStat.tryAddUnknownInstance(player, StatTypes.getStatByName(key), StatSubTag.getStatByName(tag), ITEM_MODIFIER_ID, statCompound.getCompound(key).getFloat(tag))));
         DataStorage.savePlayerStat(player, playerStat);
     }
 

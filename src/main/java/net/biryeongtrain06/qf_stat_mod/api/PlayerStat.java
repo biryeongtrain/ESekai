@@ -4,6 +4,7 @@ import lombok.Getter;
 import net.biryeongtrain06.qf_stat_mod.damage.QfDamageSource;
 import net.biryeongtrain06.qf_stat_mod.interfaces.IDamageSource;
 import net.biryeongtrain06.qf_stat_mod.player.playerclass.IPlayerClass;
+import net.biryeongtrain06.qf_stat_mod.player.playerclass.NonePlayerClass;
 import net.biryeongtrain06.qf_stat_mod.stats.FloatStat;
 import net.biryeongtrain06.qf_stat_mod.stats.PercentStat;
 import net.biryeongtrain06.qf_stat_mod.stats.interfaces.IStats;
@@ -30,11 +31,11 @@ import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes.*;
 @SuppressWarnings("unused")
 public class PlayerStat {
 
-    private Identifier playerClassId;
+    private Identifier playerClassId = new NonePlayerClass().getClassId();
     @Getter
     private int maxHealth = 100;
     @Getter
-    private float currentHealth;
+    private float currentHealth = 100;
     @Getter
     private int maxMana;
     @Getter
@@ -101,6 +102,16 @@ public class PlayerStat {
         this.needXpToLevelUp = (float) (ExpHandler.getBaseLevelUpXpValue() * Math.pow(1 + ExpHandler.getLevelScaleModifier(), getLevel()));
     }
 
+    public boolean tryAddUnknownInstance(ServerPlayerEntity player, StatTypes type, StatSubTag tag, Identifier id, float value) {
+        if (type.tag == StatTypeTag.SUB_STAT) return addPerkInstance(player, type, id, value, tag);
+        if (instance.get(type) instanceof PercentStat) {
+            return this.tryAddOrReplacePercentInstance(type, id, value);
+        }
+        if (instance.get(type) instanceof FloatStat) {
+            return this.tryAddOrReplaceNumberInstance(player, type, tag, id, value);
+        }
+        return false;
+    }
     public boolean tryAddOrReplaceNumberInstance(ServerPlayerEntity player, StatTypes e, StatSubTag tag, Identifier id, float value) {
         IStats stat = instance.get(e);
         if (stat instanceof PercentStat && tag != PERCENT) return false;
@@ -206,10 +217,11 @@ public class PlayerStat {
         return this.usedSelectionPoint >= this.totalSelectionPoint;
     }
 
-    private void addPerkInstance(ServerPlayerEntity player, StatTypes type, Identifier id, float amount, StatSubTag tag) {
-        if (type.tag != StatTypeTag.SUB_STAT) return;
+    private boolean addPerkInstance(ServerPlayerEntity player, StatTypes type, Identifier id, float amount, StatSubTag tag) {
+        if (type.tag != StatTypeTag.SUB_STAT) return false;
         this.tryAddOrReplaceNumberInstance(player, type, tag, id, amount);
         calculateSubStat(player, type);
+        return true;
     }
 
     private void calculateSubStat(ServerPlayerEntity player, StatTypes type) {
@@ -304,6 +316,8 @@ public class PlayerStat {
         instance.put(CHARISMA, new FloatStat(0,1,1));
 
         calculateMaxHealth(player);
+        calculateMaxMana();
+        this.currentMana = getMaxMana();
         this.currentHealth = getMaxHealth();
     }
 
