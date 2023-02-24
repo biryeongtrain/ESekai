@@ -38,7 +38,6 @@ public class FloatStat implements IStats {
         Object2FloatOpenHashMap<Identifier> instance = map.get(tag);
         Optional<Float> optional = instance.values().stream().reduce(Float::sum);
         if (optional.isEmpty()) return 1f;
-        if (optional.get() <= 0) return 1f;
         return optional.get();
     }
 

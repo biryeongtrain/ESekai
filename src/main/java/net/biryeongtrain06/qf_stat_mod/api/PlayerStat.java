@@ -105,33 +105,46 @@ public class PlayerStat {
     public boolean tryAddUnknownInstance(ServerPlayerEntity player, StatTypes type, StatSubTag tag, Identifier id, float value) {
         if (type.tag == StatTypeTag.SUB_STAT) return addPerkInstance(player, type, id, value, tag);
         if (instance.get(type) instanceof PercentStat) {
-            return this.tryAddOrReplacePercentInstance(type, id, value);
+            return this.tryAddPercentInstance(type, id, value);
         }
         if (instance.get(type) instanceof FloatStat) {
-            return this.tryAddOrReplaceNumberInstance(player, type, tag, id, value);
+            return this.tryAddNumberInstance(player, type, tag, id, value);
         }
         return false;
     }
-    public boolean tryAddOrReplaceNumberInstance(ServerPlayerEntity player, StatTypes e, StatSubTag tag, Identifier id, float value) {
+    public boolean tryAddNumberInstance(ServerPlayerEntity player, StatTypes e, StatSubTag tag, Identifier id, float value) {
         IStats stat = instance.get(e);
-        if (stat instanceof PercentStat && tag != PERCENT) return false;
         if (stat == null) return false;
-        if (!stat.tryReplaceInstance(id, value, tag)) {
-            stat.addStatInstance(id, value, tag);
-        }
+        if (stat instanceof PercentStat && tag != PERCENT) return false;
+
+        if (hasInstance(e, id, tag)) value += stat.getInstanceById(id, tag);
+        stat.addStatInstance(id, value, tag);
         if (e == HEALTH) calculateMaxHealth(player);
         if (e == MANA) calculateMaxMana();
         return true;
     }
 
-    public boolean tryAddOrReplacePercentInstance(StatTypes e, Identifier id, float value) {
+    public boolean tryReplaceNumberInstance(ServerPlayerEntity player, StatTypes e, StatSubTag tag, Identifier id, float value) {
+        IStats stat = instance.get(e);
+        if (stat == null) return false;
+        if (stat instanceof PercentStat && tag != PERCENT) return false;
+        stat.tryReplaceInstance(id, value, tag);
+        return true;
+    }
+
+    public boolean tryAddPercentInstance(StatTypes e, Identifier id, float value) {
         IStats stat = instance.get(e);
         if (stat == null) return false;
         if (!(stat instanceof PercentStat)) return false;
+        if(stat.hasInstance(id, PERCENT)) value += stat.getInstanceById(id, PERCENT);
+        stat.addStatInstance(id, value, PERCENT);
+        return true;
+    }
 
-        if(!stat.tryReplaceInstance(id, value, PERCENT)) {
-            stat.addStatInstance(id, value, PERCENT);
-        }
+    public boolean tryReplaceInstance(StatTypes type, Identifier id, float value) {
+        IStats stat = instance.get(type);
+        if (stat == null || !(stat instanceof PercentStat)) return false;
+        stat.tryReplaceInstance(id, value, PERCENT);
         return true;
     }
 
@@ -151,7 +164,7 @@ public class PlayerStat {
     public void tryRemoveInstance(ServerPlayerEntity player, StatTypes type, StatSubTag tag, Identifier id) {
         if(!hasInstance(type, id, tag)) return;
         instance.get(type).removeStatInstance(id, tag);
-        if (type == HEALTH) syncWithVanillaHealth(player);
+        if (type == HEALTH) calculateMaxHealth(player);
     }
 
 
@@ -178,10 +191,11 @@ public class PlayerStat {
         int originalHealth = this.maxHealth;
 
         this.maxHealth = Math.round(instance.get(HEALTH).getTotalValue());
+        if(maxHealth < 0) this.maxHealth = 1;
         int overDamagedRevisionValue = maxHealth - originalHealth;
 
-        if (isFullHealth && overDamagedRevisionValue > 0) {
-            this.currentHealth = originalHealth;
+        if (isFullHealth && overDamagedRevisionValue < 0) {
+            this.currentHealth = MathHelper.clamp(originalHealth, 1, maxHealth);
         }
         syncWithVanillaHealth(player);
     }
@@ -208,18 +222,18 @@ public class PlayerStat {
 
     public boolean tryAddPerkInstance(ServerPlayerEntity player, StatTypes type, Identifier id, float amount, StatSubTag tag) {
         if (!hasPerkPoint()) return false;
-        this.usedSelectionPoint -= 1;
+        this.usedSelectionPoint += 1;
         addPerkInstance(player, type, id, amount, tag);
         return true;
     }
 
     public boolean hasPerkPoint() {
-        return this.usedSelectionPoint >= this.totalSelectionPoint;
+        return this.usedSelectionPoint < this.totalSelectionPoint;
     }
 
     private boolean addPerkInstance(ServerPlayerEntity player, StatTypes type, Identifier id, float amount, StatSubTag tag) {
         if (type.tag != StatTypeTag.SUB_STAT) return false;
-        this.tryAddOrReplaceNumberInstance(player, type, tag, id, amount);
+        this.tryAddNumberInstance(player, type, tag, id, amount);
         calculateSubStat(player, type);
         return true;
     }
@@ -228,28 +242,28 @@ public class PlayerStat {
         int value = Math.round(this.getTotalStatValue(type));
         switch (type) {
             case STRENGTH -> {
-                this.tryAddOrReplaceNumberInstance(player, HEALTH, FLAT, STRENGTH_MODIFIER_ID, 2 * value);
-                this.tryAddOrReplaceNumberInstance(player, BONUS_MELEE_DAMAGE, PERCENT ,STRENGTH_MODIFIER_ID, (float) (0.02 * value));
+                this.tryAddNumberInstance(player, HEALTH, FLAT, STRENGTH_MODIFIER_ID, 2 * value);
+                this.tryAddNumberInstance(player, BONUS_MELEE_DAMAGE, PERCENT ,STRENGTH_MODIFIER_ID, (float) (0.02 * value));
             }
             case DEXTERITY -> {
-                this.tryAddOrReplacePercentInstance(DODGE, DEXTERITY_MODIFIER_ID, (float) (0.05 * value));
-                this.tryAddOrReplaceNumberInstance(player, BONUS_PROJECTILE_DAMAGE, PERCENT ,DEXTERITY_MODIFIER_ID, (float) 0.02 * value);
+                this.tryAddPercentInstance(DODGE, DEXTERITY_MODIFIER_ID, (float) (0.05 * value));
+                this.tryAddNumberInstance(player, BONUS_PROJECTILE_DAMAGE, PERCENT ,DEXTERITY_MODIFIER_ID, (float) 0.02 * value);
             }
 
             case CONSTITUTION -> {
-                this.tryAddOrReplaceNumberInstance(player, HEALTH, FLAT, CONSTITUTION_MODIFIER_ID, (float) 3 * value);
-                this.tryAddOrReplaceNumberInstance(player, ARMOR, FLAT, CONSTITUTION_MODIFIER_ID, (float) 5 * value);
-                this.tryAddOrReplaceNumberInstance(player, ARMOR, PERCENT, CONSTITUTION_MODIFIER_ID, (float) 0.01 * value);
+                this.tryAddNumberInstance(player, HEALTH, FLAT, CONSTITUTION_MODIFIER_ID, (float) 3 * value);
+                this.tryAddNumberInstance(player, ARMOR, FLAT, CONSTITUTION_MODIFIER_ID, (float) 5 * value);
+                this.tryAddNumberInstance(player, ARMOR, PERCENT, CONSTITUTION_MODIFIER_ID, (float) 0.01 * value);
             }
 
             case WISDOM -> {
-                this.tryAddOrReplaceNumberInstance(player, MANA, FLAT, WISDOM_MODIFIER_ID, (float) 5 * value);
-                this.tryAddOrReplaceNumberInstance(player, EFFECTIVE_HEAL, FLAT, WISDOM_MODIFIER_ID, (float) 0.05 * value);
+                this.tryAddNumberInstance(player, MANA, FLAT, WISDOM_MODIFIER_ID, (float) 5 * value);
+                this.tryAddNumberInstance(player, EFFECTIVE_HEAL, FLAT, WISDOM_MODIFIER_ID, (float) 0.05 * value);
             }
 
             case INTELLIGENCE -> {
-                this.tryAddOrReplaceNumberInstance(player, MANA, FLAT, INTELLIGENCE_MODIFIER_ID, (float) 3 * value);
-                this.tryAddOrReplaceNumberInstance(player, BONUS_MAGIC_DAMAGE, PERCENT, INTELLIGENCE_MODIFIER_ID, (float) 0.02 * value);
+                this.tryAddNumberInstance(player, MANA, FLAT, INTELLIGENCE_MODIFIER_ID, (float) 3 * value);
+                this.tryAddNumberInstance(player, BONUS_MAGIC_DAMAGE, PERCENT, INTELLIGENCE_MODIFIER_ID, (float) 0.02 * value);
             }
 
             case CHARISMA -> {
@@ -275,8 +289,8 @@ public class PlayerStat {
     private float calculateDamageReduce(Elements element, float amount) {
         var defensiveElement = element.getDefensiveStat();
         var value = instance.get(defensiveElement).getTotalValue();
-        if (value == 0) return 0;
-        if (defensiveElement == ARMOR) return value / (value + (amount * 2));
+        if (value == 0) return amount;
+        if (defensiveElement == ARMOR) return amount * (1 - (value / (value + (amount * 2))));
         return amount * (1 - value);
     }
 

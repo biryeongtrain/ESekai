@@ -30,8 +30,8 @@ public class WarriorPlayerClass extends BasicPlayerClass {
 
     @Override
     public void onGetClass(ServerPlayerEntity player, PlayerStat playerStat) {
-        playerStat.tryAddOrReplaceNumberInstance(player,HEALTH, FLAT, getModifierId(), 10);
-        playerStat.tryAddOrReplaceNumberInstance(player, ARMOR, FLAT, getModifierId(), 10);
+        playerStat.tryAddNumberInstance(player,HEALTH, FLAT, getModifierId(), 10);
+        playerStat.tryAddNumberInstance(player, ARMOR, FLAT, getModifierId(), 10);
         DataStorage.savePlayerStat(player, playerStat);
         sendClassGainMessage(player);
     }
