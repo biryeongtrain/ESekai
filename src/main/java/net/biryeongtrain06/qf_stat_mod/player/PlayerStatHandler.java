@@ -70,21 +70,4 @@ public class PlayerStatHandler {
         if (stack.isEmpty()) return false;
         return !stack.getOrCreateSubNbt(STAT_KEY).isEmpty();
     }
-
-    private EnumMap<StatTypes, Number> getStatValue(NbtCompound stats, EnumMap<StatTypes, Number> map, boolean isRemoving) {
-        int i = isRemoving ? -1 : 1;
-        stats.getKeys().stream().parallel().forEach(key -> {
-            StatTypes s = StatTypes.getStatByName(key);
-            int type = stats.getType(key);
-            Number n = 0;
-            if (type == 5) {
-                n = stats.getFloat(key);
-            } else if (type == 3) {
-                n = stats.getInt(key);
-            }
-            if (s == null) return;
-            map.put(s, map.get(s).floatValue() + (n.floatValue()) * i);
-        });
-        return map;
-    }
 }
