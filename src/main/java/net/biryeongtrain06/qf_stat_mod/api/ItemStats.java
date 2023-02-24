@@ -7,14 +7,27 @@ import net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class ItemStats {
+    /**
+     * 특정 플레이어가 들고있는 아이템의 원소를 반환합니다. 기본값은 Physical 입니다.
+     * @param player
+     * @return Elements 플레이어가 가지고 있는 아이템의 원소를 반환, 만약 아이템이 없을 시 PHYSICAL 을 반환함.
+     * @see Elements
+     */
     public static Elements getPlayerItemElement(ServerPlayerEntity player) {
         ElementHandler handler = new ElementHandler(player.getMainHandStack(), player);
         return handler.getElement();
     }
 
-    public static boolean setPlayerItemElement(Elements element, ServerPlayerEntity player) {
+    /**
+     * 특정 플레이어가 주 손에 들고있는 아이템의 원소를 설정합니다.
+     * @param element 원하는 원소
+     * @param player
+     * @return 실패 시 false 가 반환.
+     */
+    public static boolean setPlayerItemElement(@NotNull Elements element, ServerPlayerEntity player) {
         ElementHandler handler = new ElementHandler(player.getMainHandStack(), player);
         return handler.setElement(element);
     }
@@ -25,6 +38,12 @@ public class ItemStats {
         return handler.getItemDamage();
     }
 
+    /**
+     *
+     * @param stack
+     * @param value
+     * @return
+     */
     public static boolean setItemDamage(ItemStack stack, float value) {
         ItemStatHandler handler = new ItemStatHandler(stack);
         return handler.setItemDamage(value);

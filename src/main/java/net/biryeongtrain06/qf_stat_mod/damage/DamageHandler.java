@@ -16,7 +16,7 @@ public class DamageHandler {
 
     public void DamageEntity(DamageSource damageSource, Elements e, float amount) {
         IDamageSource iDamageSource = (IDamageSource) entity.getDamageSources();
-        QfDamageSource qfDamageSource = iDamageSource.getQfDamageSourceWithPlayerAttack(damageSource, e, amount);
+        QfDamageSource qfDamageSource = iDamageSource.getQfDamageSourceWithMeleeAttack(damageSource, e, amount);
         entity.damage(qfDamageSource, amount);
     }
 

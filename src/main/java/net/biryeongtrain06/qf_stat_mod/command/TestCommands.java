@@ -57,7 +57,7 @@ public class TestCommands {
             ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();
             DamageSource damageSource = player.getDamageSources().playerAttack(player);
             IDamageSource iDamageSource = (IDamageSource) player.getDamageSources();
-            player.damage(iDamageSource.getQfDamageSourceWithPlayerAttack(damageSource, Elements.PHYSICAL, 20), 10);
+            player.damage(iDamageSource.getQfDamageSourceWithMeleeAttack(damageSource, Elements.PHYSICAL, 20), 10);
         } catch(Exception e){
             e.printStackTrace();
         }
@@ -68,7 +68,7 @@ public class TestCommands {
             ServerPlayerEntity player = objectCommandContext.getSource().getPlayer();
             DamageSource damageSource = player.getDamageSources().playerAttack(player);
             IDamageSource iDamageSource = (IDamageSource) player.getDamageSources();
-            player.damage(iDamageSource.getQfDamageSourceWithPlayerAttack(damageSource, Elements.PHYSICAL, 40), 30);
+            player.damage(iDamageSource.getQfDamageSourceWithMeleeAttack(damageSource, Elements.PHYSICAL, 40), 30);
         } catch (Exception e) {
             e.printStackTrace();
         }

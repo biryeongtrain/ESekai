@@ -9,11 +9,13 @@ import net.minecraft.entity.damage.DamageType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.Nullable;
 
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.MOD_ID;
 
 public class QfDamageSource extends DamageSource {
 
+    @Nullable
     private final Elements element;
     private final DamageSource originalDamageSource;
     private final float originalDamageAmount;
@@ -25,6 +27,14 @@ public class QfDamageSource extends DamageSource {
         this.originalDamageAmount = originalDamageAmount;
     }
 
+    public DamageSource getOriginalDamageSource() {
+        return originalDamageSource;
+    }
+
+    public float getOriginalDamageAmount() {
+        return originalDamageAmount;
+    }
+
     public Elements getElement() {
         return element;
     }
@@ -33,6 +43,10 @@ public class QfDamageSource extends DamageSource {
     public Text getDeathMessage(LivingEntity killed) {
         String string = MOD_ID + ".death." + this.getType().msgId() + ".player";
         Text text = this.getAttacker() == null ? this.getSource().getDisplayName() : this.getAttacker().getDisplayName();
+        if (this.getAttacker() == null && this.getSource() == null) {
+            LivingEntity livingEntity2 = killed.getPrimeAdversary();
+            return livingEntity2 != null ? Text.translatable(string + ".environment", new Object[]{killed.getDisplayName(), livingEntity2.getDisplayName()}) : Text.translatable(string, new Object[]{killed.getDisplayName()});
+        }
         Entity killer = this.getAttacker();
         ItemStack killerHeldItem;
         if (killer instanceof LivingEntity) {

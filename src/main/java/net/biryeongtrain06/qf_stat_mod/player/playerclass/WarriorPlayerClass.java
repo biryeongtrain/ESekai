@@ -1,5 +1,6 @@
 package net.biryeongtrain06.qf_stat_mod.player.playerclass;
 
+import net.biryeongtrain06.qf_stat_mod.api.BasicPlayerClass;
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;

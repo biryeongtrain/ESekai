@@ -7,6 +7,7 @@ import net.minecraft.entity.damage.DamageSource;
 
 public interface IDamageSource {
 
-    QfDamageSource getQfDamageSourceWithEntityAttack(DamageSource originalDamageSource, Elements element, float originalDamageAmount);
-    QfDamageSource getQfDamageSourceWithPlayerAttack(DamageSource originalDamageSource, Elements element, float originalDamageAmount);
+    QfDamageSource getQfDamageSourceWithProjectileAttack(DamageSource originalDamageSource, Elements element, float originalDamageAmount);
+    QfDamageSource getQfDamageSourceWithMeleeAttack(DamageSource originalDamageSource, Elements element, float originalDamageAmount);
+    QfDamageSource getQfDamageSourceWithEnvironment(DamageSource originalDamageSource, float originalDamageAmount);
 }

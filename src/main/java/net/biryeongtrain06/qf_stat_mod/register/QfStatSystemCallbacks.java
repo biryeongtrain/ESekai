@@ -1,8 +1,8 @@
 package net.biryeongtrain06.qf_stat_mod.register;
 
-import eu.pb4.playerdata.api.PlayerDataApi;
 import net.biryeongtrain06.qf_stat_mod.MainStatSystem;
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
+import net.biryeongtrain06.qf_stat_mod.api.ItemStats;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
 import net.biryeongtrain06.qf_stat_mod.callback.*;
 import net.biryeongtrain06.qf_stat_mod.damage.DamageHandler;
@@ -18,6 +18,7 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -31,7 +32,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.ENTITY_MODIFIERS;
-import static net.biryeongtrain06.qf_stat_mod.api.DataStorage.TEST;
 
 
 public class QfStatSystemCallbacks {
@@ -41,8 +41,6 @@ public class QfStatSystemCallbacks {
             var PlayerStat = new PlayerStat(player);
             DataStorage.savePlayerStat(player, PlayerStat);
             iPlayer.setPlayedBefore(true);
-            var newPlayerStat = new PlayerStat(player);
-            PlayerDataApi.setCustomDataFor(player, TEST, newPlayerStat);
         }
         PlayerStatBar.Open(player);
     }
@@ -60,13 +58,26 @@ public class QfStatSystemCallbacks {
         DataStorage.savePlayerStat(killPlayer, stat);
     }
 
-    private static void entityHitPlayerCallback(PlayerEntity player, LivingEntity entity, DamageSource source, float amount) {
-        if ((player == null || entity == null)) return;
-        if (!(player instanceof ServerPlayerEntity)) return;
-        ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
-        PlayerStat playerStat = DataStorage.loadPlayerStat(serverPlayerEntity);
-        playerStat.damageHealth(source, ENTITY_MODIFIERS.get(entity).getElement(), serverPlayerEntity, amount);
-        DataStorage.savePlayerStat(serverPlayerEntity, playerStat);
+    private static void entityHitPlayerCallback(ServerPlayerEntity player, LivingEntity entity, DamageSource source, float amount) {
+        PlayerStat playerStat = DataStorage.loadPlayerStat(player);
+        if ((player == null && entity == null) || !source.getType().equals(DamageTypes.MOB_PROJECTILE) || !source.getType().equals(DamageTypes.MOB_ATTACK) || !source.getType().equals(DamageTypes.PLAYER_ATTACK) || !source.getType().equals(DamageTypes.PLAYER_EXPLOSION) ) {
+            playerStat.damageEnvironmentDamage(source, player, amount);
+            return;
+        }
+        float random = (float) (Math.random() * 100);
+        if (random <= playerStat.getTotalStatValue(StatTypes.DODGE)) return;
+        Elements element = null;
+        if (entity instanceof ServerPlayerEntity) {
+            ServerPlayerEntity player2 = (ServerPlayerEntity) entity;
+            element = ItemStats.getPlayerItemElement(player);
+        } else if (entity instanceof HostileEntity) {
+            element = ENTITY_MODIFIERS.get(entity).getElement();
+        }
+        if (element == null) return;
+        playerStat.damageHealth(source, element , player, amount);
+
+
+        DataStorage.savePlayerStat(player, playerStat);
     }
 
     private static void onMobSpawned(LivingEntity entity, World world) {
@@ -79,7 +90,7 @@ public class QfStatSystemCallbacks {
         OnEntitySpawnSetting.setUpNewMobOnSpawn(entity, world);
     }
 
-    private static ActionResult onEntityDamaged(@Nullable Entity attacker, Entity victim, DamageSource source, float amount) {
+    private static ActionResult onEntityDamagedByPlayer(@Nullable Entity attacker, Entity victim, DamageSource source, float amount) {
         if (!(victim instanceof HostileEntity) && !(victim instanceof LivingEntity)) {
             return ActionResult.PASS;
         }
@@ -109,6 +120,6 @@ public class QfStatSystemCallbacks {
         PlayerKilledOtherCallback.EVENT.register(QfStatSystemCallbacks::playerKilledCallback);
         PlayerHitByEntityCallback.EVENT.register(QfStatSystemCallbacks::entityHitPlayerCallback);
         MobSpawningCallback.EVENT.register(QfStatSystemCallbacks::onMobSpawned);
-        EntityDamagedCallback.EVENT.register(QfStatSystemCallbacks::onEntityDamaged);
+        EntityDamagedCallback.EVENT.register(QfStatSystemCallbacks::onEntityDamagedByPlayer);
     }
 }

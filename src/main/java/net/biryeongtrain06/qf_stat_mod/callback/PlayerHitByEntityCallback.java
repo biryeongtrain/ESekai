@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 public interface PlayerHitByEntityCallback {
     Event<PlayerHitByEntityCallback> EVENT = EventFactory.createArrayBacked(PlayerHitByEntityCallback.class, (listener) -> (player, entity, source, amount) -> {
@@ -13,5 +14,5 @@ public interface PlayerHitByEntityCallback {
         }
     });
 
-    void onHit(PlayerEntity player, LivingEntity entity, DamageSource source, float amount);
+    void onHit(ServerPlayerEntity player, LivingEntity entity, DamageSource source, float amount);
 }

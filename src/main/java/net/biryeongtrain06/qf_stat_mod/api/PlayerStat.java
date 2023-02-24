@@ -3,7 +3,6 @@ package net.biryeongtrain06.qf_stat_mod.api;
 import lombok.Getter;
 import net.biryeongtrain06.qf_stat_mod.damage.QfDamageSource;
 import net.biryeongtrain06.qf_stat_mod.interfaces.IDamageSource;
-import net.biryeongtrain06.qf_stat_mod.player.playerclass.IPlayerClass;
 import net.biryeongtrain06.qf_stat_mod.player.playerclass.NonePlayerClass;
 import net.biryeongtrain06.qf_stat_mod.stats.FloatStat;
 import net.biryeongtrain06.qf_stat_mod.stats.PercentStat;
@@ -15,6 +14,7 @@ import net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypeTag;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -276,8 +276,8 @@ public class PlayerStat {
     public void damageHealth(DamageSource s, Elements element, ServerPlayerEntity player, float amount) {
         float calculatedDamage = calculateDamageReduce(element, amount);
         IDamageSource iDamageSource = (IDamageSource) player.getDamageSources();
-        QfDamageSource qfDamageSource = s.getSource().isPlayer() ? iDamageSource.getQfDamageSourceWithPlayerAttack(s, element, amount) :
-                iDamageSource.getQfDamageSourceWithEntityAttack(s, element, amount);
+        QfDamageSource qfDamageSource = !s.isIn(DamageTypeTags.IS_PROJECTILE) ? iDamageSource.getQfDamageSourceWithMeleeAttack(s, element, amount) :
+                iDamageSource.getQfDamageSourceWithProjectileAttack(s, element, amount);
 
         this.addCurrentHealth(player, -calculatedDamage);
         float vanillaDamage = (amount / this.maxHealth) * player.getMaxHealth();
@@ -286,6 +286,13 @@ public class PlayerStat {
         player.damage(qfDamageSource, vanillaDamage);
     }
 
+    public void damageEnvironmentDamage(DamageSource s, ServerPlayerEntity player, float amount) {
+        IDamageSource iDamageSource = (IDamageSource) player.getDamageSources();
+        QfDamageSource source = iDamageSource.getQfDamageSourceWithEnvironment(s, amount);
+        float calculatedValue = ( (float) maxHealth / 20 )* amount;
+        this.addCurrentHealth(player, -calculatedValue);
+        player.damage(source, amount);
+    }
     private float calculateDamageReduce(Elements element, float amount) {
         var defensiveElement = element.getDefensiveStat();
         var value = instance.get(defensiveElement).getTotalValue();

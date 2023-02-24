@@ -2,7 +2,7 @@ package net.biryeongtrain06.qf_stat_mod.utils;
 
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
-import net.biryeongtrain06.qf_stat_mod.player.playerclass.IPlayerClass;
+import net.biryeongtrain06.qf_stat_mod.api.IPlayerClass;
 import net.biryeongtrain06.qf_stat_mod.player.playerclass.NonePlayerClass;
 import net.biryeongtrain06.qf_stat_mod.player.playerclass.WarriorPlayerClass;
 import net.minecraft.entity.LivingEntity;

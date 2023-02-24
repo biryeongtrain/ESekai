@@ -8,6 +8,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.tag.DamageTypeTags;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,11 +29,11 @@ public class PlayerEntityMixin {
     @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
     public void applyDamageHook(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
        PlayerEntity player = (PlayerEntity) (Object) this;
+        if (player instanceof ServerPlayerEntity) return;
         if (source.isIn(DamageTypeTags.BYPASSES_INVULNERABILITY)) return;
         if ((source instanceof QfDamageSource)) return;
-        if (source.getAttacker() == null && !source.getType().equals(DamageTypes.ARROW)) return;
 
-        PlayerHitByEntityCallback.EVENT.invoker().onHit(player, (LivingEntity) source.getSource(), source, amount);
+        PlayerHitByEntityCallback.EVENT.invoker().onHit((ServerPlayerEntity) player, (LivingEntity) source.getSource(), source, amount);
         cir.cancel();
     }
 

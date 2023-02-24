@@ -19,12 +19,17 @@ public abstract class DamageSourcesMixin implements IDamageSource {
 
 
     @Override
-    public QfDamageSource getQfDamageSourceWithEntityAttack(DamageSource originalDamageSource, Elements element, float originalDamageAmount) {
+    public QfDamageSource getQfDamageSourceWithProjectileAttack(DamageSource originalDamageSource, Elements element, float originalDamageAmount) {
+        return new QfDamageSource(this.registry.entryOf(QfStatSystemDamageSources.qfProjectileDamageSource), originalDamageSource, element, originalDamageAmount);
+    }
+
+    @Override
+    public QfDamageSource getQfDamageSourceWithMeleeAttack(DamageSource originalDamageSource, Elements element, float originalDamageAmount) {
         return new QfDamageSource(this.registry.entryOf(QfStatSystemDamageSources.qfDamageSource), originalDamageSource, element, originalDamageAmount);
     }
 
     @Override
-    public QfDamageSource getQfDamageSourceWithPlayerAttack(DamageSource originalDamageSource, Elements element, float originalDamageAmount) {
-        return new QfDamageSource(this.registry.entryOf(QfStatSystemDamageSources.qfDamageSource), originalDamageSource, element, originalDamageAmount);
+    public QfDamageSource getQfDamageSourceWithEnvironment(DamageSource originalDamageSource, float originalDamageAmount) {
+        return new QfDamageSource(this.registry.entryOf(QfStatSystemDamageSources.qfDamageSource), originalDamageSource, null, originalDamageAmount);
     }
 }

@@ -7,7 +7,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 public class DataStorage {
     private static final PlayerDataStorage<PlayerStat> PLAYER_STAT_DATA_STORAGE = new JsonDataStorage<>("player_stat", PlayerStat.class);
-    public static final PlayerDataStorage<PlayerStat> TEST = new JsonDataStorage<>("test", PlayerStat.class);
 
     public static PlayerStat loadPlayerStat(ServerPlayerEntity player) {
         PlayerStat playerStat = PlayerDataApi.getCustomDataFor(player, PLAYER_STAT_DATA_STORAGE);

@@ -2,7 +2,7 @@ package net.biryeongtrain06.qf_stat_mod.player;
 
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
-import net.biryeongtrain06.qf_stat_mod.player.playerclass.IPlayerClass;
+import net.biryeongtrain06.qf_stat_mod.api.IPlayerClass;
 import net.biryeongtrain06.qf_stat_mod.utils.PlayerHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag;
@@ -12,8 +12,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-
-import java.util.EnumMap;
 
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.debugLogger;
 import static net.biryeongtrain06.qf_stat_mod.item.ItemStatHandler.STAT_KEY;
@@ -51,7 +49,7 @@ public class PlayerStatHandler {
         NbtCompound stats = stack.getSubNbt(STAT_KEY);
         stats.getKeys().stream().forEach(key ->
                 stats.getCompound(key).getKeys().stream().forEach(tag ->
-                playerStat.tryRemoveInstance(player, StatTypes.getStatByName(key), StatSubTag.getStatByName(tag), ITEM_MODIFIER_ID)));
+                playerStat.tryAddUnknownInstance(player, StatTypes.getStatByName(key), StatSubTag.getStatByName(tag), ITEM_MODIFIER_ID, -stats.getCompound(key).getFloat(tag))));
         DataStorage.savePlayerStat(player, playerStat);
     }
 
