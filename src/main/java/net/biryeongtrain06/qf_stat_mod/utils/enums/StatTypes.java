@@ -15,9 +15,9 @@ import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypeTag.*;
 
 public enum StatTypes {
 
-    HEALTH("health", Formatting.RED, RESOURCE, true),
-    REGEN_HEALTH_PER_SECOND("health_regen", Formatting.RED, RESOURCE, false),
-    MANA("mana", Formatting.BLUE, RESOURCE, true),
+    HEALTH("health", Formatting.RED, RESOURCE, false),
+    REGEN_HEALTH_PER_SECOND("health_regen", Formatting.RED, RESOURCE, true),
+    MANA("mana", Formatting.BLUE, RESOURCE, false),
     REGEN_MANA_PER_SECOND("regen_mana", Formatting.BLUE, RESOURCE, false),
     ARMOR("armor", Formatting.GRAY, DEFENSIVE, true),
     DODGE("dodge", Formatting.GREEN, DEFENSIVE, true),
@@ -28,8 +28,8 @@ public enum StatTypes {
     DARK_RESISTANCE("dark_resistance", Formatting.DARK_PURPLE, DEFENSIVE, true),
     BONUS_MELEE_DAMAGE("bonus_melee_damage", Formatting.GRAY, OFFENSIVE, true),
     BONUS_MAGIC_DAMAGE("bonus_magic_damage", Formatting.AQUA, OFFENSIVE, true),
-    EFFECTIVE_HEAL("effective_heal", Formatting.WHITE, OFFENSIVE, true),
-    BONUS_PROJECTILE_DAMAGE("bonus_projectile_damage", Formatting.WHITE, OFFENSIVE, true),
+    HEAL_EFFICIENT("heal_efficient", Formatting.WHITE, OFFENSIVE, true),
+    BONUS_RANGED_DAMAGE("bonus_ranged_damage", Formatting.WHITE, OFFENSIVE, true),
     BONUS_XP("bonus_xp", Formatting.GREEN, RESOURCE, false),
     STRENGTH("strength", Formatting.RED, SUB_STAT, false),
     CONSTITUTION("constitution", Formatting.YELLOW, SUB_STAT, false),

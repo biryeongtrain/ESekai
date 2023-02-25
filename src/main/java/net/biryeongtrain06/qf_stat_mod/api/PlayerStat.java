@@ -247,7 +247,7 @@ public class PlayerStat {
             }
             case DEXTERITY -> {
                 this.tryAddPercentInstance(DODGE, DEXTERITY_MODIFIER_ID, (float) (0.05 * value));
-                this.tryAddNumberInstance(player, BONUS_PROJECTILE_DAMAGE, PERCENT ,DEXTERITY_MODIFIER_ID, (float) 0.02 * value);
+                this.tryAddNumberInstance(player, BONUS_RANGED_DAMAGE, PERCENT ,DEXTERITY_MODIFIER_ID, (float) 0.02 * value);
             }
 
             case CONSTITUTION -> {
@@ -258,7 +258,7 @@ public class PlayerStat {
 
             case WISDOM -> {
                 this.tryAddNumberInstance(player, MANA, FLAT, WISDOM_MODIFIER_ID, (float) 5 * value);
-                this.tryAddNumberInstance(player, EFFECTIVE_HEAL, FLAT, WISDOM_MODIFIER_ID, (float) 0.05 * value);
+                this.tryAddNumberInstance(player, HEAL_EFFICIENT, FLAT, WISDOM_MODIFIER_ID, (float) 0.05 * value);
             }
 
             case INTELLIGENCE -> {
@@ -326,8 +326,8 @@ public class PlayerStat {
         instance.put(LIGHT_RESISTANCE, new PercentStat(0));
         instance.put(DARK_RESISTANCE, new PercentStat(0));
         instance.put(BONUS_MELEE_DAMAGE, new FloatStat(0, 1, 1));
-        instance.put(BONUS_PROJECTILE_DAMAGE, new FloatStat(0, 1, 1));
-        instance.put(EFFECTIVE_HEAL, new FloatStat(0, 1, 1));
+        instance.put(BONUS_RANGED_DAMAGE, new FloatStat(0, 1, 1));
+        instance.put(HEAL_EFFICIENT, new FloatStat(0, 1, 1));
         instance.put(BONUS_XP, new PercentStat(0));
         instance.put(STRENGTH, new FloatStat(0, 1, 1));
         instance.put(DEXTERITY, new FloatStat(0,1,1));
