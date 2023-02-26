@@ -27,7 +27,7 @@ public class MobBaseStatLoader extends JsonDataLoader implements IdentifiableRes
             JsonObject jsonObject = element.getAsJsonObject();
             Identifier entityId = new Identifier(jsonObject.get("id").toString());
 
-
+            jsonObject.asMap().
         });
     }
 }

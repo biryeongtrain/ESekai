@@ -29,5 +29,11 @@ public abstract class AbstractCommonStatBuilder {
     public abstract AbstractCommonStatBuilder setMeleeDamageBonus(float flat, float percent, float multi);
     public abstract AbstractCommonStatBuilder setRangedDamageBonus(float flat, float percent, float multi);
     public abstract AbstractCommonStatBuilder setBonusXp(float percent);
+    public abstract AbstractCommonStatBuilder setStrength(float flat, float percent, float multi);
+    public abstract AbstractCommonStatBuilder setDexterity(float flat, float percent, float multi);
+    public abstract AbstractCommonStatBuilder setConstitution(float flat, float percent, float multi);
+    public abstract AbstractCommonStatBuilder setIntelligence(float flat, float percent, float multi);
+    public abstract AbstractCommonStatBuilder setWisdom(float flat, float percent, float multi);
+    public abstract AbstractCommonStatBuilder setCharisma(float flat, float percent, float multi);
     public abstract AbstractCommonStatBuilder build();
 }

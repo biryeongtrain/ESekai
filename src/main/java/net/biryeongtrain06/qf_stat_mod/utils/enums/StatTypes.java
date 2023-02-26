@@ -91,14 +91,13 @@ public enum StatTypes {
 
     }
 
-    public static Stream<StatTypes> getPlayerStats() {
-
-        return Arrays.stream(values()).filter(e -> e.getTag() == OFFENSIVE || e.getTag() == DEFENSIVE || e.getTag() == SUB_STAT);
-    }
-
     public static StatTypes getStatByName(String s) {
         Optional<StatTypes> optionalStatEnums = Arrays.stream(values()).filter(stat -> stat.getName().equals(s)).findFirst();
         return optionalStatEnums.orElse(null);
+    }
+
+    public static Stream<StatTypes> getAvailablePlayerStats() {
+        return Arrays.stream(values()).filter(e -> e.tag != SYSTEM);
     }
 }
 

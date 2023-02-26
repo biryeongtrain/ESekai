@@ -1,21 +1,26 @@
 {
-  "version" : 1,
-  "id" : "minecraft:player",
-  "stat" : {
-    "HEALTH" : {
-      "flat" : 100,
-      "percent" : 1,
-      "multi" : 1
+  "version": 1,
+  "id": "minecraft:player",
+  "stat": {
+    "HEALTH": {
+      "PERCENT": 1.0,
+      "FLAT": 100.0,
+      "MULTIPLIER": 1.0
     },
-    "HEALTH_REGEN" : {
-      "flat" : 5,
-      "percent" : 1,
-      "multi" : 1
+    "REGEN_HEALTH_PER_SECOND": {
+      "PERCENT": 1.0,
+      "FLAT": 5.0,
+      "MULTIPLIER": 1.0
     },
-    "HEALTH" : {
-      "flat" : 100,
-      "percent" : 1,
-      "multi" : 1
+    "MANA": {
+      "PERCENT": 1.0,
+      "FLAT": 100.0,
+      "MULTIPLIER": 1.0
+    },
+    "REGEN_MANA_PER_SECOND": {
+      "PERCENT": 1.0,
+      "FLAT": 5.0,
+      "MULTIPLIER": 1.0
     }
   }
 }
