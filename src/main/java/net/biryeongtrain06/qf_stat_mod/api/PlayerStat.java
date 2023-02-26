@@ -30,7 +30,7 @@ import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes.*;
 
 @SuppressWarnings("unused")
 public class PlayerStat {
-
+    private final EnumMap<StatTypes, IStats> instance = new EnumMap<>(StatTypes.class);
     private Identifier playerClassId = new NonePlayerClass().getClassId();
     @Getter
     private int maxHealth = 100;
@@ -45,7 +45,6 @@ public class PlayerStat {
     @Getter
     private int xp = 0;
     private float needXpToLevelUp = ExpHandler.getBaseLevelUpXpValue();
-    private final EnumMap<StatTypes, IStats> instance = new EnumMap<>(StatTypes.class);
     @SuppressWarnings("FieldMayBeFinal")
     @Getter
     private int usedSelectionPoint = 0;

@@ -50,7 +50,7 @@ public class NewCommonEntityValue implements INewCommonEntityComponents {
         if (canApplyModifier(this.provider)) {
             setRankRandomly();
         } else this.rank = EntityRank.COMMON;
-        setLevel();
+       // setLevel();
     }
 
     public boolean canApplyModifier(MobEntity provider) {
@@ -199,11 +199,7 @@ public class NewCommonEntityValue implements INewCommonEntityComponents {
 
     @Override
     public void serverTick() {
-        if (!this.healthIncreased) {
-            provider.getWorld().getServer().sendMessage(Text.literal("Entity Spawned, Level : " + level + ", Rank : " + this.rank.getName() + ", Elements : " + this.attackElement.name() + " Entity : ").append(provider.getDisplayName()));
-            getDefensiveMap().forEach(((statEnums, integer) -> provider.getServer().sendMessage(Text.literal(statEnums.getName() + " : " + integer))));
 
-        }
         tryHealthIncrease();
         tryDamageIncrease();
     }
@@ -215,13 +211,6 @@ public class NewCommonEntityValue implements INewCommonEntityComponents {
         this.rank = getRankById(tag.getString("rank"));
 
         NbtCompound armorStat = (NbtCompound) tag.get("armorStat");
-        this.setDefense(armorStat.getInt(ARMOR.getName()));
-        this.setDodge(armorStat.getInt(DODGE.getName()));
-        this.setFireResistance(armorStat.getInt(FIRE_RESISTANCE.getName()));
-        this.setWaterResistance(armorStat.getInt(WATER_RESISTANCE.getName()));
-        this.setEarthResistance(armorStat.getInt(EARTH_RESISTANCE.getName()));
-        this.setLightResistance(armorStat.getInt(LIGHT_RESISTANCE.getName()));
-        this.setDarkResistance(armorStat.getInt(DARK_RESISTANCE.getName()));
     }
 
     @Override
@@ -230,7 +219,6 @@ public class NewCommonEntityValue implements INewCommonEntityComponents {
         tag.putBoolean("healthIncreased", this.healthIncreased);
 
         NbtCompound armorStat = new NbtCompound();
-        this.defensiveMap.forEach((statEnums, value) -> armorStat.putInt(statEnums.getName(), value));
         tag.put("armorStat", armorStat);
         tag.putString("rank", this.rank.getName());
     }

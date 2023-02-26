@@ -5,6 +5,7 @@ import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistryV3;
 import net.biryeongtrain06.qf_stat_mod.components.ICommonEntityComponents;
+import net.biryeongtrain06.qf_stat_mod.utils.builder.TestDataLoader;
 import net.biryeongtrain06.qf_stat_mod.utils.data.MobLevelDataLoader;
 import net.biryeongtrain06.qf_stat_mod.utils.data.MobXpDataLoader;
 import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemCallbacks;
@@ -12,6 +13,7 @@ import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemDamageSources;
 import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemGameRules;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
@@ -35,6 +37,9 @@ public class MainStatSystem implements ModInitializer {
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new MobLevelDataLoader());
         QfStatSystemGameRules.setupGameRule();
         QfStatSystemDamageSources.init();
+
+        ServerLifecycleEvents.SERVER_STARTED.register(TestDataLoader::loadTest);
+        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((x, y, z) -> TestDataLoader.loadTest(x));
     }
 
     public static HashMap<StatTypes, Integer> getEntityDefensiveMap(ComponentProvider provider) {

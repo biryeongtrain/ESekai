@@ -1,0 +1,21 @@
+{
+  "version" : 1,
+  "id" : "minecraft:player",
+  "stat" : {
+    "HEALTH" : {
+      "flat" : 100,
+      "percent" : 1,
+      "multi" : 1
+    },
+    "HEALTH_REGEN" : {
+      "flat" : 5,
+      "percent" : 1,
+      "multi" : 1
+    },
+    "HEALTH" : {
+      "flat" : 100,
+      "percent" : 1,
+      "multi" : 1
+    }
+  }
+}

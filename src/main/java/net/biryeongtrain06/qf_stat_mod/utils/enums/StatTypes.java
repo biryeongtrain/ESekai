@@ -15,42 +15,44 @@ import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypeTag.*;
 
 public enum StatTypes {
 
-    HEALTH("health", Formatting.RED, RESOURCE, false),
-    REGEN_HEALTH_PER_SECOND("health_regen", Formatting.RED, RESOURCE, true),
-    MANA("mana", Formatting.BLUE, RESOURCE, false),
-    REGEN_MANA_PER_SECOND("regen_mana", Formatting.BLUE, RESOURCE, false),
-    ARMOR("armor", Formatting.GRAY, DEFENSIVE, true),
-    DODGE("dodge", Formatting.GREEN, DEFENSIVE, true),
-    FIRE_RESISTANCE("fire_resistance", Formatting.RED, DEFENSIVE, true),
-    WATER_RESISTANCE("water_resistance", Formatting.AQUA, DEFENSIVE, true),
-    EARTH_RESISTANCE("earth_resistance", Formatting.GREEN, DEFENSIVE, true),
-    LIGHT_RESISTANCE("light_resistance", Formatting.LIGHT_PURPLE, DEFENSIVE, true),
-    DARK_RESISTANCE("dark_resistance", Formatting.DARK_PURPLE, DEFENSIVE, true),
-    BONUS_MELEE_DAMAGE("bonus_melee_damage", Formatting.GRAY, OFFENSIVE, true),
-    BONUS_MAGIC_DAMAGE("bonus_magic_damage", Formatting.AQUA, OFFENSIVE, true),
-    HEAL_EFFICIENT("heal_efficient", Formatting.WHITE, OFFENSIVE, true),
-    BONUS_RANGED_DAMAGE("bonus_ranged_damage", Formatting.WHITE, OFFENSIVE, true),
-    BONUS_XP("bonus_xp", Formatting.GREEN, RESOURCE, false),
-    STRENGTH("strength", Formatting.RED, SUB_STAT, false),
-    CONSTITUTION("constitution", Formatting.YELLOW, SUB_STAT, false),
-    DEXTERITY("dexterity", Formatting.GREEN, SUB_STAT, false),
-    INTELLIGENCE("intelligence", Formatting.AQUA, SUB_STAT, false),
-    WISDOM("wisdom", Formatting.LIGHT_PURPLE, SUB_STAT, false),
-    CHARISMA("charisma", Formatting.GREEN, SUB_STAT, false),
-    SELECT_POINT("select_point", Formatting.WHITE, SYSTEM, false);
+    HEALTH("health", Formatting.RED, RESOURCE, false, false),
+    REGEN_HEALTH_PER_SECOND("health_regen", Formatting.RED, RESOURCE, true, false),
+    MANA("mana", Formatting.BLUE, RESOURCE, false, false),
+    REGEN_MANA_PER_SECOND("regen_mana", Formatting.BLUE, RESOURCE, false, false),
+    ARMOR("armor", Formatting.GRAY, DEFENSIVE, true, false),
+    DODGE("dodge", Formatting.GREEN, DEFENSIVE, true, true),
+    FIRE_RESISTANCE("fire_resistance", Formatting.RED, DEFENSIVE, true, true),
+    WATER_RESISTANCE("water_resistance", Formatting.AQUA, DEFENSIVE, true, true),
+    EARTH_RESISTANCE("earth_resistance", Formatting.GREEN, DEFENSIVE, true, true),
+    LIGHT_RESISTANCE("light_resistance", Formatting.LIGHT_PURPLE, DEFENSIVE, true, true),
+    DARK_RESISTANCE("dark_resistance", Formatting.DARK_PURPLE, DEFENSIVE, true, true),
+    BONUS_MELEE_DAMAGE("bonus_melee_damage", Formatting.GRAY, OFFENSIVE, true, false),
+    BONUS_MAGIC_DAMAGE("bonus_magic_damage", Formatting.AQUA, OFFENSIVE, true, false),
+    HEAL_EFFICIENT("heal_efficient", Formatting.WHITE, OFFENSIVE, true, false),
+    BONUS_RANGED_DAMAGE("bonus_ranged_damage", Formatting.WHITE, OFFENSIVE, true, true),
+    BONUS_XP("bonus_xp", Formatting.GREEN, RESOURCE, false, true),
+    STRENGTH("strength", Formatting.RED, SUB_STAT, false, false),
+    CONSTITUTION("constitution", Formatting.YELLOW, SUB_STAT, false, false),
+    DEXTERITY("dexterity", Formatting.GREEN, SUB_STAT, false, false),
+    INTELLIGENCE("intelligence", Formatting.AQUA, SUB_STAT, false, false),
+    WISDOM("wisdom", Formatting.LIGHT_PURPLE, SUB_STAT, false, false),
+    CHARISMA("charisma", Formatting.GREEN, SUB_STAT, false, false),
+    SELECT_POINT("select_point", Formatting.WHITE, SYSTEM, false, false);
 
     public final String name;
     public final Text translatableName;
     public final Formatting format;
     public final StatTypeTag tag;
     public final Boolean entityCanUseThisStat;
+    public final Boolean isOnlyPercent;
 
-    StatTypes(String name, Formatting format, StatTypeTag tag, boolean entityCanUseThisStat) {
+    StatTypes(String name, Formatting format, StatTypeTag tag, boolean entityCanUseThisStat, boolean isOnlyPercent) {
         this.name = name;
         this.translatableName = Text.translatable(TextHelper.createTranslation(name));
         this.format = format;
         this.tag = tag;
         this.entityCanUseThisStat = entityCanUseThisStat;
+        this.isOnlyPercent = isOnlyPercent;
     }
 
     public String getName() {
