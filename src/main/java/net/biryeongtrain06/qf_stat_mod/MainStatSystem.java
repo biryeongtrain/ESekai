@@ -15,6 +15,7 @@ import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
@@ -30,6 +31,7 @@ public class MainStatSystem implements ModInitializer {
 
     public static final ComponentKey<ICommonEntityComponents> ENTITY_MODIFIERS = ComponentRegistryV3.INSTANCE.getOrCreate(new Identifier(MOD_ID, "entity_modifiers"), ICommonEntityComponents.class);
 
+    public static final String MOD_DIR = FabricLoader.getInstance().getGameDir().toString().replace("run", "src");
     @Override
     public void onInitialize() {
         QfStatSystemCallbacks.init();
