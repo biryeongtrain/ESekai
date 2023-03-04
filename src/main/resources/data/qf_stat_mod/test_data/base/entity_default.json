@@ -1,0 +1,53 @@
+{
+  "version" : "1",
+  "isBased" : true,
+  "id" : "minecraft:mob",
+  "HEALTH": {
+    "MULTIPLIER": 1.0,
+    "PERCENT": 1.0,
+    "FLAT": 100.0
+  },
+  "MANA": {
+    "MULTIPLIER": 1.0,
+    "PERCENT": 1.0,
+    "FLAT": 100.0
+  },
+  "ARMOR": {
+    "MULTIPLIER": 1.0,
+    "PERCENT": 1.0,
+    "FLAT": 0.0
+  },
+  "DODGE": {
+    "PERCENT": 0.0
+  },
+  "FIRE_RESISTANCE": {
+    "PERCENT": 0.0
+  },
+  "WATER_RESISTANCE": {
+    "PERCENT": 0.0
+  },
+  "EARTH_RESISTANCE": {
+    "PERCENT": 0.0
+  },
+  "LIGHT_RESISTANCE": {
+    "PERCENT": 0.0
+  },
+  "DARK_RESISTANCE": {
+    "PERCENT": 0.0
+  },
+  "BONUS_MELEE_DAMAGE": {
+    "MULTIPLIER": 1.0,
+    "PERCENT": 1.0,
+    "FLAT": 0.0
+  },
+  "HEAL_EFFICIENT": {
+    "MULTIPLIER": 1.0,
+    "PERCENT": 1.0,
+    "FLAT": 0.0
+  },
+  "BONUS_RANGED_DAMAGE": {
+    "MULTIPLIER": 1.0,
+    "PERCENT": 1.0,
+    "FLAT": 0.0
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "version" : "1",
+  "isBased" : true,
+  "id" : "minecraft:player",
+  "stat" : {
+    "HEALTH": {
+      "MULTIPLIER": 1.0,
+      "PERCENT": 1.0,
+      "FLAT": 100.0
+    },
+    "REGEN_HEALTH_PER_SECOND": {
+      "MULTIPLIER": 1.0,
+      "PERCENT": 1.0,
+      "FLAT": 5.0
+    },
+    "MANA": {
+      "MULTIPLIER": 1.0,
+      "PERCENT": 1.0,
+      "FLAT": 100.0
+    },
+    "REGEN_MANA_PER_SECOND": {
+      "MULTIPLIER": 1.0,
+      "PERCENT": 1.0,
+      "FLAT": 5.0
+    },
+    "ARMOR": {
+      "MULTIPLIER": 1.0,
+      "PERCENT": 1.0,
+      "FLAT": 0.0
+    },
+    "DODGE": {
+      "PERCENT": 0.0
+    },
+    "FIRE_RESISTANCE": {
+      "PERCENT": 0.0
+    },
+    "WATER_RESISTANCE": {
+      "PERCENT": 0.0
+    },
+    "EARTH_RESISTANCE": {
+      "PERCENT": 0.0
+    },
+    "LIGHT_RESISTANCE": {
+      "PERCENT": 0.0
+    },
+    "DARK_RESISTANCE": {
+      "PERCENT": 0.0
+    },
+    "BONUS_MELEE_DAMAGE": {
+      "MULTIPLIER": 1.0,
+      "PERCENT": 1.0,
+      "FLAT": 0.0
+    },
+    "HEAL_EFFICIENT": {
+      "MULTIPLIER": 1.0,
+      "PERCENT": 1.0,
+      "FLAT": 0.0
+    },
+    "BONUS_RANGED_DAMAGE": {
+      "MULTIPLIER": 1.0,
+      "PERCENT": 1.0,
+      "FLAT": 0.0
+    },
+    "BONUS_XP": {
+      "PERCENT": 0.0
+    },
+    "STRENGTH": {
+      "MULTIPLIER": 1.0,
+      "PERCENT": 1.0,
+      "FLAT": 0.0
+    },
+    "CONSTITUTION": {
+      "MULTIPLIER": 1.0,
+      "PERCENT": 1.0,
+      "FLAT": 0.0
+    },
+    "DEXTERITY": {
+      "MULTIPLIER": 1.0,
+      "PERCENT": 1.0,
+      "FLAT": 0.0
+    },
+    "INTELLIGENCE": {
+      "MULTIPLIER": 1.0,
+      "PERCENT": 1.0,
+      "FLAT": 0.0
+    },
+    "WISDOM": {
+      "MULTIPLIER": 1.0,
+      "PERCENT": 1.0,
+      "FLAT": 0.0
+    },
+    "CHARISMA": {
+      "MULTIPLIER": 1.0,
+      "PERCENT": 1.0,
+      "FLAT": 0.0
+    }
+  }
+}

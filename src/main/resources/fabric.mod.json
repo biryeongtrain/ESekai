@@ -10,8 +10,6 @@
   "icon": "assets/qf_stat_mod/icon.png",
   "environment": "*",
   "entrypoints": {
-    "client": [
-    ],
     "main": [
       "net.biryeongtrain06.qf_stat_mod.MainStatSystem"
     ],
@@ -30,6 +28,6 @@
   "depends": {
     "fabricloader": ">=0.14.14",
     "fabric": "*",
-    "minecraft": "1.19.4-alpha.23.7.a"
+    "minecraft": "1.19.4-beta.3"
   }
 }

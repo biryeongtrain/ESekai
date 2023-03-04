@@ -29,10 +29,7 @@ public class ExpHandler {
 
     public static void setXpModifier(JsonObject xp) {
         HashMap<Identifier, Integer> xpMap = new HashMap<>();
-        xp.keySet().forEach(keyStr -> {
-            String[] s = keyStr.split(":");
-            xpMap.put(new Identifier(s[0], s[1]), xp.get(keyStr).getAsInt());
-        });
+        xp.keySet().forEach(keyStr -> xpMap.put(new Identifier(keyStr), xp.get(keyStr).getAsInt()));
         xpModifier = xpMap;
         debugLogger.info("xpModifier has Successfully Loaded!");
     }
