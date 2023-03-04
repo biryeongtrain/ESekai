@@ -5,6 +5,7 @@ import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistryV3;
 import net.biryeongtrain06.qf_stat_mod.components.ICommonEntityComponents;
+import net.biryeongtrain06.qf_stat_mod.utils.builder.TestBaseStatGsonLoader;
 import net.biryeongtrain06.qf_stat_mod.utils.builder.TestDataLoader;
 import net.biryeongtrain06.qf_stat_mod.utils.data.MobLevelDataLoader;
 import net.biryeongtrain06.qf_stat_mod.utils.data.MobXpDataLoader;
@@ -42,6 +43,8 @@ public class MainStatSystem implements ModInitializer {
 
         ServerLifecycleEvents.SERVER_STARTED.register(TestDataLoader::loadTest);
         ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((x, y, z) -> TestDataLoader.loadTest(x));
+        ServerLifecycleEvents.SERVER_STARTED.register(TestBaseStatGsonLoader::new);
+        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((x, y, z) -> new TestBaseStatGsonLoader(x));
     }
 
     public static HashMap<StatTypes, Integer> getEntityDefensiveMap(ComponentProvider provider) {
