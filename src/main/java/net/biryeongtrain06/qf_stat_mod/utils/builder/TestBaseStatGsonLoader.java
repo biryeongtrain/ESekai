@@ -1,6 +1,7 @@
 package net.biryeongtrain06.qf_stat_mod.utils.builder;
 
-import com.google.gson.*;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.biryeongtrain06.qf_stat_mod.stats.FloatStat;
@@ -11,13 +12,12 @@ import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Identifier;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.EnumMap;
-import java.util.Iterator;
 import java.util.List;
 
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.*;
@@ -27,7 +27,7 @@ public class TestBaseStatGsonLoader {
     private final int REQUIRED_TO_FLAT_STAT = StatSubTag.values().length;
     public final String baseStatDir = MOD_DIR + "/main/resources/data/" + MOD_ID + "/test_data/base";
 
-    private List<File> files;
+    private final List<File> files;
 
     public TestBaseStatGsonLoader(MinecraftServer server) {
         File folder = new File(baseStatDir);
