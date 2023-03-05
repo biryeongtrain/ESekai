@@ -46,7 +46,7 @@ public class IStatGsonAdapter implements JsonSerializer<EnumMap<StatTypes, IStat
     @Override
     public EnumMap<StatTypes, IStats> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         EnumMap<StatTypes, IStats> map = new EnumMap<>(StatTypes.class);
-        if (json instanceof JsonObject) throw new JsonParseException("stat must be JsonObject");
+        if (!(json instanceof JsonObject)) throw new JsonParseException("stat must be JsonObject");
         JsonObject stat = json.getAsJsonObject();
 
         for (String key : stat.keySet()) {
