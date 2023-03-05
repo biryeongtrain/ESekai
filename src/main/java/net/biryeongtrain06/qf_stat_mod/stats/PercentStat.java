@@ -66,4 +66,10 @@ public class PercentStat implements IStats {
 
         return 0;
     }
+
+    @Override
+    public Object2FloatOpenHashMap<Identifier> getInstances(StatSubTag tag) {
+        if (tag != PERCENT) return null;
+        return map.get(tag).clone();
+    }
 }

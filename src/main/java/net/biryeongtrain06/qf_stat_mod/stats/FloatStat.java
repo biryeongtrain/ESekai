@@ -62,6 +62,11 @@ public class FloatStat implements IStats {
     }
 
     @Override
+    public Object2FloatOpenHashMap<Identifier> getInstances(StatSubTag tag) {
+        return map.get(tag).clone();
+    }
+
+    @Override
     public boolean removeStatInstance(Identifier id, StatSubTag tag) {
         if (!hasInstance(id, tag)) return false;
         Object2FloatOpenHashMap<Identifier> instance = map.get(tag);

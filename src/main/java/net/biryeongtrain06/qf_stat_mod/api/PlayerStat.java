@@ -1,5 +1,7 @@
 package net.biryeongtrain06.qf_stat_mod.api;
 
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import net.biryeongtrain06.qf_stat_mod.damage.QfDamageSource;
 import net.biryeongtrain06.qf_stat_mod.interfaces.IDamageSource;
@@ -30,6 +32,7 @@ import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes.*;
 
 @SuppressWarnings("unused")
 public class PlayerStat {
+
     private final EnumMap<StatTypes, IStats> instance = new EnumMap<>(StatTypes.class);
     private Identifier playerClassId = new NonePlayerClass().getClassId();
     @Getter

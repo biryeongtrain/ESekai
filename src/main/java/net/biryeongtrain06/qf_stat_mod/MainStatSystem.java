@@ -4,9 +4,10 @@ package net.biryeongtrain06.qf_stat_mod;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistryV3;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.biryeongtrain06.qf_stat_mod.components.ICommonEntityComponents;
-import net.biryeongtrain06.qf_stat_mod.utils.builder.TestBaseStatGsonLoader;
-import net.biryeongtrain06.qf_stat_mod.utils.builder.TestDataLoader;
+import net.biryeongtrain06.qf_stat_mod.stats.interfaces.IStats;
+import net.biryeongtrain06.qf_stat_mod.utils.builder.CommonStatJsonLoader;
 import net.biryeongtrain06.qf_stat_mod.utils.data.MobLevelDataLoader;
 import net.biryeongtrain06.qf_stat_mod.utils.data.MobXpDataLoader;
 import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemCallbacks;
@@ -22,6 +23,7 @@ import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 
 
@@ -33,6 +35,12 @@ public class MainStatSystem implements ModInitializer {
     public static final ComponentKey<ICommonEntityComponents> ENTITY_MODIFIERS = ComponentRegistryV3.INSTANCE.getOrCreate(new Identifier(MOD_ID, "entity_modifiers"), ICommonEntityComponents.class);
 
     public static final String MOD_DIR = FabricLoader.getInstance().getGameDir().toString().replace("run", "src");
+
+    public static Object2ObjectOpenHashMap<Identifier, EnumMap<StatTypes, IStats>> ENTITY_INIT_STATS = new Object2ObjectOpenHashMap<>();
+
+    public static void clearEntityStatMap() {
+        ENTITY_INIT_STATS.clear();
+    }
     @Override
     public void onInitialize() {
         QfStatSystemCallbacks.init();
@@ -41,10 +49,8 @@ public class MainStatSystem implements ModInitializer {
         QfStatSystemGameRules.setupGameRule();
         QfStatSystemDamageSources.init();
 
-        ServerLifecycleEvents.SERVER_STARTED.register(TestDataLoader::loadTest);
-        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((x, y, z) -> TestDataLoader.loadTest(x));
-        ServerLifecycleEvents.SERVER_STARTED.register(TestBaseStatGsonLoader::new);
-        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((x, y, z) -> new TestBaseStatGsonLoader(x));
+        ServerLifecycleEvents.SERVER_STARTED.register(CommonStatJsonLoader::new);
+        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((x, y, z) -> new CommonStatJsonLoader(x));
     }
 
     public static HashMap<StatTypes, Integer> getEntityDefensiveMap(ComponentProvider provider) {

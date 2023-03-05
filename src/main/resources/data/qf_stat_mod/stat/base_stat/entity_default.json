@@ -1,4 +1,5 @@
 {
+  "type" : "stat_data",
   "isBased" : true,
   "id" : "minecraft:mob",
   "stats" : {

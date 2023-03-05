@@ -1,5 +1,6 @@
 {
-  "version": 1,
+  "type" : "stat_data",
+  "isBased" : false,
   "id": "minecraft:player",
   "stat": {
     "HEALTH": {

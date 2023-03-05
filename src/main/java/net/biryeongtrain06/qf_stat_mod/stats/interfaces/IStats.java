@@ -1,5 +1,6 @@
 package net.biryeongtrain06.qf_stat_mod.stats.interfaces;
 
+import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag;
 import net.minecraft.util.Identifier;
@@ -15,4 +16,5 @@ public interface IStats {
     boolean removeStatInstance(Identifier id, StatSubTag tag);
     boolean hasInstance(Identifier id, StatSubTag tag);
     float getInstanceById(Identifier id, StatSubTag tag);
+    Object2FloatOpenHashMap<Identifier> getInstances(StatSubTag tag);
 }
