@@ -1,7 +1,7 @@
 {
   "isBased" : true,
   "id" : "minecraft:mob",
-  "stat" : {
+  "stats" : {
     "HEALTH": {
       "MULTIPLIER": 1.0,
       "PERCENT": 1.0,
