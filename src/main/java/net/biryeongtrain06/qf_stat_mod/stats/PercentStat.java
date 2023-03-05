@@ -14,9 +14,12 @@ public class PercentStat implements IStats {
     private final Object2ObjectOpenHashMap<StatSubTag, Object2FloatOpenHashMap<Identifier>> map = new Object2ObjectOpenHashMap<>();
 
     public PercentStat(float basePercent) {
-        map.put(PERCENT, new Object2FloatOpenHashMap<>());
-
+        this();
         map.get(PERCENT).put(getBaseStatId(), basePercent);
+    }
+
+    public PercentStat() {
+        map.put(PERCENT, new Object2FloatOpenHashMap<>());
     }
 
     @Override

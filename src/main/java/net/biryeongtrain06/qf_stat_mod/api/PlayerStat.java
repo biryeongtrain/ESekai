@@ -1,7 +1,6 @@
 package net.biryeongtrain06.qf_stat_mod.api;
 
 import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import net.biryeongtrain06.qf_stat_mod.damage.QfDamageSource;
 import net.biryeongtrain06.qf_stat_mod.interfaces.IDamageSource;
@@ -33,6 +32,7 @@ import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes.*;
 @SuppressWarnings("unused")
 public class PlayerStat {
 
+    @JsonAdapter(IStatGsonAdapter.class)
     private final EnumMap<StatTypes, IStats> instance = new EnumMap<>(StatTypes.class);
     private Identifier playerClassId = new NonePlayerClass().getClassId();
     @Getter
@@ -145,7 +145,7 @@ public class PlayerStat {
 
     public boolean tryReplaceInstance(StatTypes type, Identifier id, float value) {
         IStats stat = instance.get(type);
-        if (stat == null || !(stat instanceof PercentStat)) return false;
+        if (!(stat instanceof PercentStat)) return false;
         stat.tryReplaceInstance(id, value, PERCENT);
         return true;
     }
