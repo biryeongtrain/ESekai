@@ -39,7 +39,7 @@ public class BaseStatGsonLoader implements IStatGsonLoader{
             EnumMap<StatTypes, IStats> map;
             try (JsonReader reader = new JsonReader(new InputStreamReader(new FileInputStream(file)))) {
                 JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
-                if (!json.has("type") || !json.get("type").getAsString().equals("stat_type")) continue;
+                if (!json.has("type") || !json.get("type").getAsString().equals("stat_data")) continue;
                 if (!json.has("isBased") || !json.get("isBased").getAsBoolean()) {
                     continue;
                 }

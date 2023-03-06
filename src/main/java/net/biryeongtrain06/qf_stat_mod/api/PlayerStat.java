@@ -2,6 +2,7 @@ package net.biryeongtrain06.qf_stat_mod.api;
 
 import com.google.gson.annotations.JsonAdapter;
 import lombok.Getter;
+import net.biryeongtrain06.qf_stat_mod.MainStatSystem;
 import net.biryeongtrain06.qf_stat_mod.damage.QfDamageSource;
 import net.biryeongtrain06.qf_stat_mod.interfaces.IDamageSource;
 import net.biryeongtrain06.qf_stat_mod.player.playerclass.NonePlayerClass;
@@ -33,7 +34,7 @@ import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes.*;
 public class PlayerStat {
 
     @JsonAdapter(IStatGsonAdapter.class)
-    private final EnumMap<StatTypes, IStats> instance = new EnumMap<>(StatTypes.class);
+    private final EnumMap<StatTypes, IStats> instance;
     private Identifier playerClassId = new NonePlayerClass().getClassId();
     @Getter
     private int maxHealth = 100;
@@ -55,8 +56,8 @@ public class PlayerStat {
     private int totalSelectionPoint = 5;
 
     public PlayerStat(ServerPlayerEntity player) {
+        instance = MainStatSystem.ENTITY_INIT_STATS.get(new Identifier("minecraft:player")).clone();
         init(player);
-
     }
 
     public void setPlayer_class(IPlayerClass player_class) {
@@ -189,21 +190,21 @@ public class PlayerStat {
     }
 
     public void calculateMaxHealth(ServerPlayerEntity player) {
-        boolean isFullHealth = isFullHealth();
         int originalHealth = this.maxHealth;
 
         this.maxHealth = Math.round(instance.get(HEALTH).getTotalValue());
         if(maxHealth < 0) this.maxHealth = 1;
         int overDamagedRevisionValue = maxHealth - originalHealth;
 
+        boolean isFullHealth = isOverThanFullHealth();
         if (isFullHealth && overDamagedRevisionValue < 0) {
             this.currentHealth = MathHelper.clamp(originalHealth, 1, maxHealth);
         }
         syncWithVanillaHealth(player);
     }
 
-    public boolean isFullHealth() {
-        return this.currentHealth == this.maxHealth;
+    public boolean isOverThanFullHealth() {
+        return this.currentHealth >= this.maxHealth;
     }
 
     public void setCurrentHealth(ServerPlayerEntity player, float value) {
@@ -316,27 +317,6 @@ public class PlayerStat {
         }
     }
     public void init(ServerPlayerEntity player) {
-        instance.put(HEALTH, new FloatStat(100, 1, 1));
-        instance.put(REGEN_HEALTH_PER_SECOND, new FloatStat(5, 1 ,1));
-        instance.put(MANA, new FloatStat(100, 1, 1));
-        instance.put(REGEN_MANA_PER_SECOND, new FloatStat(5, 1, 1));
-        instance.put(ARMOR, new FloatStat(0, 1, 1));
-        instance.put(DODGE, new PercentStat(0));
-        instance.put(FIRE_RESISTANCE, new PercentStat(0));
-        instance.put(WATER_RESISTANCE, new PercentStat(0));
-        instance.put(EARTH_RESISTANCE, new PercentStat(0));
-        instance.put(LIGHT_RESISTANCE, new PercentStat(0));
-        instance.put(DARK_RESISTANCE, new PercentStat(0));
-        instance.put(BONUS_MELEE_DAMAGE, new FloatStat(0, 1, 1));
-        instance.put(BONUS_RANGED_DAMAGE, new FloatStat(0, 1, 1));
-        instance.put(HEAL_EFFICIENT, new FloatStat(0, 1, 1));
-        instance.put(BONUS_XP, new PercentStat(0));
-        instance.put(STRENGTH, new FloatStat(0, 1, 1));
-        instance.put(DEXTERITY, new FloatStat(0,1,1));
-        instance.put(CONSTITUTION, new FloatStat(0, 1, 1));
-        instance.put(INTELLIGENCE, new FloatStat(0, 1,1));
-        instance.put(WISDOM, new FloatStat(0,1,1));
-        instance.put(CHARISMA, new FloatStat(0,1,1));
 
         calculateMaxHealth(player);
         calculateMaxMana();

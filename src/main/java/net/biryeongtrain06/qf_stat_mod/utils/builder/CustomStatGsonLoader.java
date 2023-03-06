@@ -43,7 +43,8 @@ public class CustomStatGsonLoader implements IStatGsonLoader{
             EnumMap<StatTypes, IStats> map;
             try (JsonReader reader = new JsonReader(new InputStreamReader(new FileInputStream(file)))) {
                 JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
-                if (!json.has("type") || !json.get("type").getAsString().equals("stat_type")) continue;
+                Identifier id = new Identifier(json.get("id").getAsString());
+                if (!json.has("type") || !json.get("type").getAsString().equals("stat_data")) continue;
                 if (!json.has("isBased") || json.get("isBased").getAsBoolean()) {
                     continue;
                 }
@@ -51,8 +52,11 @@ public class CustomStatGsonLoader implements IStatGsonLoader{
                 JsonObject stats = json.get("stats").getAsJsonObject();
                 map = makeMap(stats, file);
                 if (map == null) continue;
-
-                ENTITY_INIT_STATS.put(new Identifier(json.get("id").getAsString()), map);
+                if (!ENTITY_INIT_STATS.containsKey(id)) {
+                    ENTITY_INIT_STATS.put(id, map);
+                    continue;
+                }
+                map.keySet().forEach(key -> ENTITY_INIT_STATS.get(id).put(key, map.get(key)));
             } catch (IOException e) {
                 debugLogger.error("Failed to read file: {}", file, e);
             }

@@ -18,7 +18,7 @@ public enum StatTypes {
     HEALTH("health", Formatting.RED, RESOURCE, false, false),
     REGEN_HEALTH_PER_SECOND("health_regen", Formatting.RED, RESOURCE, true, false),
     MANA("mana", Formatting.BLUE, RESOURCE, false, false),
-    REGEN_MANA_PER_SECOND("regen_mana", Formatting.BLUE, RESOURCE, false, false),
+    REGEN_MANA_PER_SECOND("mana_regen", Formatting.BLUE, RESOURCE, false, false),
     ARMOR("armor", Formatting.GRAY, DEFENSIVE, true, false),
     DODGE("dodge", Formatting.GREEN, DEFENSIVE, true, true),
     FIRE_RESISTANCE("fire_resistance", Formatting.RED, DEFENSIVE, true, true),

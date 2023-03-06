@@ -2,13 +2,13 @@
   "type" : "stat_data",
   "isBased" : false,
   "id": "minecraft:player",
-  "stat": {
+  "stats": {
     "HEALTH": {
       "PERCENT": 1.0,
       "FLAT": 100.0,
       "MULTIPLIER": 1.0
     },
-    "REGEN_HEALTH_PER_SECOND": {
+    "health_regen": {
       "PERCENT": 1.0,
       "FLAT": 5.0,
       "MULTIPLIER": 1.0
@@ -18,7 +18,7 @@
       "FLAT": 100.0,
       "MULTIPLIER": 1.0
     },
-    "REGEN_MANA_PER_SECOND": {
+    "mana_regen": {
       "PERCENT": 1.0,
       "FLAT": 5.0,
       "MULTIPLIER": 1.0
