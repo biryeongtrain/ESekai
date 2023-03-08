@@ -1,7 +1,7 @@
 {
   "type" : "stat_data",
   "isBased" : true,
-  "id" : "minecraft:mob",
+  "id" : "qf_stat_mod:default_mob",
   "stats" : {
     "HEALTH": {
       "MULTIPLIER": 1.0,
