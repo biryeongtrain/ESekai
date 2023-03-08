@@ -24,11 +24,11 @@ public class IStatGsonAdapter implements JsonSerializer<EnumMap<StatTypes, IStat
             JsonObject stat = new JsonObject();
             var iStat = src.get(key);
             if (iStat instanceof FloatStat) {
-                stat.add(FLAT.name(), convertMapAsJsonObject(iStat.getInstances(FLAT)));
-                stat.add(PERCENT.name(), convertMapAsJsonObject(iStat.getInstances(PERCENT)));
-                stat.add(MULTIPLIER.name(), convertMapAsJsonObject(iStat.getInstances(MULTIPLIER)));
+                stat.add(FLAT.name(), convertMapAsJsonObject(iStat.getCloneInstances(FLAT)));
+                stat.add(PERCENT.name(), convertMapAsJsonObject(iStat.getCloneInstances(PERCENT)));
+                stat.add(MULTIPLIER.name(), convertMapAsJsonObject(iStat.getCloneInstances(MULTIPLIER)));
             } else {
-                stat.add(PERCENT.name(), convertMapAsJsonObject(iStat.getInstances(PERCENT)));
+                stat.add(PERCENT.name(), convertMapAsJsonObject(iStat.getCloneInstances(PERCENT)));
             }
             jsonObject.add(key.getName(), stat);
         });

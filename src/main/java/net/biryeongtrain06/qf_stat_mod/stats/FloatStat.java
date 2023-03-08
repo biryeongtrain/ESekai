@@ -13,17 +13,17 @@ import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag.*;
 public class FloatStat implements IStats {
     private final Object2ObjectOpenHashMap<StatSubTag, Object2FloatOpenHashMap<Identifier>> map = new Object2ObjectOpenHashMap<>();
 
+    public FloatStat() {
+        map.put(FLAT, new Object2FloatOpenHashMap<>());
+        map.put(PERCENT, new Object2FloatOpenHashMap<>());
+        map.put(MULTIPLIER, new Object2FloatOpenHashMap<>());
+    }
+
     public FloatStat(float baseFlat, float basePercent, float baseMulti) {
         this();
         map.get(FLAT).put(getBaseStatId(), baseFlat);
         map.get(PERCENT).put(getBaseStatId(), basePercent);
         map.get(MULTIPLIER).put(getBaseStatId(), baseMulti);
-    }
-
-    public FloatStat() {
-        map.put(FLAT, new Object2FloatOpenHashMap<>());
-        map.put(PERCENT, new Object2FloatOpenHashMap<>());
-        map.put(MULTIPLIER, new Object2FloatOpenHashMap<>());
     }
 
     @Override
@@ -58,7 +58,7 @@ public class FloatStat implements IStats {
     }
 
     @Override
-    public float getInstanceById(Identifier id, StatSubTag tag) {
+    public float getInstanceValueById(Identifier id, StatSubTag tag) {
         var instanceMap = map.get(tag);
         if (instanceMap.containsKey(id)) return instanceMap.getFloat(id);
         return 0;
@@ -66,7 +66,7 @@ public class FloatStat implements IStats {
 
 
     @Override
-    public Object2FloatOpenHashMap<Identifier> getInstances(StatSubTag tag) {
+    public Object2FloatOpenHashMap<Identifier> getCloneInstances(StatSubTag tag) {
         return map.get(tag).clone();
     }
 

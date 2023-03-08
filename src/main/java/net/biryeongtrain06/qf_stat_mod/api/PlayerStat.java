@@ -120,7 +120,7 @@ public class PlayerStat {
         if (stat == null) return false;
         if (stat instanceof PercentStat && tag != PERCENT) return false;
 
-        if (hasInstance(e, id, tag)) value += stat.getInstanceById(id, tag);
+        if (hasInstance(e, id, tag)) value += stat.getInstanceValueById(id, tag);
         stat.addStatInstance(id, value, tag);
         if (e == HEALTH) calculateMaxHealth(player);
         if (e == MANA) calculateMaxMana();
@@ -139,7 +139,7 @@ public class PlayerStat {
         IStats stat = instance.get(e);
         if (stat == null) return false;
         if (!(stat instanceof PercentStat)) return false;
-        if(stat.hasInstance(id, PERCENT)) value += stat.getInstanceById(id, PERCENT);
+        if(stat.hasInstance(id, PERCENT)) value += stat.getInstanceValueById(id, PERCENT);
         stat.addStatInstance(id, value, PERCENT);
         return true;
     }
@@ -153,7 +153,7 @@ public class PlayerStat {
 
     public float getStatInstanceById(StatTypes e, Identifier id, StatSubTag tag) {
         IStats stat = instance.get(e);
-        return stat.getInstanceById(id, tag);
+        return stat.getInstanceValueById(id, tag);
     }
 
     public float getTotalStatValue(StatTypes e) {

@@ -61,7 +61,7 @@ public class PercentStat implements IStats {
     }
 
     @Override
-    public float getInstanceById(Identifier id, StatSubTag tag) {
+    public float getInstanceValueById(Identifier id, StatSubTag tag) {
         if (tag == PERCENT) return 0;
         var instanceMap = map.get(tag);
 
@@ -71,7 +71,7 @@ public class PercentStat implements IStats {
     }
 
     @Override
-    public Object2FloatOpenHashMap<Identifier> getInstances(StatSubTag tag) {
+    public Object2FloatOpenHashMap<Identifier> getCloneInstances(StatSubTag tag) {
         if (tag != PERCENT) return null;
         return map.get(tag).clone();
     }
