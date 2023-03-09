@@ -75,4 +75,9 @@ public class PercentStat implements IStats {
         if (tag != PERCENT) return null;
         return map.get(tag).clone();
     }
+
+    @Override
+    public Object2ObjectOpenHashMap<StatSubTag, Object2FloatOpenHashMap<Identifier>> getCloneMap() {
+        return this.map.clone();
+    }
 }
