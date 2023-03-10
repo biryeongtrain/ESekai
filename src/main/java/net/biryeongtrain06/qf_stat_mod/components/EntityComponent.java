@@ -41,7 +41,7 @@ public class EntityComponent implements INewCommonEntityComponents{
         this.provider = provider;
         this.instance = setEntityStat(EntityType.getId(provider.getType()));
         setRankRandomly();
-        setLevel();
+        setInitLevel();
     }
 
     private EnumMap<StatTypes, IStats> setEntityStat(Identifier id) {
@@ -53,7 +53,7 @@ public class EntityComponent implements INewCommonEntityComponents{
         return map;
     }
 
-    public void setLevel() {
+    private void setInitLevel() {
         final int MAX_LEVEL = ExpHandler.getMaxLevel();
         if (provider instanceof EnderDragonEntity) {
             this.level = (int) (MAX_LEVEL / 0.8);
@@ -85,7 +85,7 @@ public class EntityComponent implements INewCommonEntityComponents{
         return instance.get(stat);
     }
 
-    public void setRankRandomly() {
+    private void setRankRandomly() {
         if (!(this.rank.equals(EntityRank.UN_DECIDED))) {
             return;
         }
