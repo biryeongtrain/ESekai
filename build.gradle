@@ -43,7 +43,7 @@ dependencies {
     modImplementation include("eu.pb4:sidebar-api:0.1.2+1.19.3")
     modImplementation include("eu.pb4:player-data-api:0.2.2+1.19.3")
  //   modImplementation include("eu.pb4:polymer-core:0.3.9+1.19.3")
- //   modImplementation include("fr.catcore:server-translations-api:1.4.19+1.19.3")
+    modImplementation include("xyz.nucleoid:server-translations-api:2.0.0-beta.2+1.19.4-pre2")
     modImplementation include("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cardinal_version}")
     modImplementation include("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cardinal_version}")
     compileOnly 'org.projectlombok:lombok:1.18.26'
