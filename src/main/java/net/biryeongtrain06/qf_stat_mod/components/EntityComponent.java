@@ -3,11 +3,14 @@ package net.biryeongtrain06.qf_stat_mod.components;
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.entity.BaseEntityModifiers;
 import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemGameRules;
+import net.biryeongtrain06.qf_stat_mod.stats.FloatStat;
+import net.biryeongtrain06.qf_stat_mod.stats.PercentStat;
 import net.biryeongtrain06.qf_stat_mod.stats.interfaces.IStats;
 import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.PlayerHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.EntityRank;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
@@ -122,16 +125,17 @@ public class EntityComponent implements INewCommonEntityComponents{
     public void readFromNbt(NbtCompound tag) {
         this.healthIncreased = tag.getBoolean("healthIncreased");
         this.level = tag.getInt("level");
+        this.instance = ConvertNbtCompoundAsMap(tag);
     }
 
     @Override
     public void writeToNbt(NbtCompound tag) {
         tag.putBoolean("healthIncreased", healthIncreased);
         tag.putInt("level", level);
-        tag.put("stat", convertMapAsNbtCompound());
+        tag.put("stat", ConvertMapAsNbtCompound());
     }
 
-    private NbtCompound convertMapAsNbtCompound() {
+    private NbtCompound ConvertMapAsNbtCompound() {
         NbtCompound nbtCompound = new NbtCompound();
         instance.forEach(((statTypes, iStats) -> {
             // HEALTH, ARMOR etc...
@@ -153,7 +157,23 @@ public class EntityComponent implements INewCommonEntityComponents{
 
     private EnumMap<StatTypes, IStats> ConvertNbtCompoundAsMap(NbtCompound nbtCompound) {
         EnumMap<StatTypes, IStats> map = new EnumMap<>(StatTypes.class);
+        nbtCompound.getKeys().forEach(stat -> {
 
+            StatTypes type = StatTypes.getStatByName(stat);
+            IStats statClazz;
+            NbtCompound nbtCompound2 = nbtCompound.getCompound(stat); // FLAT, PERCENT, MULTI
+            if (nbtCompound2.getSize() == 3) statClazz = new FloatStat();
+            else statClazz = new PercentStat();
+
+            nbtCompound2.getKeys().forEach(tag -> {
+                NbtCompound nbtCompound3 = nbtCompound2.getCompound(tag); // ID , value
+
+                nbtCompound3.getKeys().forEach(id -> {
+                    statClazz.addStatInstance(new Identifier(id), nbtCompound3.getFloat(id), StatSubTag.getStatByName(tag));
+                });
+            });
+            map.put(type, statClazz);
+        });
         return map;
     }
 }
