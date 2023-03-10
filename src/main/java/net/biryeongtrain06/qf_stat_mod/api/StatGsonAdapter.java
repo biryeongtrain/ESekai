@@ -14,7 +14,7 @@ import java.util.EnumMap;
 
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag.*;
 
-public class IStatGsonAdapter implements JsonSerializer<EnumMap<StatTypes, IStats>>, JsonDeserializer<EnumMap<StatTypes, IStats>> {
+public class StatGsonAdapter implements JsonSerializer<EnumMap<StatTypes, IStats>>, JsonDeserializer<EnumMap<StatTypes, IStats>> {
 
 
     @Override

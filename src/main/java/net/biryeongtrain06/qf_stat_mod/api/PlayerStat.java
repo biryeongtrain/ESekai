@@ -33,7 +33,7 @@ import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes.*;
 @SuppressWarnings("unused")
 public class PlayerStat {
 
-    @JsonAdapter(IStatGsonAdapter.class)
+    @JsonAdapter(StatGsonAdapter.class)
     private final EnumMap<StatTypes, IStats> instance;
     private Identifier playerClassId = new NonePlayerClass().getClassId();
     @Getter
