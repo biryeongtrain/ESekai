@@ -61,7 +61,7 @@ public class QfStatSystemCallbacks {
     private static void entityHitPlayerCallback(ServerPlayerEntity player, LivingEntity entity, DamageSource source, float amount) {
         PlayerStat playerStat = DataStorage.loadPlayerStat(player);
         if ((player == null && entity == null) || !source.getType().equals(DamageTypes.MOB_PROJECTILE) || !source.getType().equals(DamageTypes.MOB_ATTACK) || !source.getType().equals(DamageTypes.PLAYER_ATTACK) || !source.getType().equals(DamageTypes.PLAYER_EXPLOSION) ) {
-            playerStat.damageEnvironmentDamage(source, player, amount);
+            playerStat.applyEnvironmentDamage(source, player, amount);
             return;
         }
         float random = (float) (Math.random() * 100);

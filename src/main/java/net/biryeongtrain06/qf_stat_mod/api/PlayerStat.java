@@ -57,10 +57,13 @@ public class PlayerStat {
 
     public PlayerStat(ServerPlayerEntity player) {
         instance = MainStatSystem.ENTITY_INIT_STATS.get(new Identifier("minecraft:player")).clone();
-        init(player);
+        calculateMaxHealth(player);
+        calculateMaxMana();
+        this.currentMana = getMaxMana();
+        this.currentHealth = getMaxHealth();
     }
 
-    public void setPlayer_class(IPlayerClass player_class) {
+    public void setPlayerClass(IPlayerClass player_class) {
         this.playerClassId = player_class.getClassId();
 
     }
@@ -101,7 +104,7 @@ public class PlayerStat {
         return this.needXpToLevelUp;
     }
 
-    public void dumpNeedXpToLevelUp() {
+    private void dumpNeedXpToLevelUp() {
         this.needXpToLevelUp = (float) (ExpHandler.getBaseLevelUpXpValue() * Math.pow(1 + ExpHandler.getLevelScaleModifier(), getLevel()));
     }
 
@@ -179,7 +182,7 @@ public class PlayerStat {
         this.setCurrentMana(value + currentMana);
     }
 
-    public void calculateMaxMana() {
+    private void calculateMaxMana() {
         boolean bl1 = this.currentMana == this.maxMana;
         int originalMana = this.maxMana;
 
@@ -189,7 +192,7 @@ public class PlayerStat {
         }
     }
 
-    public void calculateMaxHealth(ServerPlayerEntity player) {
+    private void calculateMaxHealth(ServerPlayerEntity player) {
         int originalHealth = this.maxHealth;
 
         this.maxHealth = Math.round(instance.get(HEALTH).getTotalValue());
@@ -203,7 +206,7 @@ public class PlayerStat {
         syncWithVanillaHealth(player);
     }
 
-    public boolean isOverThanFullHealth() {
+    private boolean isOverThanFullHealth() {
         return this.currentHealth >= this.maxHealth;
     }
 
@@ -216,7 +219,7 @@ public class PlayerStat {
         setCurrentHealth(player, this.currentHealth + value);
         syncWithVanillaHealth(player);
     }
-    public void syncWithVanillaHealth(ServerPlayerEntity player) {
+    private void syncWithVanillaHealth(ServerPlayerEntity player) {
         if (player.isDead()) {
             return;
         }
@@ -230,11 +233,11 @@ public class PlayerStat {
         return true;
     }
 
-    public boolean hasPerkPoint() {
+    private boolean hasPerkPoint() {
         return this.usedSelectionPoint < this.totalSelectionPoint;
     }
 
-    private boolean addPerkInstance(ServerPlayerEntity player, StatTypes type, Identifier id, float amount, StatSubTag tag) {
+    public boolean addPerkInstance(ServerPlayerEntity player, StatTypes type, Identifier id, float amount, StatSubTag tag) {
         if (type.tag != StatTypeTag.SUB_STAT) return false;
         this.tryAddNumberInstance(player, type, tag, id, amount);
         calculateSubStat(player, type);
@@ -289,7 +292,7 @@ public class PlayerStat {
         player.damage(qfDamageSource, vanillaDamage);
     }
 
-    public void damageEnvironmentDamage(DamageSource s, ServerPlayerEntity player, float amount) {
+    public void applyEnvironmentDamage(DamageSource s, ServerPlayerEntity player, float amount) {
         IDamageSource iDamageSource = (IDamageSource) player.getDamageSources();
         QfDamageSource source = iDamageSource.getQfDamageSourceWithEnvironment(s, amount);
         float calculatedValue = ( (float) maxHealth / 20 )* amount;
@@ -315,13 +318,6 @@ public class PlayerStat {
                 addCurrentMana(getTotalStatValue(REGEN_MANA_PER_SECOND));
             }
         }
-    }
-    public void init(ServerPlayerEntity player) {
-
-        calculateMaxHealth(player);
-        calculateMaxMana();
-        this.currentMana = getMaxMana();
-        this.currentHealth = getMaxHealth();
     }
 
 }

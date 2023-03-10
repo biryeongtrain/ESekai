@@ -31,7 +31,7 @@ public class PlayerStatHandler {
         IPlayerClass originalPlayerClass = PlayerHelper.getPlayerClass(playerStat.getPlayerClassId());
         playerStat = originalPlayerClass.onLostClass(player);
         Text debugPlayerClass = originalPlayerClass.getClassText();
-        playerStat.setPlayer_class(playerClass);
+        playerStat.setPlayerClass(playerClass);
         playerClass.onGetClass(player, playerStat);
         debugLogger.info("Player {}'s class changed : {} -> {}", player.getDisplayName(), debugPlayerClass, playerClass.getClassText());
     }

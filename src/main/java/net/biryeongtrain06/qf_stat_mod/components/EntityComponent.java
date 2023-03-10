@@ -115,6 +115,9 @@ public class EntityComponent implements INewCommonEntityComponents{
         provider.setHealth((float) provider.getAttributeValue(EntityAttributes.GENERIC_MAX_HEALTH));
     }
 
+    public void setLevel(int value) {
+        this.level = value;
+    }
 
     @Override
     public void serverTick() {
