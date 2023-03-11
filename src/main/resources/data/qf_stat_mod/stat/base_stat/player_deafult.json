@@ -52,6 +52,11 @@
       "PERCENT": 1.0,
       "FLAT": 0.0
     },
+    "BONUS_MAGIC_DAMAGE": {
+      "MULTIPLIER": 1.0,
+      "PERCENT": 1.0,
+      "FLAT": 0.0
+    },
     "HEAL_EFFICIENT": {
       "MULTIPLIER": 1.0,
       "PERCENT": 1.0,

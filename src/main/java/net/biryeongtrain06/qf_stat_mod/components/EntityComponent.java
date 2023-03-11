@@ -2,6 +2,7 @@ package net.biryeongtrain06.qf_stat_mod.components;
 
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.entity.BaseEntityModifiers;
+import net.biryeongtrain06.qf_stat_mod.entity.modifier.Modifier;
 import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemGameRules;
 import net.biryeongtrain06.qf_stat_mod.stats.FloatStat;
 import net.biryeongtrain06.qf_stat_mod.stats.PercentStat;
@@ -28,9 +29,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.ENTITY_INIT_STATS;
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.Elements.*;
@@ -44,6 +43,7 @@ public class EntityComponent implements INewCommonEntityComponents{
     private boolean healthIncreased = false;
     private boolean damageIncreased = false;
     private Elements element = Elements.PHYSICAL;
+    private List<Modifier> modifiers = new ArrayList<>();
 
 
     public EntityComponent(MobEntity provider) {

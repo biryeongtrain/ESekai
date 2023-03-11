@@ -7,11 +7,11 @@ import java.util.List;
 
 public enum EntityRank {
     UN_DECIDED("un_decided", 0, Formatting.WHITE, 1F, 0, 1F),
-    COMMON("common", 0, Formatting.WHITE, 1, 82, 1F),
-    RARE("rare", 1, Formatting.AQUA, 1.25F, 10, 1.5F),
-    UNIQUE("unique", 3, Formatting.LIGHT_PURPLE, 2F, 5, 3F),
-    LEGENDARY("legendary", 5, Formatting.GOLD, 5F, 2.5f, 5F),
-    MYTHIC("mythic", 7, Formatting.RED, 7F, 0.5f, 10F);
+    COMMON("common", 3, Formatting.WHITE, 1, 82, 1F),
+    RARE("rare", 5, Formatting.AQUA, 1.25F, 10, 1.5F),
+    UNIQUE("unique", 7, Formatting.LIGHT_PURPLE, 2F, 5, 3F),
+    LEGENDARY("legendary", 10, Formatting.GOLD, 5F, 2.5f, 5F),
+    MYTHIC("mythic", 15, Formatting.RED, 7F, 0.5f, 10F);
 
     EntityRank(String name, int abilities, Formatting color, float expScaling, float spawnChance, float statMultiplier) {
         this.name = name;

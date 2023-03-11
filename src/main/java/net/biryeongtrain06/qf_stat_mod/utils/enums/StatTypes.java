@@ -26,7 +26,7 @@ public enum StatTypes {
     EARTH_RESISTANCE("earth_resistance", Formatting.GREEN, DEFENSIVE, true, true),
     LIGHT_RESISTANCE("light_resistance", Formatting.LIGHT_PURPLE, DEFENSIVE, true, true),
     DARK_RESISTANCE("dark_resistance", Formatting.DARK_PURPLE, DEFENSIVE, true, true),
-    BONUS_MELEE_DAMAGE("bonus_melee_damage", Formatting.GRAY, OFFENSIVE, true, false),
+    BONUS_MELEE_DAMAGE("bonus_melee_damage", Formatting.GRAY, OFFENSIVE, false, false),
     BONUS_MAGIC_DAMAGE("bonus_magic_damage", Formatting.AQUA, OFFENSIVE, true, false),
     HEAL_EFFICIENT("heal_efficient", Formatting.WHITE, OFFENSIVE, true, false),
     BONUS_RANGED_DAMAGE("bonus_ranged_damage", Formatting.WHITE, OFFENSIVE, true, true),
