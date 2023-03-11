@@ -27,4 +27,5 @@ public interface INewCommonEntityComponents extends Component, ServerTickingComp
     boolean hasStatInstance(StatTypes type, Identifier id, StatSubTag tag);
     float getTotalStatValue(StatTypes type);
     IStats getStatClass(StatTypes stat);
+    Elements getElement();
 }

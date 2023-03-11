@@ -32,6 +32,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.ENTITY_MODIFIERS;
+import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes.DODGE;
 
 
 public class QfStatSystemCallbacks {
@@ -94,18 +95,17 @@ public class QfStatSystemCallbacks {
         if (!(victim instanceof HostileEntity) && !(victim instanceof LivingEntity)) {
             return ActionResult.PASS;
         }
-        HashMap<StatTypes, Integer> defensiveMap = MainStatSystem.getEntityDefensiveMap(victim.asComponentProvider());
         if (!(attacker instanceof ServerPlayerEntity)) {
             return ActionResult.PASS;
         }
-        int dodge = ENTITY_MODIFIERS.get(victim).getDodge();
+        float dodge = ENTITY_MODIFIERS.get(victim).getTotalStatValue(DODGE);
         if ((Math.random() * 100) < dodge) {
             return ActionResult.PASS;
         }
         ServerPlayerEntity player = (ServerPlayerEntity) attacker;
         ElementHandler elementHandler = new ElementHandler(player);
         Elements e = elementHandler.getElement();
-        int resistance = defensiveMap.get(e.getDefensiveStat());
+        float resistance = ENTITY_MODIFIERS.get(victim).getTotalStatValue(e.getDefensiveStat());
         amount = Elements.calculateDamageReduce(e, resistance, amount);
 
         DamageHandler damageHandler = new DamageHandler(victim);

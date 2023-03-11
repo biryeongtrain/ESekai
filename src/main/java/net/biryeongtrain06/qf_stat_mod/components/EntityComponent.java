@@ -64,15 +64,15 @@ public class EntityComponent implements INewCommonEntityComponents{
     }
 
     private void setInitLevel() {
+        if (provider.world.isClient) {
+            return;
+        }
         final int MAX_LEVEL = ExpHandler.getMaxLevel();
         if (provider instanceof EnderDragonEntity) {
             this.level = (int) (MAX_LEVEL / 0.8);
         }
         if (provider instanceof WitherEntity) {
             this.level =  (int) (MAX_LEVEL / 0.6);
-        }
-        if (provider.world.isClient) {
-            return;
         }
 
         final int SCALING_DISTANCE = ExpHandler.getScalingDistance();
@@ -265,6 +265,11 @@ public class EntityComponent implements INewCommonEntityComponents{
         tag.putInt("level", level);
         tag.put("stat", ConvertMapAsNbtCompound());
         tag.putString("element", element.getId().toString());
+    }
+
+    @Override
+    public Elements getElement() {
+        return this.element;
     }
 
     private NbtCompound ConvertMapAsNbtCompound() {

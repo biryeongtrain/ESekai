@@ -101,7 +101,7 @@ public enum Elements {
         return element.orElse(PHYSICAL);
     }
 
-    public static float calculateDamageReduce(Elements e, int resistance, float amount) {
+    public static float calculateDamageReduce(Elements e, float resistance, float amount) {
         if (resistance == 0) {
             return amount;
         }

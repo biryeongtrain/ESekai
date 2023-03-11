@@ -6,6 +6,7 @@ import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistryV3;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.biryeongtrain06.qf_stat_mod.components.ICommonEntityComponents;
+import net.biryeongtrain06.qf_stat_mod.components.INewCommonEntityComponents;
 import net.biryeongtrain06.qf_stat_mod.stats.interfaces.IStats;
 import net.biryeongtrain06.qf_stat_mod.utils.builder.CommonStatJsonLoader;
 import net.biryeongtrain06.qf_stat_mod.utils.data.MobLevelDataLoader;
@@ -32,7 +33,7 @@ public class MainStatSystem implements ModInitializer {
     public static final String MOD_ID ="qf_stat_mod";
     final public static Logger debugLogger = LogManager.getLogger("ESekai Debug");
 
-    public static final ComponentKey<ICommonEntityComponents> ENTITY_MODIFIERS = ComponentRegistryV3.INSTANCE.getOrCreate(new Identifier(MOD_ID, "entity_modifiers"), ICommonEntityComponents.class);
+    public static final ComponentKey<INewCommonEntityComponents> ENTITY_MODIFIERS = ComponentRegistryV3.INSTANCE.getOrCreate(new Identifier(MOD_ID, "entity_modifiers"), INewCommonEntityComponents.class);
 
     public static final String MOD_DIR = FabricLoader.getInstance().getGameDir().toString().replace("run", "src");
 
@@ -51,10 +52,6 @@ public class MainStatSystem implements ModInitializer {
 
         ServerLifecycleEvents.SERVER_STARTED.register(CommonStatJsonLoader::new);
         ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((x, y, z) -> new CommonStatJsonLoader(x));
-    }
-
-    public static HashMap<StatTypes, Integer> getEntityDefensiveMap(ComponentProvider provider) {
-        return ENTITY_MODIFIERS.get(provider).getDefensiveMap();
     }
 }
 
