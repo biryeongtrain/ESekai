@@ -3,6 +3,7 @@ package net.biryeongtrain06.qf_stat_mod.entity.modifier.passive.offensive;
 import net.biryeongtrain06.qf_stat_mod.entity.modifier.Modifier;
 import net.biryeongtrain06.qf_stat_mod.entity.modifier.ModifierSubType;
 import net.biryeongtrain06.qf_stat_mod.entity.modifier.ModifierType;
+import net.biryeongtrain06.qf_stat_mod.entity.modifier.stat.ModifierTier;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 
@@ -24,6 +25,11 @@ public class LifeStealModifier implements Modifier {
     @Override
     public ModifierSubType getModifierSubType() {
         return OFFENSIVE;
+    }
+
+    @Override
+    public ModifierTier getModifierTier() {
+        return ModifierTier.TIER_2;
     }
 
     @Override

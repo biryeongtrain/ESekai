@@ -1,5 +1,6 @@
 package net.biryeongtrain06.qf_stat_mod.entity.modifier;
 
+import net.biryeongtrain06.qf_stat_mod.entity.modifier.stat.ModifierTier;
 import net.biryeongtrain06.qf_stat_mod.stats.interfaces.IStats;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
 import net.minecraft.entity.LivingEntity;
@@ -11,10 +12,9 @@ import java.util.EnumMap;
 
 public interface Modifier {
     String getName();
-
     ModifierType getModifierType();
-
     ModifierSubType getModifierSubType();
+    ModifierTier getModifierTier();
 
     default EnumMap<StatTypes, IStats> getStatsMap() {
         return null;

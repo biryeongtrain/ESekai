@@ -11,10 +11,16 @@ import net.minecraft.util.Identifier;
 import java.util.EnumMap;
 
 public abstract class AbstractStatModifier implements Modifier {
-    protected Identifier statId = TextHelper.getId("stat_modifier");
+    final int level;
+    protected abstract Identifier getStatId();
     protected abstract EnumMap<StatTypes, IStats> getMap();
     protected abstract String getModifierName();
     protected abstract ModifierSubType getSubType();
+    protected abstract ModifierTier getTier();
+
+    public AbstractStatModifier(int level) {
+        this.level = level;
+    }
 
     @Override
     public String getName() {
@@ -34,5 +40,10 @@ public abstract class AbstractStatModifier implements Modifier {
     @Override
     public EnumMap<StatTypes, IStats> getStatsMap() {
         return getMap();
+    }
+
+    @Override
+    public ModifierTier getModifierTier() {
+        return getTier();
     }
 }
