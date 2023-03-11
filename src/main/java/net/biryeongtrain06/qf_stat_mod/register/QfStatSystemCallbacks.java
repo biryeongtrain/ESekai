@@ -38,8 +38,8 @@ public class QfStatSystemCallbacks {
     private static void playerJoinCallback(ServerPlayerEntity player) {
         IServerPlayerEntityDuck iPlayer = (IServerPlayerEntityDuck) player;
         if (!iPlayer.isPlayedBefore() || DataStorage.loadPlayerStat(player) == null) {
-            var PlayerStat = new PlayerStat(player);
-            DataStorage.savePlayerStat(player, PlayerStat);
+            PlayerStat playerStat = new PlayerStat(player);
+            DataStorage.savePlayerStat(player, playerStat);
             iPlayer.setPlayedBefore(true);
         }
         PlayerStatBar.Open(player);

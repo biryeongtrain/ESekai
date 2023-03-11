@@ -9,11 +9,13 @@ import net.biryeongtrain06.qf_stat_mod.stats.interfaces.IStats;
 import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.PlayerHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.Elements;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.EntityRank;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
@@ -21,13 +23,18 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.ENTITY_INIT_STATS;
+import static net.biryeongtrain06.qf_stat_mod.utils.enums.Elements.*;
+import static net.biryeongtrain06.qf_stat_mod.utils.enums.Elements.getPercent;
 
 public class EntityComponent implements INewCommonEntityComponents{
     private EnumMap<StatTypes, IStats> instance;
@@ -35,6 +42,8 @@ public class EntityComponent implements INewCommonEntityComponents{
     private int level;
     private EntityRank rank = EntityRank.UN_DECIDED;
     private boolean healthIncreased = false;
+    private boolean damageIncreased = false;
+    private Elements element = Elements.PHYSICAL;
 
 
     public EntityComponent(MobEntity provider) {
@@ -42,6 +51,7 @@ public class EntityComponent implements INewCommonEntityComponents{
         this.instance = setEntityStat(EntityType.getId(provider.getType()));
         setRankRandomly();
         setInitLevel();
+        initElement();
     }
 
     private EnumMap<StatTypes, IStats> setEntityStat(Identifier id) {
@@ -81,10 +91,6 @@ public class EntityComponent implements INewCommonEntityComponents{
         this.level = (int) (distance / SCALING_DISTANCE) + 1;
     }
 
-    public IStats getStatClass(StatTypes stat) {
-        return instance.get(stat);
-    }
-
     private void setRankRandomly() {
         if (!(this.rank.equals(EntityRank.UN_DECIDED))) {
             return;
@@ -113,29 +119,152 @@ public class EntityComponent implements INewCommonEntityComponents{
         if (entityAttributeInstance.hasModifier(BaseEntityModifiers.getBaseModifier())) entityAttributeInstance.addPersistentModifier(BaseEntityModifiers.getBaseModifier(value));
 
         provider.setHealth((float) provider.getAttributeValue(EntityAttributes.GENERIC_MAX_HEALTH));
+        provider.getWorld().getServer().sendMessage(Text.literal("Health : " + provider.getAttributeValue(EntityAttributes.GENERIC_MAX_HEALTH)));
     }
 
+    private void tryDamageIncrease() {
+        if (damageIncreased) {
+            return;
+        }
+        EntityAttributeInstance entityAttributeInstance = provider.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+        float originalDamage = (float) provider.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+        if (!entityAttributeInstance.hasModifier(BaseEntityModifiers.getBaseModifier())) entityAttributeInstance.addPersistentModifier(BaseEntityModifiers.getBaseModifier(Math.round(originalDamage * this.rank.getStatMultiplier())));
+        this.damageIncreased = true;
+        provider.getWorld().getServer().sendMessage(Text.literal(("Damage : " + provider.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE))));
+    }
+
+    private void initElement() {
+        HashMap<Elements, Integer> percent;
+        int roll = (int) (Math.random() * 100);
+        boolean gameRule = provider.getWorld().getGameRules().getBoolean(QfStatSystemGameRules.ENTITY_ELEMENT_SELECTION_TYPE);
+        if (gameRule) {
+            long time = provider.getWorld().getTimeOfDay();
+            long date = time % 24000;
+            int day = (int) (date % 7);
+            percent = switch (day) {
+                case 1 -> setPeakElement(PHYSICAL);
+                case 2 -> setPeakElement(FIRE);
+                case 3 -> setPeakElement(WATER);
+                case 4 -> setPeakElement(EARTH);
+                case 5 -> setPeakElement(LIGHT);
+                case 6 -> setPeakElement(DARK);
+                default -> getPercent();
+            };
+        } else percent = getPercent();
+        for (Map.Entry<Elements, Integer> elem : percent.entrySet()) {
+            if (roll <= elem.getValue()) {
+                this.element = elem.getKey();
+                return;
+            }
+            roll -= elem.getValue();
+        }
+    }
+
+    @Override
+    public IStats getStatClass(StatTypes stat) {
+        return instance.get(stat);
+    }
+
+    @Override
+    public void setBaseHealth(int value) {
+        EntityAttributeInstance entityAttributeInstance = provider.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
+        entityAttributeInstance.removeModifier(BaseEntityModifiers.getBaseModifier());
+        entityAttributeInstance.addPersistentModifier(BaseEntityModifiers.getBaseModifier(value));
+    }
+
+    @Override
+    public void addPersistentHealthInstance(EntityAttributeModifier modifier) {
+        EntityAttributeInstance entityAttributeInstance = provider.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
+        entityAttributeInstance.addPersistentModifier(modifier);
+    }
+
+    @Override
+    public void addTemporaryHealthInstance(EntityAttributeModifier modifier) {
+        EntityAttributeInstance entityAttributeInstance = provider.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
+        entityAttributeInstance.addTemporaryModifier(modifier);
+    }
+
+    @Override
+    public void setBaseDamage(int value) {
+        EntityAttributeInstance entityAttributeInstance = provider.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+        entityAttributeInstance.removeModifier(BaseEntityModifiers.getBaseModifier());
+        entityAttributeInstance.addPersistentModifier(BaseEntityModifiers.getBaseModifier(value));
+    }
+
+    @Override
+    public void addPersistentDamageInstance(EntityAttributeModifier modifier) {
+        EntityAttributeInstance entityAttributeInstance = provider.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+        entityAttributeInstance.addPersistentModifier(modifier);
+    }
+
+    @Override
+    public void addTemporaryDamageInstance(EntityAttributeModifier modifier) {
+        EntityAttributeInstance entityAttributeInstance = provider.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+        entityAttributeInstance.addTemporaryModifier(modifier);
+    }
+
+
+    @Override
     public void setLevel(int value) {
         this.level = value;
     }
 
     @Override
+    public void setElement(Elements element) {
+        this.element = element;
+    }
+
+    @Override
     public void serverTick() {
         tryIncreaseHealth();
+        tryDamageIncrease();
     }
+
+    @Override
+    public void addStatInstance(StatTypes type, Identifier id, float value, StatSubTag tag) {
+        if (checkStatUseOnlyPlayer(type)) return;
+        IStats stat = instance.get(type);
+        stat.addStatInstance(id, value, tag);
+    }
+
+    private boolean checkStatUseOnlyPlayer(StatTypes type) {
+        return type.isPlayerStat();
+    }
+    @Override
+    public boolean replaceStatInstance(StatTypes type, Identifier id, float value, StatSubTag tag) {
+        IStats stat = instance.get(type);
+        return stat.tryReplaceInstance(id, value, tag);
+    }
+    @Override
+    public boolean hasStatInstance(StatTypes type, Identifier id, StatSubTag tag) {
+        IStats stat = instance.get(type);
+        return stat.hasInstance(id, tag);
+    }
+
+    @Override
+    public float getTotalStatValue(StatTypes type) {
+        IStats stat = instance.get(type);
+        return stat.getTotalValue();
+    }
+
+
 
     @Override
     public void readFromNbt(NbtCompound tag) {
         this.healthIncreased = tag.getBoolean("healthIncreased");
+        this.damageIncreased = tag.getBoolean("damageIncreased");
         this.level = tag.getInt("level");
         this.instance = ConvertNbtCompoundAsMap(tag);
+        this.element = Elements.getElementWithId(new Identifier(tag.getString("element")));
     }
 
     @Override
     public void writeToNbt(NbtCompound tag) {
         tag.putBoolean("healthIncreased", healthIncreased);
+        tag.putBoolean("damageIncreased", damageIncreased);
         tag.putInt("level", level);
         tag.put("stat", ConvertMapAsNbtCompound());
+        tag.putString("element", element.getId().toString());
     }
 
     private NbtCompound ConvertMapAsNbtCompound() {
@@ -171,9 +300,7 @@ public class EntityComponent implements INewCommonEntityComponents{
             nbtCompound2.getKeys().forEach(tag -> {
                 NbtCompound nbtCompound3 = nbtCompound2.getCompound(tag); // ID , value
 
-                nbtCompound3.getKeys().forEach(id -> {
-                    statClazz.addStatInstance(new Identifier(id), nbtCompound3.getFloat(id), StatSubTag.getStatByName(tag));
-                });
+                nbtCompound3.getKeys().forEach(id -> statClazz.addStatInstance(new Identifier(id), nbtCompound3.getFloat(id), StatSubTag.getStatByName(tag)));
             });
             map.put(type, statClazz);
         });

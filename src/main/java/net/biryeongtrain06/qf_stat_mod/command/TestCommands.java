@@ -37,6 +37,7 @@ public class TestCommands {
             player.sendMessage(Text.literal("Unique : " + EntityRank.UNIQUE.getSpawnChance()));
             player.sendMessage(Text.literal("Legendary : " + EntityRank.LEGENDARY.getSpawnChance()));
             player.sendMessage(Text.literal("Mythic : " + EntityRank.MYTHIC.getSpawnChance()));
+            player.sendMessage(Text.literal("text case added"));
         } catch(Exception e) {
             e.printStackTrace();
         }
