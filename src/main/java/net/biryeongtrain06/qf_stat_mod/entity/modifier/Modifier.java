@@ -1,9 +1,13 @@
 package net.biryeongtrain06.qf_stat_mod.entity.modifier;
 
+import net.biryeongtrain06.qf_stat_mod.stats.interfaces.IStats;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
+
+import java.util.EnumMap;
 
 public interface Modifier {
     String getName();
@@ -12,7 +16,10 @@ public interface Modifier {
 
     ModifierSubType getModifierSubType();
 
-    default long getCooldown() {
+    default EnumMap<StatTypes, IStats> getStatsMap() {
+        return null;
+    }
+    default long getCoolDown() {
         return 0;
     }
 
@@ -27,7 +34,6 @@ public interface Modifier {
     default void passiveApply(MobEntity mobEntity) {
 
     }
-
     default void onDamaged(LivingEntity entity, DamageSource source, float amount) {}
 
     default boolean dealsSelfDamage() {

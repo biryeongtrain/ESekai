@@ -6,6 +6,8 @@ import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag;
 import net.minecraft.util.Identifier;
 
+import java.util.function.BiFunction;
+
 public interface IStats {
     default Identifier getBaseStatId() {
         return TextHelper.getId("base_value");
@@ -17,6 +19,7 @@ public interface IStats {
     boolean removeStatInstance(Identifier id, StatSubTag tag);
     boolean hasInstance(Identifier id, StatSubTag tag);
     float getInstanceValueById(Identifier id, StatSubTag tag);
+    void mergeInstance(Identifier id, StatSubTag tag, float value, BiFunction<? super Float, ? super Float, ? extends Float> remappingFunction);
     Object2FloatOpenHashMap<Identifier> getCloneInstances(StatSubTag tag);
     Object2ObjectOpenHashMap<StatSubTag, Object2FloatOpenHashMap<Identifier>> getCloneMap();
 }

@@ -68,7 +68,7 @@
       "FLAT": 0.0
     },
     "BONUS_XP": {
-      "PERCENT": 0.0
+      "PERCENT": 1.0
     },
     "STRENGTH": {
       "MULTIPLIER": 1.0,

@@ -7,6 +7,7 @@ import net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag;
 import net.minecraft.util.Identifier;
 
 import java.util.Optional;
+import java.util.function.BiFunction;
 
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag.*;
 
@@ -62,6 +63,12 @@ public class FloatStat implements IStats {
         var instanceMap = map.get(tag);
         if (instanceMap.containsKey(id)) return instanceMap.getFloat(id);
         return 0;
+    }
+
+    @Override
+    public void mergeInstance(Identifier id, StatSubTag tag, float value, BiFunction<? super Float, ? super Float, ? extends Float> remappingFunction) {
+        var instance = map.get(tag);
+        instance.merge(id, value, remappingFunction);
     }
 
 

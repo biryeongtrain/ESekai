@@ -7,6 +7,7 @@ import net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag;
 import net.minecraft.util.Identifier;
 
 import java.util.OptionalDouble;
+import java.util.function.BiFunction;
 
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag.PERCENT;
 
@@ -79,5 +80,11 @@ public class PercentStat implements IStats {
     @Override
     public Object2ObjectOpenHashMap<StatSubTag, Object2FloatOpenHashMap<Identifier>> getCloneMap() {
         return this.map.clone();
+    }
+
+    @Override
+    public void mergeInstance(Identifier id, StatSubTag tag, float value, BiFunction<? super Float, ? super Float, ? extends Float> remappingFunction) {
+        var instance = map.get(tag);
+        instance.merge(id, value, remappingFunction);
     }
 }

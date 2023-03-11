@@ -77,6 +77,16 @@ public class PlayerStat {
 
 
     public void addXP(ServerPlayerEntity player, float i) {
+        this.xp += i * instance.get(BONUS_XP).getTotalValue();
+
+        if (xp >= needXpToLevelUp) {
+            this.xp-= needXpToLevelUp;
+            addLevel(player, 1);
+            this.needXpToLevelUp = (float) (ExpHandler.getBaseLevelUpXpValue() * Math.pow(1 + ExpHandler.getLevelScaleModifier(), getLevel()));
+        }
+    }
+
+    public void addXpConstant(ServerPlayerEntity player, float i) {
         this.xp += i;
 
         if (xp >= needXpToLevelUp) {
