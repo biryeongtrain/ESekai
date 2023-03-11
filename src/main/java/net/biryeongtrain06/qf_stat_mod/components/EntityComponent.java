@@ -255,7 +255,7 @@ public class EntityComponent implements INewCommonEntityComponents{
         this.healthIncreased = tag.getBoolean("healthIncreased");
         this.damageIncreased = tag.getBoolean("damageIncreased");
         this.level = tag.getInt("level");
-        this.instance = ConvertNbtCompoundAsMap(tag);
+        this.instance = ConvertNbtCompoundAsMap(tag.getCompound("stat"));
         this.element = Elements.getElementWithId(new Identifier(tag.getString("element")));
     }
 
@@ -295,7 +295,7 @@ public class EntityComponent implements INewCommonEntityComponents{
 
     private EnumMap<StatTypes, IStats> ConvertNbtCompoundAsMap(NbtCompound nbtCompound) {
         EnumMap<StatTypes, IStats> map = new EnumMap<>(StatTypes.class);
-        nbtCompound.getKeys().forEach(stat -> {
+        nbtCompound.getKeys().forEach(stat -> { // Root
 
             StatTypes type = StatTypes.getStatByName(stat);
             IStats statClazz;
