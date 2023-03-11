@@ -3,16 +3,6 @@
   "isBased" : true,
   "id" : "qf_stat_mod:default_mob",
   "stats" : {
-    "HEALTH": {
-      "MULTIPLIER": 1.0,
-      "PERCENT": 1.0,
-      "FLAT": 100.0
-    },
-    "MANA": {
-      "MULTIPLIER": 1.0,
-      "PERCENT": 1.0,
-      "FLAT": 100.0
-    },
     "ARMOR": {
       "MULTIPLIER": 1.0,
       "PERCENT": 1.0,

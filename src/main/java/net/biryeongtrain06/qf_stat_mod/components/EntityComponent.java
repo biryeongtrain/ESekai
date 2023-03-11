@@ -58,7 +58,7 @@ public class EntityComponent implements INewCommonEntityComponents{
         EnumMap<StatTypes, IStats> map = ENTITY_INIT_STATS.get(TextHelper.getId("default_mob"));
         EnumMap<StatTypes, IStats> replaceMap = ENTITY_INIT_STATS.get(id);
 
-        if (replaceMap.isEmpty()) return map;
+        if (replaceMap == null || replaceMap.isEmpty()) return map;
         replaceMap.keySet().forEach(key -> map.put(key, replaceMap.get(key)));
         return map;
     }
@@ -116,10 +116,11 @@ public class EntityComponent implements INewCommonEntityComponents{
         }
         int value = Math.round(provider.getMaxHealth() * level * rank.getStatMultiplier());
         EntityAttributeInstance entityAttributeInstance = provider.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
-        if (entityAttributeInstance.hasModifier(BaseEntityModifiers.getBaseModifier())) entityAttributeInstance.addPersistentModifier(BaseEntityModifiers.getBaseModifier(value));
+        if (!entityAttributeInstance.hasModifier(BaseEntityModifiers.getBaseModifier())) entityAttributeInstance.addPersistentModifier(BaseEntityModifiers.getBaseModifier(value));
 
         provider.setHealth((float) provider.getAttributeValue(EntityAttributes.GENERIC_MAX_HEALTH));
         provider.getWorld().getServer().sendMessage(Text.literal("Health : " + provider.getAttributeValue(EntityAttributes.GENERIC_MAX_HEALTH)));
+        this.healthIncreased = true;
     }
 
     private void tryDamageIncrease() {
