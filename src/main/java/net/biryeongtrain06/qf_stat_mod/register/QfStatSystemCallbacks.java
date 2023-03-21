@@ -22,6 +22,7 @@ import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
@@ -32,6 +33,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.ENTITY_MODIFIERS;
+import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.debugLogger;
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes.DODGE;
 
 
@@ -61,7 +63,7 @@ public class QfStatSystemCallbacks {
 
     private static void entityHitPlayerCallback(ServerPlayerEntity player, LivingEntity entity, DamageSource source, float amount) {
         PlayerStat playerStat = DataStorage.loadPlayerStat(player);
-        if ((player == null && entity == null) || !source.getType().equals(DamageTypes.MOB_PROJECTILE) || !source.getType().equals(DamageTypes.MOB_ATTACK) || !source.getType().equals(DamageTypes.PLAYER_ATTACK) || !source.getType().equals(DamageTypes.PLAYER_EXPLOSION) ) {
+        if ((entity == null) || (source.getAttacker() == null && !source.isIndirect())) {
             playerStat.applyEnvironmentDamage(source, player, amount);
             return;
         }

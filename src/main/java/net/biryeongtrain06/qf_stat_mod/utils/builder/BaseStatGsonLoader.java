@@ -30,7 +30,7 @@ public class BaseStatGsonLoader implements IStatGsonLoader{
 
     @Override
     public String getDir() {
-        return MOD_DIR + "/main/resources/data/" + MOD_ID + "/stat/base_stat";
+        return MOD_DIR + "/" + MOD_ID + "/stat/base_stat";
     }
 
     @Override

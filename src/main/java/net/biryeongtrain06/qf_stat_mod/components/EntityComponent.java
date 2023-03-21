@@ -275,6 +275,7 @@ public class EntityComponent implements INewCommonEntityComponents{
 
     private NbtCompound ConvertMapAsNbtCompound() {
         NbtCompound nbtCompound = new NbtCompound();
+        if (instance == null) this.instance = setEntityStat(EntityType.getId(provider.getType()));
         instance.forEach(((statTypes, iStats) -> {
             // HEALTH, ARMOR etc...
             String typeName = statTypes.getName();

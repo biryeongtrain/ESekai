@@ -8,6 +8,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.biryeongtrain06.qf_stat_mod.components.ICommonEntityComponents;
 import net.biryeongtrain06.qf_stat_mod.components.INewCommonEntityComponents;
 import net.biryeongtrain06.qf_stat_mod.stats.interfaces.IStats;
+import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.builder.CommonStatJsonLoader;
 import net.biryeongtrain06.qf_stat_mod.utils.data.MobLevelDataLoader;
 import net.biryeongtrain06.qf_stat_mod.utils.data.MobXpDataLoader;
@@ -19,6 +20,8 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.impl.game.minecraft.launchwrapper.FabricServerTweaker;
+import net.fabricmc.loader.impl.launch.server.FabricServerLauncher;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
@@ -35,7 +38,7 @@ public class MainStatSystem implements ModInitializer {
 
     public static final ComponentKey<INewCommonEntityComponents> ENTITY_MODIFIERS = ComponentRegistryV3.INSTANCE.getOrCreate(new Identifier(MOD_ID, "entity_modifiers"), INewCommonEntityComponents.class);
 
-    public static final String MOD_DIR = FabricLoader.getInstance().getGameDir().toString().replace("run", "src");
+    public static final String MOD_DIR = FabricLoader.getInstance().getModContainer(MOD_ID).get().findPath("data").get().normalize().toString();
 
     public static Object2ObjectOpenHashMap<Identifier, EnumMap<StatTypes, IStats>> ENTITY_INIT_STATS = new Object2ObjectOpenHashMap<>();
 
@@ -50,8 +53,10 @@ public class MainStatSystem implements ModInitializer {
         QfStatSystemGameRules.setupGameRule();
         QfStatSystemDamageSources.init();
 
-        ServerLifecycleEvents.SERVER_STARTED.register(CommonStatJsonLoader::new);
-        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((x, y, z) -> new CommonStatJsonLoader(x));
+        Identifier phase = TextHelper.getId("json_loader");
+        ServerLifecycleEvents.SERVER_STARTING.register(phase, CommonStatJsonLoader::setJsonData);
+        ServerLifecycleEvents.START_DATA_PACK_RELOAD.register(phase, (x, y) -> CommonStatJsonLoader.setJsonData(x));
+        FabricLoader.getInstance().getModContainer(MOD_ID);
     }
 }
 

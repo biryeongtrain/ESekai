@@ -1,6 +1,9 @@
 package net.biryeongtrain06.qf_stat_mod.mixin;
 
+import io.netty.buffer.ByteBuf;
+import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.Elements;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
@@ -11,6 +14,7 @@ import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
@@ -18,14 +22,18 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 
+import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.debugLogger;
 import static net.biryeongtrain06.qf_stat_mod.item.ElementHandler.ITEM_ELEMENT_KEY;
+import static net.biryeongtrain06.qf_stat_mod.item.ItemStatHandler.STAT_KEY;
 import static net.minecraft.item.ItemStack.DISPLAY_KEY;
 import static net.minecraft.item.ItemStack.LORE_KEY;
 import static net.minecraft.nbt.NbtElement.LIST_TYPE;
 import static net.minecraft.nbt.NbtElement.STRING_TYPE;
 
 @Mixin(value = PacketByteBuf.class, priority = 700)
-public class PacketByteBufMixin {
+public abstract class PacketByteBufMixin {
+
+    @Shadow public abstract ByteBuf setByte(int index, int value);
 
     @ModifyVariable(method = "writeItemStack", at = @At("HEAD"), argsOnly = true)
     private ItemStack qf$addLore(ItemStack stack) {
@@ -43,14 +51,18 @@ public class PacketByteBufMixin {
 
     @Contract("_ -> param1")
     private @NotNull ItemStack appendElementLore(@NotNull ItemStack stack) {
-        NbtCompound display = stack.getNbt().getCompound(DISPLAY_KEY);
+        NbtCompound display = stack.getOrCreateSubNbt(DISPLAY_KEY);
         NbtList list = display.getList(LORE_KEY, STRING_TYPE);
+        if (list == null) list = new NbtList();
         Elements element = Elements.getElementWithId(new Identifier(stack.getNbt().getString(ITEM_ELEMENT_KEY)));
         NbtString elementText = NbtString.of(Text.Serializer.toJson(element.getLoreText()));
 
-        if (list.contains(elementText)) {
+        if (!list.contains(elementText)) {
             list.add(elementText);
         }
+
+        list.add(NbtString.of(Text.Serializer.toJson(Text.empty())));
+        list = setStatList(stack, list);
         display.put(LORE_KEY, list);
         stack.getOrCreateNbt().put(DISPLAY_KEY, display);
         return stack;
@@ -64,5 +76,20 @@ public class PacketByteBufMixin {
             return;
         }
         list.remove(element.getLoreText());
+    }
+
+    private NbtList setStatList(ItemStack stack, NbtList list) {
+        NbtCompound statRootCompound = stack.getNbt().getCompound(STAT_KEY);
+        statRootCompound.getKeys().forEach(statType -> { // stat -> health 등등 -> flat / percent / -> value
+            StatTypes statEnum = StatTypes.getStatByName((statType));
+            NbtCompound statCompound = statRootCompound.getCompound(statType);
+
+            statCompound.getKeys().forEach(subtag -> {
+                float value = statCompound.getFloat(subtag);
+                if (!subtag.toLowerCase().equals("flat")) value *= 100;
+                list.add(NbtString.of(Text.Serializer.toJson(Text.translatable(TextHelper.createTranslation(subtag.toLowerCase()) + "_tooltip", new Object[]{statEnum.getTranslatableName(), value}).formatted(statEnum.getFormat()))));
+            });
+        });
+        return list;
     }
 }

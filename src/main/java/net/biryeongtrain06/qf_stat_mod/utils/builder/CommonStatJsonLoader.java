@@ -6,9 +6,13 @@ import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.clearEntityStatMap;
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.debugLogger;
 
 public class CommonStatJsonLoader {
-    IStatGsonLoader baseStatLoader = new BaseStatGsonLoader();
-    IStatGsonLoader customStatLoader = new CustomStatGsonLoader();
-    public CommonStatJsonLoader(MinecraftServer server) {
+    private static IStatGsonLoader baseStatLoader;
+    private static IStatGsonLoader customStatLoader;
+    public static void setJsonData(MinecraftServer server) {
+
+        baseStatLoader = new BaseStatGsonLoader();
+        customStatLoader = new CustomStatGsonLoader();
+
         clearEntityStatMap();
         baseStatLoader.setStats();
         customStatLoader.setStats();
