@@ -72,7 +72,7 @@ public class QfStatSystemCallbacks {
         Elements element = null;
         if (entity instanceof ServerPlayerEntity) {
             ServerPlayerEntity player2 = (ServerPlayerEntity) entity;
-            element = ItemStats.getPlayerItemElement(player);
+            element = ItemStats.getPlayerItemElement(player2);
         } else if (entity instanceof HostileEntity) {
             element = ENTITY_MODIFIERS.get(entity).getElement();
         }

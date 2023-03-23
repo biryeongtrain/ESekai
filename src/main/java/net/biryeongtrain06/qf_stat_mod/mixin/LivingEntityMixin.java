@@ -24,7 +24,7 @@ import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.ENTITY_MODIFIERS;
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
 
-    @Inject(method = "heal", at = @At("HEAD"))
+    @Inject(method = "heal", at = @At("HEAD"), cancellable = true)
     public void heal(float amount, CallbackInfo ci) {
         LivingEntity entity = (LivingEntity) (Object) this;
         if (entity instanceof PlayerEntity) {
@@ -32,6 +32,7 @@ public class LivingEntityMixin {
             PlayerStat stat = DataStorage.loadPlayerStat(player);
             stat.addCurrentHealth(player, amount);
             DataStorage.savePlayerStat(player, stat);
+            ci.cancel();
         }
     }
 

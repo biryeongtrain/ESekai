@@ -233,7 +233,8 @@ public class PlayerStat {
         if (player.isDead()) {
             return;
         }
-        player.setHealth(MathHelper.clamp((float) Math.floor(getCurrentHealth() / getMaxHealth() * 20), 0f, player.getMaxHealth()));
+        float value = (float) Math.ceil(getCurrentHealth() / getMaxHealth() * 20);
+        player.setHealth(MathHelper.clamp(value, 0f, player.getMaxHealth()));
     }
 
     public boolean tryAddPerkInstance(ServerPlayerEntity player, StatTypes type, Identifier id, float amount, StatSubTag tag) {
@@ -295,7 +296,7 @@ public class PlayerStat {
         QfDamageSource qfDamageSource = !s.isIn(DamageTypeTags.IS_PROJECTILE) ? iDamageSource.getQfDamageSourceWithMeleeAttack(s, element, amount) :
                 iDamageSource.getQfDamageSourceWithProjectileAttack(s, element, amount);
 
-        this.addCurrentHealth(player, -calculatedDamage);
+        this.damageRPGHealth(qfDamageSource, player, -calculatedDamage);
         float vanillaDamage = (amount / this.maxHealth) * player.getMaxHealth();
         player.hurtTime = 0;
 
@@ -306,8 +307,13 @@ public class PlayerStat {
         IDamageSource iDamageSource = (IDamageSource) player.getDamageSources();
         QfDamageSource source = iDamageSource.getQfDamageSourceWithEnvironment(s, amount);
         float calculatedValue = ( (float) maxHealth / 20 )* amount;
-        this.addCurrentHealth(player, -calculatedValue);
+        this.damageRPGHealth(source, player, -calculatedValue);
         player.damage(source, amount);
+    }
+
+    public void damageRPGHealth(DamageSource s, ServerPlayerEntity player, float value) {
+        this.currentHealth += value;
+        if (this.currentHealth <= 0) player.damage(s, player.getMaxHealth());
     }
     private float calculateDamageReduce(Elements element, float amount) {
         var defensiveElement = element.getDefensiveStat();

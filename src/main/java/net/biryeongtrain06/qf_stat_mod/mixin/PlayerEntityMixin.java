@@ -27,16 +27,6 @@ public class PlayerEntityMixin {
         PlayerEntity player = (PlayerEntity)(Object) this;
         PlayerKilledOtherCallback.EVENT.invoker().onKilledOther(player, entity);
     }
-    @Inject(method = "applyDamage", at = @At("HEAD"), cancellable = true)
-    public void applyDamageHook(DamageSource source, float amount, CallbackInfo ci) {
-        PlayerEntity player = (PlayerEntity) (Object) this;
-        if (!(player instanceof ServerPlayerEntity)) return;
-        if (source.isIn(DamageTypeTags.BYPASSES_INVULNERABILITY)) return;
-        if ((source instanceof QfDamageSource)) return;
-
-        PlayerHitByEntityCallback.EVENT.invoker().onHit((ServerPlayerEntity) player, (LivingEntity) source.getSource(), source, amount);
-        ci.cancel();
-    }
 
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getMaxHealth()F", opcode = Opcodes.GETFIELD))
     private float disableNatureGeneration(PlayerEntity instance) {

@@ -4,11 +4,13 @@ import io.netty.buffer.ByteBuf;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.Elements;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Contract;
@@ -37,7 +39,7 @@ public abstract class PacketByteBufMixin {
 
     @ModifyVariable(method = "writeItemStack", at = @At("HEAD"), argsOnly = true)
     private ItemStack qf$addLore(ItemStack stack) {
-        if (stack.getNbt() == null || stack.getNbt().getString(ITEM_ELEMENT_KEY) == null) {
+        if (stack.getNbt() == null || stack.getNbt().getString(ITEM_ELEMENT_KEY) == null || !stack.isDamageable() || stack.isStackable()) {
             return stack;
         }
         if (stack.getSubNbt(DISPLAY_KEY) != null) {
@@ -54,14 +56,16 @@ public abstract class PacketByteBufMixin {
         NbtCompound display = stack.getOrCreateSubNbt(DISPLAY_KEY);
         NbtList list = display.getList(LORE_KEY, STRING_TYPE);
         if (list == null) list = new NbtList();
-        Elements element = Elements.getElementWithId(new Identifier(stack.getNbt().getString(ITEM_ELEMENT_KEY)));
-        NbtString elementText = NbtString.of(Text.Serializer.toJson(element.getLoreText()));
+        if (!(stack.getItem() instanceof ArmorItem)) {
+            Elements element = Elements.getElementWithId(new Identifier(stack.getNbt().getString(ITEM_ELEMENT_KEY)));
+            NbtString elementText = NbtString.of(Text.Serializer.toJson(element.getLoreText()));
 
-        if (!list.contains(elementText)) {
-            list.add(elementText);
+            if (!list.contains(elementText)) {
+                list.add(elementText);
+            }
+
+            list.add(NbtString.of(Text.Serializer.toJson(Text.empty())));
         }
-
-        list.add(NbtString.of(Text.Serializer.toJson(Text.empty())));
         list = setStatList(stack, list);
         display.put(LORE_KEY, list);
         stack.getOrCreateNbt().put(DISPLAY_KEY, display);

@@ -38,6 +38,19 @@ public abstract class   ServerPlayerEntityMixin implements IServerPlayerEntityDu
         this.isDisplaySystemMessage = nbt.getBoolean("isDisplaySystemMessage");
     }
 
+    @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
+    public void applyDamageHook(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        PlayerEntity player = (PlayerEntity) (Object) this;
+        if (!(player instanceof ServerPlayerEntity)) return;
+        if (source.isIn(DamageTypeTags.BYPASSES_INVULNERABILITY)) return;
+        if ((source instanceof QfDamageSource)) return;
+
+        if(source.getAttacker() instanceof LivingEntity || source.getAttacker() == null) {
+            PlayerHitByEntityCallback.EVENT.invoker().onHit((ServerPlayerEntity) player, (LivingEntity) source.getSource(), source, amount);
+        }
+        cir.cancel();
+    }
+
     @Inject(at = @At("HEAD"), method = ("tick"))
     public void displayHealthBar(CallbackInfo ci) {
         ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;

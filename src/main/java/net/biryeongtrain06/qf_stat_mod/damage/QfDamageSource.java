@@ -41,6 +41,7 @@ public class QfDamageSource extends DamageSource {
 
     @Override
     public Text getDeathMessage(LivingEntity killed) {
+        if (this.getSource() == null && this.getAttacker() == null) return originalDamageSource.getDeathMessage(killed);
         String string = MOD_ID + ".death." + this.getType().msgId() + ".player";
         Text text = this.getAttacker() == null ? this.getSource().getDisplayName() : this.getAttacker().getDisplayName();
         if (this.getAttacker() == null && this.getSource() == null) {
