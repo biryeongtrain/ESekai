@@ -70,9 +70,6 @@ public class QfStatSystemCommands {
                 literal("getItemStat")
                         .executes(TestCommands::getItemStat)
         );
-        dispatcher.register(
-                literal("setItemStat")
-                        .executes(TestCommands::setItemStat)
-        );
+        SetItemStatCommand.register(dispatcher);
     }
 }

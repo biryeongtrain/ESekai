@@ -39,12 +39,12 @@ public enum StatTypes {
     CHARISMA("charisma", Formatting.GREEN, SUB_STAT, false, false),
     SELECT_POINT("select_point", Formatting.WHITE, SYSTEM, false, false);
 
-    public final String name;
-    public final Text translatableName;
-    public final Formatting format;
-    public final StatTypeTag tag;
-    public final Boolean entityCanUseThisStat;
-    public final Boolean isOnlyPercent;
+    private final String name;
+    private final Text translatableName;
+    private final Formatting format;
+    private final StatTypeTag tag;
+    private final Boolean entityCanUseThisStat;
+    private final Boolean isOnlyPercent;
 
     StatTypes(String name, Formatting format, StatTypeTag tag, boolean entityCanUseThisStat, boolean isOnlyPercent) {
         this.name = name;
