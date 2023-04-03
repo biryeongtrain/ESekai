@@ -2,14 +2,13 @@ package net.biryeongtrain06.qf_stat_mod;
 
 
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
-import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistryV3;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import net.biryeongtrain06.qf_stat_mod.components.ICommonEntityComponents;
+import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.components.INewCommonEntityComponents;
 import net.biryeongtrain06.qf_stat_mod.stats.interfaces.IStats;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
-import net.biryeongtrain06.qf_stat_mod.utils.builder.CommonStatJsonLoader;
+import net.biryeongtrain06.qf_stat_mod.utils.loader.CommonStatJsonLoader;
 import net.biryeongtrain06.qf_stat_mod.utils.data.MobLevelDataLoader;
 import net.biryeongtrain06.qf_stat_mod.utils.data.MobXpDataLoader;
 import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemCallbacks;
@@ -20,15 +19,12 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.impl.game.minecraft.launchwrapper.FabricServerTweaker;
-import net.fabricmc.loader.impl.launch.server.FabricServerLauncher;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.EnumMap;
-import java.util.HashMap;
 
 
 public class MainStatSystem implements ModInitializer {
@@ -47,6 +43,7 @@ public class MainStatSystem implements ModInitializer {
     }
     @Override
     public void onInitialize() {
+        DataStorage.registerAllDataStorage();
         QfStatSystemCallbacks.init();
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new MobXpDataLoader());
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new MobLevelDataLoader());

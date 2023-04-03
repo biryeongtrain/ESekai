@@ -2,7 +2,6 @@ package net.biryeongtrain06.qf_stat_mod.player.playerclass;
 
 import net.biryeongtrain06.qf_stat_mod.api.BasicPlayerClass;
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
-import net.biryeongtrain06.qf_stat_mod.api.IPlayerClass;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -11,7 +10,7 @@ import net.minecraft.util.Identifier;
 
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.MOD_ID;
 
-public class NonePlayerClass extends BasicPlayerClass implements IPlayerClass {
+public class NonePlayerClass extends BasicPlayerClass {
     @Override
     public void onGetClass(ServerPlayerEntity player, PlayerStat playerStat) {
         sendClassGainMessage(player);

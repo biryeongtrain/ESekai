@@ -11,6 +11,7 @@ import net.biryeongtrain06.qf_stat_mod.stats.PercentStat;
 import net.biryeongtrain06.qf_stat_mod.stats.interfaces.IStats;
 import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
+import net.biryeongtrain06.qf_stat_mod.utils.StatGsonAdapter;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.Elements;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypeTag;
@@ -119,7 +120,7 @@ public class PlayerStat {
     }
 
     public boolean tryAddUnknownInstance(ServerPlayerEntity player, StatTypes type, StatSubTag tag, Identifier id, float value) {
-        if (type.tag == StatTypeTag.SUB_STAT) return addPerkInstance(player, type, id, value, tag);
+        if (type.getTag() == StatTypeTag.SUB_STAT) return addPerkInstance(player, type, id, value, tag);
         if (instance.get(type) instanceof PercentStat) {
             return this.tryAddPercentInstance(type, id, value);
         }
@@ -128,6 +129,7 @@ public class PlayerStat {
         }
         return false;
     }
+
     public boolean tryAddNumberInstance(ServerPlayerEntity player, StatTypes e, StatSubTag tag, Identifier id, float value) {
         IStats stat = instance.get(e);
         if (stat == null) return false;
@@ -136,6 +138,7 @@ public class PlayerStat {
         if (hasInstance(e, id, tag)) value += stat.getInstanceValueById(id, tag);
         stat.addStatInstance(id, value, tag);
         if (e == HEALTH) calculateMaxHealth(player);
+        if (e.getTag() == StatTypeTag.SUB_STAT) calculateSubStat(player, e);
         if (e == MANA) calculateMaxMana();
         return true;
     }
@@ -145,6 +148,9 @@ public class PlayerStat {
         if (stat == null) return false;
         if (stat instanceof PercentStat && tag != PERCENT) return false;
         stat.tryReplaceInstance(id, value, tag);
+        if (e == HEALTH) {
+            calculateMaxHealth(player);
+        }
         return true;
     }
 
@@ -249,7 +255,7 @@ public class PlayerStat {
     }
 
     public boolean addPerkInstance(ServerPlayerEntity player, StatTypes type, Identifier id, float amount, StatSubTag tag) {
-        if (type.tag != StatTypeTag.SUB_STAT) return false;
+        if (type.getTag() != StatTypeTag.SUB_STAT) return false;
         this.tryAddNumberInstance(player, type, tag, id, amount);
         calculateSubStat(player, type);
         return true;
@@ -259,8 +265,16 @@ public class PlayerStat {
         int value = Math.round(this.getTotalStatValue(type));
         switch (type) {
             case STRENGTH -> {
-                this.tryAddNumberInstance(player, HEALTH, FLAT, STRENGTH_MODIFIER_ID, 2 * value);
-                this.tryAddNumberInstance(player, BONUS_MELEE_DAMAGE, PERCENT ,STRENGTH_MODIFIER_ID, (float) (0.02 * value));
+                if (instance.get(HEALTH).hasInstance(STRENGTH_MODIFIER_ID, FLAT)) {
+                    this.tryReplaceNumberInstance(player, HEALTH, FLAT, STRENGTH_MODIFIER_ID, 2 * value);
+                } else {
+                    this.tryAddNumberInstance(player, HEALTH, FLAT, STRENGTH_MODIFIER_ID, 2 * value);
+                }
+                if (instance.get(BONUS_MELEE_DAMAGE).hasInstance(STRENGTH_MODIFIER_ID, FLAT)) {
+                    this.tryReplaceNumberInstance(player, BONUS_MELEE_DAMAGE, FLAT, STRENGTH_MODIFIER_ID, (float) (0.02 * value));
+                } else {
+                    this.tryAddNumberInstance(player, BONUS_MELEE_DAMAGE, FLAT, STRENGTH_MODIFIER_ID, (float) 0.02 * value);
+                }
             }
             case DEXTERITY -> {
                 this.tryAddPercentInstance(DODGE, DEXTERITY_MODIFIER_ID, (float) (0.05 * value));
@@ -333,6 +347,8 @@ public class PlayerStat {
             if (currentMana < maxMana) {
                 addCurrentMana(getTotalStatValue(REGEN_MANA_PER_SECOND));
             }
+
+
         }
     }
 

@@ -28,7 +28,7 @@ public class Tier1ArmorModifier extends AbstractStatModifier {
     @Override
     protected EnumMap<StatTypes, IStats> getMap() {
         EnumMap<StatTypes, IStats> map = new EnumMap<>(StatTypes.class);
-        IStats armorStat = new FloatStat();
+        IStats armorStat = new FloatStat(ARMOR);
 
         armorStat.addStatInstance(getStatId(), 30, FLAT);
         map.put(ARMOR, armorStat);

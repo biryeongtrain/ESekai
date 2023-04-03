@@ -1,6 +1,8 @@
 package net.biryeongtrain06.qf_stat_mod.mixin;
 
 import io.netty.buffer.ByteBuf;
+import net.biryeongtrain06.qf_stat_mod.stats.interfaces.IStats;
+import net.biryeongtrain06.qf_stat_mod.utils.Nbt2EnumMapAdapter;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.Elements;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
@@ -10,7 +12,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Contract;
@@ -21,10 +22,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.Objects;
 import java.util.Optional;
 
-import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.debugLogger;
 import static net.biryeongtrain06.qf_stat_mod.item.ElementHandler.ITEM_ELEMENT_KEY;
 import static net.biryeongtrain06.qf_stat_mod.item.ItemStatHandler.STAT_KEY;
 import static net.minecraft.item.ItemStack.DISPLAY_KEY;
@@ -94,6 +95,15 @@ public abstract class PacketByteBufMixin {
                 list.add(NbtString.of(Text.Serializer.toJson(Text.translatable(TextHelper.createTranslation(subtag.toLowerCase()) + "_tooltip", new Object[]{statEnum.getTranslatableName(), value}).formatted(statEnum.getFormat()))));
             });
         });
+        return list;
+    }
+
+    private NbtList setStatListVersion2(ItemStack stack, NbtList list) {
+        PacketByteBuf packetByteBuf = (PacketByteBuf) (Object)  this;
+        NbtCompound statRootCompound = stack.getSubNbt(STAT_KEY);
+        EnumMap<StatTypes, IStats> instance = Nbt2EnumMapAdapter.ConvertNbtCompoundAsMap(statRootCompound);
+
+
         return list;
     }
 }

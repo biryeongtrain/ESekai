@@ -2,9 +2,8 @@ package net.biryeongtrain06.qf_stat_mod.callback;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public interface PlayerHitByEntityCallback {
@@ -14,5 +13,5 @@ public interface PlayerHitByEntityCallback {
         }
     });
 
-    void onHit(ServerPlayerEntity player, LivingEntity entity, DamageSource source, float amount);
+    void onHit(ServerPlayerEntity player, Entity entity, DamageSource source, float amount);
 }

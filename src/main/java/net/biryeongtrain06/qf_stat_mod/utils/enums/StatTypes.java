@@ -55,6 +55,10 @@ public enum StatTypes {
         this.isOnlyPercent = isOnlyPercent;
     }
 
+    public Boolean isOnlyPercent() {
+        return isOnlyPercent;
+    }
+
     public String getName() {
         return name;
     }

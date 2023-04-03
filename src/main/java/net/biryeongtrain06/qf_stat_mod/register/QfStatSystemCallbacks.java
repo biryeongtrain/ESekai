@@ -1,6 +1,5 @@
 package net.biryeongtrain06.qf_stat_mod.register;
 
-import net.biryeongtrain06.qf_stat_mod.MainStatSystem;
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.api.ItemStats;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
@@ -18,11 +17,9 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
@@ -30,17 +27,14 @@ import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.ENTITY_MODIFIERS;
-import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.debugLogger;
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes.DODGE;
 
 
 public class QfStatSystemCallbacks {
     private static void playerJoinCallback(ServerPlayerEntity player) {
         IServerPlayerEntityDuck iPlayer = (IServerPlayerEntityDuck) player;
-        if (!iPlayer.isPlayedBefore() || DataStorage.loadPlayerStat(player) == null) {
+            if (!iPlayer.isPlayedBefore() || DataStorage.loadPlayerStat(player) == null) {
             PlayerStat playerStat = new PlayerStat(player);
             DataStorage.savePlayerStat(player, playerStat);
             iPlayer.setPlayedBefore(true);
@@ -61,7 +55,7 @@ public class QfStatSystemCallbacks {
         DataStorage.savePlayerStat(killPlayer, stat);
     }
 
-    private static void entityHitPlayerCallback(ServerPlayerEntity player, LivingEntity entity, DamageSource source, float amount) {
+    private static void entityHitPlayerCallback(ServerPlayerEntity player, Entity entity, DamageSource source, float amount) {
         PlayerStat playerStat = DataStorage.loadPlayerStat(player);
         if ((entity == null) || (source.getAttacker() == null && !source.isIndirect())) {
             playerStat.applyEnvironmentDamage(source, player, amount);
@@ -70,8 +64,7 @@ public class QfStatSystemCallbacks {
         float random = (float) (Math.random() * 100);
         if (random <= playerStat.getTotalStatValue(StatTypes.DODGE)) return;
         Elements element = null;
-        if (entity instanceof ServerPlayerEntity) {
-            ServerPlayerEntity player2 = (ServerPlayerEntity) entity;
+        if (entity instanceof ServerPlayerEntity player2) {
             element = ItemStats.getPlayerItemElement(player2);
         } else if (entity instanceof HostileEntity) {
             element = ENTITY_MODIFIERS.get(entity).getElement();
@@ -94,17 +87,16 @@ public class QfStatSystemCallbacks {
     }
 
     private static ActionResult onEntityDamagedByPlayer(@Nullable Entity attacker, Entity victim, DamageSource source, float amount) {
-        if (!(victim instanceof HostileEntity) && !(victim instanceof LivingEntity)) {
+        if (!(victim instanceof HostileEntity) || !(victim instanceof LivingEntity)) {
             return ActionResult.PASS;
         }
-        if (!(attacker instanceof ServerPlayerEntity)) {
+        if (!(attacker instanceof ServerPlayerEntity player)) {
             return ActionResult.PASS;
         }
         float dodge = ENTITY_MODIFIERS.get(victim).getTotalStatValue(DODGE);
         if ((Math.random() * 100) < dodge) {
             return ActionResult.PASS;
         }
-        ServerPlayerEntity player = (ServerPlayerEntity) attacker;
         ElementHandler elementHandler = new ElementHandler(player);
         Elements e = elementHandler.getElement();
         float resistance = ENTITY_MODIFIERS.get(victim).getTotalStatValue(e.getDefensiveStat());

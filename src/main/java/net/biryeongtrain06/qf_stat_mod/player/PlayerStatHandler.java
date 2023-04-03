@@ -37,35 +37,37 @@ public class PlayerStatHandler {
     }
 
     public void syncItemStat(ItemStack oldStack, ItemStack newStack) {
+        if (oldStack.getSubNbt(STAT_KEY) == null && newStack.getSubNbt(STAT_KEY) == null) return;
+        if (oldStack.getSubNbt(STAT_KEY) == null || oldStack.getSubNbt(STAT_KEY).equals(newStack.getSubNbt(STAT_KEY))) return;
         removeItemStatToPlayer(oldStack);
         addItemStatsToPlayer(newStack);
     }
 
     private void removeItemStatToPlayer(ItemStack stack) {
-        if (!checkIfItemHasStack(stack)) {
+        if (!isItemHasItemStack(stack)) {
             return;
         }
         if (stack.getSubNbt(STAT_KEY) == null) return;
         NbtCompound stats = stack.getSubNbt(STAT_KEY);
         stats.getKeys().stream().forEach(key ->
-                stats.getCompound(key).getKeys().stream().forEach(tag ->
+                stats.getCompound(key).getKeys().forEach(tag ->
                 playerStat.tryAddUnknownInstance(player, StatTypes.getStatByName(key), StatSubTag.getStatByName(tag), ITEM_MODIFIER_ID, -stats.getCompound(key).getFloat(tag))));
         DataStorage.savePlayerStat(player, playerStat);
     }
 
     private void addItemStatsToPlayer(ItemStack stack) {
-        if (!checkIfItemHasStack(stack)) return;
+        if (!isItemHasItemStack(stack)) return;
         NbtCompound statCompound = stack.getSubNbt(STAT_KEY);
 
         if (statCompound == null) return;
-        statCompound.getKeys().stream().forEach(key ->
-                statCompound.getCompound(key).getKeys().stream().forEach(tag ->
+        statCompound.getKeys().forEach(key ->
+                statCompound.getCompound(key).getKeys().forEach(tag ->
                         playerStat.tryAddUnknownInstance(player, StatTypes.getStatByName(key), StatSubTag.getStatByName(tag), ITEM_MODIFIER_ID, statCompound.getCompound(key).getFloat(tag))));
         DataStorage.savePlayerStat(player, playerStat);
     }
 
-    private boolean checkIfItemHasStack(ItemStack stack) {
+    private boolean isItemHasItemStack(ItemStack stack) {
         if (stack.isEmpty()) return false;
-        return !stack.getOrCreateSubNbt(STAT_KEY).isEmpty();
+        return !stack.getSubNbt(STAT_KEY).isEmpty();
     }
 }

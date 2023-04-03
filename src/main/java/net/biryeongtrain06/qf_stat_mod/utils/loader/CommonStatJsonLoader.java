@@ -1,4 +1,4 @@
-package net.biryeongtrain06.qf_stat_mod.utils.builder;
+package net.biryeongtrain06.qf_stat_mod.utils.loader;
 
 import net.minecraft.server.MinecraftServer;
 

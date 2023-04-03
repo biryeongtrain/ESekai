@@ -71,5 +71,6 @@ public class QfStatSystemCommands {
                         .executes(TestCommands::getItemStat)
         );
         SetItemStatCommand.register(dispatcher);
+        SetItemStatCommandWithID.register(dispatcher);
     }
 }

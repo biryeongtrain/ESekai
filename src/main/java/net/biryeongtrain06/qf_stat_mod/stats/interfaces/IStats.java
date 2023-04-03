@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.util.Identifier;
 
 import java.util.function.BiFunction;
@@ -22,4 +23,6 @@ public interface IStats {
     void mergeInstance(Identifier id, StatSubTag tag, float value, BiFunction<? super Float, ? super Float, ? extends Float> remappingFunction);
     Object2FloatOpenHashMap<Identifier> getCloneInstances(StatSubTag tag);
     Object2ObjectOpenHashMap<StatSubTag, Object2FloatOpenHashMap<Identifier>> getCloneMap();
+    NbtList getSeparatedStatLore();
+    NbtList getCombinedStatLore();
 }

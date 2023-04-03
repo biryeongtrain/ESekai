@@ -4,6 +4,8 @@ import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.biryeongtrain06.qf_stat_mod.stats.interfaces.IStats;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.util.Identifier;
 
 import java.util.OptionalDouble;
@@ -13,13 +15,15 @@ import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag.PERCENT;
 
 public class PercentStat implements IStats {
     private final Object2ObjectOpenHashMap<StatSubTag, Object2FloatOpenHashMap<Identifier>> map = new Object2ObjectOpenHashMap<>();
+    private final StatTypes type;
 
-    public PercentStat(float basePercent) {
-        this();
+    public PercentStat(StatTypes type, float basePercent) {
+        this(type);
         map.get(PERCENT).put(getBaseStatId(), basePercent);
     }
 
-    public PercentStat() {
+    public PercentStat(StatTypes type) {
+        this.type = type;
         map.put(PERCENT, new Object2FloatOpenHashMap<>());
     }
 
@@ -80,6 +84,16 @@ public class PercentStat implements IStats {
     @Override
     public Object2ObjectOpenHashMap<StatSubTag, Object2FloatOpenHashMap<Identifier>> getCloneMap() {
         return this.map.clone();
+    }
+
+    @Override
+    public NbtList getSeparatedStatLore() {
+        return null;
+    }
+
+    @Override
+    public NbtList getCombinedStatLore() {
+        return null;
     }
 
     @Override

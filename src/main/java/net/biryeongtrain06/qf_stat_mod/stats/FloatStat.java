@@ -3,7 +3,12 @@ package net.biryeongtrain06.qf_stat_mod.stats;
 import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.biryeongtrain06.qf_stat_mod.stats.interfaces.IStats;
+import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag;
+import net.biryeongtrain06.qf_stat_mod.utils.enums.StatTypes;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import java.util.Optional;
@@ -13,15 +18,16 @@ import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag.*;
 
 public class FloatStat implements IStats {
     private final Object2ObjectOpenHashMap<StatSubTag, Object2FloatOpenHashMap<Identifier>> map = new Object2ObjectOpenHashMap<>();
-
-    public FloatStat() {
+    private final StatTypes type;
+    public FloatStat(StatTypes type) {
+        this.type = type;
         map.put(FLAT, new Object2FloatOpenHashMap<>());
         map.put(PERCENT, new Object2FloatOpenHashMap<>());
         map.put(MULTIPLIER, new Object2FloatOpenHashMap<>());
     }
 
-    public FloatStat(float baseFlat, float basePercent, float baseMulti) {
-        this();
+    public FloatStat(StatTypes type, float baseFlat, float basePercent, float baseMulti) {
+        this(type);
         map.get(FLAT).put(getBaseStatId(), baseFlat);
         map.get(PERCENT).put(getBaseStatId(), basePercent);
         map.get(MULTIPLIER).put(getBaseStatId(), baseMulti);
@@ -41,8 +47,7 @@ public class FloatStat implements IStats {
     public float getTagValue(StatSubTag tag) {
         Object2FloatOpenHashMap<Identifier> instance = map.get(tag);
         Optional<Float> optional = instance.values().stream().reduce(Float::sum);
-        if (optional.isEmpty()) return 1f;
-        return optional.get();
+        return optional.orElse(1f);
     }
 
     @Override
@@ -80,6 +85,27 @@ public class FloatStat implements IStats {
     @Override
     public Object2ObjectOpenHashMap<StatSubTag, Object2FloatOpenHashMap<Identifier>> getCloneMap() {
         return this.map.clone();
+    }
+
+    @Override
+    public NbtList getSeparatedStatLore() {
+        NbtList nbtList = new NbtList();
+        this.map.forEach((tag, tagInstance) ->
+                tagInstance.keySet().forEach(key -> {
+                float value = tagInstance.getFloat(key);
+                nbtList.add(NbtString.of(Text.Serializer.toJson(Text.translatable(TextHelper.createTranslation(tag.toString().toLowerCase() + "_tooltip"), type.getTranslatableName(), value).formatted(type.getFormat()))));
+            })
+        );
+        return nbtList;
+    }
+
+    @Override
+    public NbtList getCombinedStatLore() {
+        NbtList nbtList = new NbtList();
+        float value = getTotalValue();
+
+        nbtList.add(NbtString.of(Text.Serializer.toJson(Text.translatable(TextHelper.createTranslation(FLAT.toString().toLowerCase() + "_tooltip"), type.getTranslatableName(), value).formatted(type.getFormat()))));
+        return nbtList;
     }
 
     @Override

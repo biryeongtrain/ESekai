@@ -1,4 +1,4 @@
-package net.biryeongtrain06.qf_stat_mod.api;
+package net.biryeongtrain06.qf_stat_mod.utils;
 
 import com.google.gson.*;
 import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
@@ -15,8 +15,6 @@ import java.util.EnumMap;
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag.*;
 
 public class StatGsonAdapter implements JsonSerializer<EnumMap<StatTypes, IStats>>, JsonDeserializer<EnumMap<StatTypes, IStats>> {
-
-
     @Override
     public JsonElement serialize(EnumMap<StatTypes, IStats> src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject jsonObject = new JsonObject();
@@ -53,14 +51,14 @@ public class StatGsonAdapter implements JsonSerializer<EnumMap<StatTypes, IStats
             var statType = stat.get(key).getAsJsonObject();
             StatTypes statEnum = StatTypes.getStatByName(key);
 
-            map.put(statEnum, convertJsonObjectAsMap(statType));
+            map.put(statEnum, convertJsonObjectAsMap(statEnum, statType));
             }
 
         return map;
     }
 
-    private IStats convertJsonObjectAsMap(JsonObject object) {
-        IStats iStats = createStatClass(object);
+    private IStats convertJsonObjectAsMap(StatTypes type, JsonObject object) {
+        IStats iStats = createStatClass(type, object);
 
         for (String tag : object.keySet()) {
             StatSubTag statSubTag = StatSubTag.getStatByName(tag);
@@ -73,10 +71,10 @@ public class StatGsonAdapter implements JsonSerializer<EnumMap<StatTypes, IStats
         return iStats;
     }
 
-    private IStats createStatClass(JsonObject object) {
+    private IStats createStatClass(StatTypes type, JsonObject object) {
         if (object.size() == 3) {
-            return new FloatStat();
+            return new FloatStat(type);
         }
-        return new PercentStat();
+        return new PercentStat(type);
     }
 }

@@ -10,6 +10,7 @@ import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -44,9 +45,11 @@ public abstract class   ServerPlayerEntityMixin implements IServerPlayerEntityDu
         if (!(player instanceof ServerPlayerEntity)) return;
         if (source.isIn(DamageTypeTags.BYPASSES_INVULNERABILITY)) return;
         if ((source instanceof QfDamageSource)) return;
+        if (source.getSource() instanceof ProjectileEntity) {
 
+        }
         if(source.getAttacker() instanceof LivingEntity || source.getAttacker() == null) {
-            PlayerHitByEntityCallback.EVENT.invoker().onHit((ServerPlayerEntity) player, (LivingEntity) source.getSource(), source, amount);
+            PlayerHitByEntityCallback.EVENT.invoker().onHit((ServerPlayerEntity) player, source.getSource(), source, amount);
         }
         cir.cancel();
     }

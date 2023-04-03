@@ -4,10 +4,9 @@ import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.entity.BaseEntityModifiers;
 import net.biryeongtrain06.qf_stat_mod.entity.modifier.Modifier;
 import net.biryeongtrain06.qf_stat_mod.register.QfStatSystemGameRules;
-import net.biryeongtrain06.qf_stat_mod.stats.FloatStat;
-import net.biryeongtrain06.qf_stat_mod.stats.PercentStat;
 import net.biryeongtrain06.qf_stat_mod.stats.interfaces.IStats;
 import net.biryeongtrain06.qf_stat_mod.utils.ExpHandler;
+import net.biryeongtrain06.qf_stat_mod.utils.Nbt2EnumMapAdapter;
 import net.biryeongtrain06.qf_stat_mod.utils.PlayerHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.Elements;
@@ -43,7 +42,7 @@ public class EntityComponent implements INewCommonEntityComponents{
     private boolean healthIncreased = false;
     private boolean damageIncreased = false;
     private Elements element = Elements.PHYSICAL;
-    private List<Modifier> modifiers = new ArrayList<>();
+    private final List<Modifier> modifiers = new ArrayList<>();
 
 
     public EntityComponent(MobEntity provider) {
@@ -255,7 +254,7 @@ public class EntityComponent implements INewCommonEntityComponents{
         this.healthIncreased = tag.getBoolean("healthIncreased");
         this.damageIncreased = tag.getBoolean("damageIncreased");
         this.level = tag.getInt("level");
-        this.instance = ConvertNbtCompoundAsMap(tag.getCompound("stat"));
+        this.instance = Nbt2EnumMapAdapter.ConvertNbtCompoundAsMap(tag.getCompound("stat"));
         this.element = Elements.getElementWithId(new Identifier(tag.getString("element")));
     }
 
@@ -264,53 +263,11 @@ public class EntityComponent implements INewCommonEntityComponents{
         tag.putBoolean("healthIncreased", healthIncreased);
         tag.putBoolean("damageIncreased", damageIncreased);
         tag.putInt("level", level);
-        tag.put("stat", ConvertMapAsNbtCompound());
+        tag.put("stat", Nbt2EnumMapAdapter.ConvertMapAsNbtCompound(this.instance == null ? setEntityStat(EntityType.getId(provider.getType())) : this.instance));
         tag.putString("element", element.getId().toString());
     }
-
     @Override
     public Elements getElement() {
         return this.element;
-    }
-
-    private NbtCompound ConvertMapAsNbtCompound() {
-        NbtCompound nbtCompound = new NbtCompound();
-        if (instance == null) this.instance = setEntityStat(EntityType.getId(provider.getType()));
-        instance.forEach(((statTypes, iStats) -> {
-            // HEALTH, ARMOR etc...
-            String typeName = statTypes.getName();
-            NbtCompound nbtCompound1 = new NbtCompound();
-            iStats.getCloneMap().forEach((tag, map) -> {
-                // FLAT, PERCENT, MULTI
-                NbtCompound nbtCompound2 = new NbtCompound();
-                map.forEach((id, value) -> {
-                    // id, value
-                    nbtCompound2.putFloat(id.toString(), value);
-                });
-                nbtCompound1.put(tag.name(), nbtCompound2);
-            });
-            nbtCompound.put(typeName ,nbtCompound1);
-        }));
-        return nbtCompound;
-    }
-
-    private EnumMap<StatTypes, IStats> ConvertNbtCompoundAsMap(NbtCompound nbtCompound) {
-        EnumMap<StatTypes, IStats> map = new EnumMap<>(StatTypes.class);
-        nbtCompound.getKeys().forEach(stat -> { // Root
-
-            StatTypes type = StatTypes.getStatByName(stat);
-            IStats statClazz;
-            NbtCompound nbtCompound2 = nbtCompound.getCompound(stat); // FLAT, PERCENT, MULTI
-            if (nbtCompound2.getSize() == 3) statClazz = new FloatStat();
-            else statClazz = new PercentStat();
-
-            nbtCompound2.getKeys().forEach(tag -> {
-                NbtCompound nbtCompound3 = nbtCompound2.getCompound(tag); // ID , value
-
-                nbtCompound3.getKeys().forEach(id -> statClazz.addStatInstance(new Identifier(id), nbtCompound3.getFloat(id), StatSubTag.getStatByName(tag)));
-            });
-            map.put(type, statClazz);
-        });
-        return map;
     }
 }

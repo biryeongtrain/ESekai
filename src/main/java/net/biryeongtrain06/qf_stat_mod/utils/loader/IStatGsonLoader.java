@@ -1,4 +1,4 @@
-package net.biryeongtrain06.qf_stat_mod.utils.builder;
+package net.biryeongtrain06.qf_stat_mod.utils.loader;
 
 import com.google.gson.JsonObject;
 import net.biryeongtrain06.qf_stat_mod.stats.FloatStat;
@@ -29,11 +29,11 @@ public interface IStatGsonLoader {
                 float percentValue = statObj.get(StatSubTag.PERCENT.name()).getAsFloat();
                 float multiValue = statObj.get(StatSubTag.MULTIPLIER.name()).getAsFloat();
 
-                map.put(statType, new FloatStat(flatValue, percentValue, multiValue));
+                map.put(statType, new FloatStat(statType, flatValue, percentValue, multiValue));
             } else if (statObj.has(StatSubTag.PERCENT.name())) {
                 float percentValue = statObj.get(StatSubTag.PERCENT.name()).getAsFloat();
 
-                map.put(statType, new PercentStat(percentValue));
+                map.put(statType, new PercentStat(statType, percentValue));
             } else {
                 debugLogger.error("Stat {} is not valid. Check this json. Path : {}", key, file.toString());
             }

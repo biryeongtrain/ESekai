@@ -66,7 +66,7 @@ public class LivingEntityMixin {
         if (!isChanged) return;
         if (livingEntity instanceof ServerPlayerEntity) {
             PlayerStatHandler handler = new PlayerStatHandler((ServerPlayerEntity) livingEntity);
-            handler.syncItemStat(stack, stack2);
+            //handler.syncItemStat(stack, stack2);
         }
         if (ENTITY_MODIFIERS.maybeGet(livingEntity).isEmpty()) {
             return;
