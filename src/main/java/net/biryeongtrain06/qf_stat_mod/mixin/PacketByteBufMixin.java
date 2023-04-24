@@ -36,8 +36,6 @@ import static net.minecraft.nbt.NbtElement.STRING_TYPE;
 @Mixin(value = PacketByteBuf.class, priority = 700)
 public abstract class PacketByteBufMixin {
 
-    @Shadow public abstract ByteBuf setByte(int index, int value);
-
     @ModifyVariable(method = "writeItemStack", at = @At("HEAD"), argsOnly = true)
     private ItemStack qf$addLore(ItemStack stack) {
         if (stack.getNbt() == null || stack.getNbt().getString(ITEM_ELEMENT_KEY) == null || !stack.isDamageable() || stack.isStackable()) {
@@ -67,7 +65,7 @@ public abstract class PacketByteBufMixin {
 
             list.add(NbtString.of(Text.Serializer.toJson(Text.empty())));
         }
-        list = setStatList(stack, list);
+        list = setStatLoreV2(stack, list);
         display.put(LORE_KEY, list);
         stack.getOrCreateNbt().put(DISPLAY_KEY, display);
         return stack;
@@ -85,7 +83,7 @@ public abstract class PacketByteBufMixin {
 
     private NbtList setStatList(ItemStack stack, NbtList list) {
         NbtCompound statRootCompound = stack.getNbt().getCompound(STAT_KEY);
-        statRootCompound.getKeys().forEach(statType -> { // stat -> health 등등 -> flat / percent / -> value
+        statRootCompound.getKeys().forEach(statType -> { // stat -> health 등등 -> flat / percent / -> id -> value
             StatTypes statEnum = StatTypes.getStatByName((statType));
             NbtCompound statCompound = statRootCompound.getCompound(statType);
 
@@ -98,11 +96,13 @@ public abstract class PacketByteBufMixin {
         return list;
     }
 
-    private NbtList setStatListVersion2(ItemStack stack, NbtList list) {
-        PacketByteBuf packetByteBuf = (PacketByteBuf) (Object)  this;
+    private NbtList setStatLoreV2(ItemStack stack, NbtList list) {
         NbtCompound statRootCompound = stack.getSubNbt(STAT_KEY);
         EnumMap<StatTypes, IStats> instance = Nbt2EnumMapAdapter.ConvertNbtCompoundAsMap(statRootCompound);
 
+        instance.forEach((stat, iStats) -> {
+            list.addAll(iStats.getSeparatedStatLore());
+        });
 
         return list;
     }
