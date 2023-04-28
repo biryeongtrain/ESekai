@@ -25,4 +25,5 @@ public interface IStats {
     Object2ObjectOpenHashMap<StatSubTag, Object2FloatOpenHashMap<Identifier>> getCloneMap();
     NbtList getSeparatedStatLore();
     NbtList getCombinedStatLore();
+    float getTagValue(StatSubTag tag);
 }

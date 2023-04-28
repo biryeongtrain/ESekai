@@ -5,6 +5,8 @@ import lombok.Builder;
 import net.biryeongtrain06.qf_stat_mod.api.DataStorage;
 import net.biryeongtrain06.qf_stat_mod.api.PlayerStat;
 import net.biryeongtrain06.qf_stat_mod.api.IPlayerClass;
+import net.biryeongtrain06.qf_stat_mod.stats.PercentStat;
+import net.biryeongtrain06.qf_stat_mod.utils.Nbt2EnumMapAdapter;
 import net.biryeongtrain06.qf_stat_mod.utils.PlayerHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.TextHelper;
 import net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag;
@@ -18,7 +20,6 @@ import net.minecraft.util.Identifier;
 import static net.biryeongtrain06.qf_stat_mod.MainStatSystem.debugLogger;
 import static net.biryeongtrain06.qf_stat_mod.item.ItemStatHandler.STAT_KEY;
 
-@Builder
 public class PlayerStatHandler {
     public final ServerPlayerEntity player;
     public final PlayerStat playerStat;
@@ -47,30 +48,63 @@ public class PlayerStatHandler {
     }
 
     public void modifyItemStat(ItemStack oldStack, ItemStack newStack) {
-        boolean test = checkStatMustChange(oldStack, newStack);
-        if (!test) return;
 
         if (oldStack.getSubNbt(STAT_KEY) == null) {
-            addItemStatsToPlayer(newStack);
+            addItemStatsToPlayerV2(newStack);
             return;
         }
 
         if (newStack.getSubNbt(STAT_KEY) == null) {
-            removeItemStatToPlayer(oldStack);
+            removeItemStatToPlayerV2(oldStack);
             return;
         }
+        boolean test = checkStatMustChange(oldStack, newStack);
+        if (!test) return;
 
-        removeItemStatToPlayer(oldStack);
-        addItemStatsToPlayer(newStack);
+        removeItemStatToPlayerV2(oldStack);
+        addItemStatsToPlayerV2(newStack);
     }
 
     public boolean checkStatMustChange(ItemStack oldStack, ItemStack newStack) {
         var oldStackNbt = oldStack.getSubNbt(STAT_KEY);
         var newStackNbt = newStack.getSubNbt(STAT_KEY);
-
         if (oldStackNbt.isEmpty() && newStackNbt.isEmpty()) return false;
         if (oldStackNbt.equals(newStackNbt)) return false;
         return true;
+    }
+
+    private void addItemStatsToPlayerV2(ItemStack stack) {
+        if (!isItemHasItemStack(stack)) return;
+        NbtCompound statCompound = stack.getSubNbt(STAT_KEY);
+        if (statCompound == null) return;
+
+        var itemStatMap = Nbt2EnumMapAdapter.ConvertNbtCompoundAsMap(statCompound);
+        itemStatMap.forEach(((statTypes, iStats) -> {
+            if (iStats instanceof PercentStat) {
+                playerStat.mergeInstance(player, statTypes, StatSubTag.PERCENT, ITEM_MODIFIER_ID, iStats.getTotalValue() - 1, Float::sum);
+            } else {
+                playerStat.mergeInstance(player,statTypes, StatSubTag.FLAT, ITEM_MODIFIER_ID, iStats.getTagValue(StatSubTag.FLAT), Float::sum);
+                playerStat.mergeInstance(player,statTypes, StatSubTag.PERCENT, ITEM_MODIFIER_ID, iStats.getTagValue(StatSubTag.PERCENT) - 1, Float::sum);
+                playerStat.mergeInstance(player,statTypes, StatSubTag.MULTIPLIER, ITEM_MODIFIER_ID, iStats.getTagValue(StatSubTag.MULTIPLIER) - 1, Float::sum);
+            }
+        }));
+    }
+
+    private void removeItemStatToPlayerV2(ItemStack stack) {
+        if (!isItemHasItemStack(stack)) return;
+        NbtCompound statCompound = stack.getSubNbt(STAT_KEY);
+        if (statCompound == null) return;
+
+        var itemStatMap = Nbt2EnumMapAdapter.ConvertNbtCompoundAsMap(statCompound);
+        itemStatMap.forEach(((statTypes, iStats) -> {
+            if (iStats instanceof PercentStat) {
+                playerStat.mergeInstance(player, statTypes, StatSubTag.PERCENT, ITEM_MODIFIER_ID, -iStats.getTotalValue() - 1,Float::sum);
+            } else {
+                playerStat.mergeInstance(player,statTypes, StatSubTag.FLAT, ITEM_MODIFIER_ID, -iStats.getTagValue(StatSubTag.FLAT), Float::sum);
+                playerStat.mergeInstance(player,statTypes, StatSubTag.PERCENT, ITEM_MODIFIER_ID, -iStats.getTagValue(StatSubTag.PERCENT) - 1, Float::sum);
+                playerStat.mergeInstance(player,statTypes, StatSubTag.MULTIPLIER, ITEM_MODIFIER_ID, -iStats.getTagValue(StatSubTag.MULTIPLIER) - 1, Float::sum);
+            }
+        }));
     }
 
     private void removeItemStatToPlayer(ItemStack stack) {
@@ -98,6 +132,7 @@ public class PlayerStatHandler {
 
     private boolean isItemHasItemStack(ItemStack stack) {
         if (stack.isEmpty()) return false;
+        if (stack.getSubNbt(STAT_KEY) == null) return false;
         return !stack.getSubNbt(STAT_KEY).isEmpty();
     }
 }

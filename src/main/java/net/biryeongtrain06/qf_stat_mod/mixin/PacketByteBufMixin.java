@@ -98,12 +98,13 @@ public abstract class PacketByteBufMixin {
 
     private NbtList setStatLoreV2(ItemStack stack, NbtList list) {
         NbtCompound statRootCompound = stack.getSubNbt(STAT_KEY);
-        EnumMap<StatTypes, IStats> instance = Nbt2EnumMapAdapter.ConvertNbtCompoundAsMap(statRootCompound);
+        if (statRootCompound != null) {
+            EnumMap<StatTypes, IStats> instance = Nbt2EnumMapAdapter.ConvertNbtCompoundAsMap(statRootCompound);
 
-        instance.forEach((stat, iStats) -> {
-            list.addAll(iStats.getSeparatedStatLore());
-        });
-
+            instance.forEach((stat, iStats) -> {
+                list.addAll(iStats.getSeparatedStatLore());
+            });
+        }
         return list;
     }
 }

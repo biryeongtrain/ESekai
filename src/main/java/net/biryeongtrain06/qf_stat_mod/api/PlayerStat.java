@@ -23,8 +23,11 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
+import org.intellij.lang.annotations.Subst;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumMap;
+import java.util.function.BiFunction;
 
 import static net.biryeongtrain06.qf_stat_mod.utils.PlayerHelper.*;
 import static net.biryeongtrain06.qf_stat_mod.utils.enums.StatSubTag.FLAT;
@@ -117,6 +120,16 @@ public class PlayerStat {
 
     private void dumpNeedXpToLevelUp() {
         this.needXpToLevelUp = (float) (ExpHandler.getBaseLevelUpXpValue() * Math.pow(1 + ExpHandler.getLevelScaleModifier(), getLevel()));
+    }
+
+    public void mergeInstance(ServerPlayerEntity player, @NotNull StatTypes type, StatSubTag tag, Identifier id, float value, BiFunction<? super Float, ? super Float, ? extends Float> remappingFunction) {
+        this.instance.get(type).mergeInstance(id, tag, value, remappingFunction);
+
+        if (type == HEALTH) {
+            this.calculateMaxHealth(player);
+        } else if (type.getTag() == StatTypeTag.SUB_STAT) {
+            this.calculateSubStat(player, type);
+        }
     }
 
     public boolean tryAddUnknownInstance(ServerPlayerEntity player, StatTypes type, StatSubTag tag, Identifier id, float value) {

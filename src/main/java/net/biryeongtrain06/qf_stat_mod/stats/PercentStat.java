@@ -97,6 +97,11 @@ public class PercentStat implements IStats {
     }
 
     @Override
+    public float getTagValue(StatSubTag tag) {
+        return getTotalValue();
+    }
+
+    @Override
     public void mergeInstance(Identifier id, StatSubTag tag, float value, BiFunction<? super Float, ? super Float, ? extends Float> remappingFunction) {
         var instance = map.get(tag);
         instance.merge(id, value, remappingFunction);

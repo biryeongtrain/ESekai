@@ -44,6 +44,7 @@ public class FloatStat implements IStats {
         return getTagValue(FLAT) * getTagValue(PERCENT) * getTagValue(MULTIPLIER);
     }
 
+    @Override
     public float getTagValue(StatSubTag tag) {
         Object2FloatOpenHashMap<Identifier> instance = map.get(tag);
         Optional<Float> optional = instance.values().stream().reduce(Float::sum);
